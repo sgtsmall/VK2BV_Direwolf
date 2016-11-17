@@ -24,6 +24,14 @@ more text here
 
 Need to put more here at the moment the main action is to create an SD card with the image and boot. And then all th e build steps.
 
+There are 2 build documents the lite version is command line based and the full version is screen based.
+I recommend the lite version to start with particularly for beacons, digipeaters or SARTrack.
+I also recommend starting again if you build a full version. It's not hard and takes a lot less fiddling around that adding the Desktop later.
+
+https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md
+
+https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md
+
 ## Documentation
 
 There will be lots of documentation here: https://github.com/sgtsmall/VK2BV_direwolf/tree/master/docs (oneday)
