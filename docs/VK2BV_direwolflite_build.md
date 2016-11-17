@@ -51,9 +51,6 @@ boots to sh (ssh available)
 basic config stuff:
 
 
-DONT BOTHER READING PAST THIS POINT YET its a copy of another project
-
-
 ### Initial Setup
 
 <table>
