@@ -1,21 +1,38 @@
-VK2BV Direwolf - Build Image
+VK2BV Direwolf - Build Lite Image
 
-This document is unnecessary in this project?
  
 
-# Rebuild a Master Image 20140930
+# Build the Lite Image
 
-From time to time you may need to completely rebuild the image. These instructions and some scripts represent a minimal set of installs and script changes that were needed to build the image. Most of this came about as I was searching and trying several different base images, trying to find a balance of function for size. I ended up automating several of these steps and these notes are the result. Your mileage may vary!!!
+This document covers the lite image. The lite image does not include the desktop components and is meant to be run via ssh access, network and or boot files.
 
-Source for minimal headless raspbian image:
+There is also a full image build (link here later) This starts with the full desktop version. This opens a whole can of worms in its own right.
 
-http://www.linuxsystems.it/raspbian-wheezy-armhf-raspberry-pi-minimal-image/
+From time to time you may need to completely rebuild the image. These instructions and some scripts represent a minimal set of installs and script changes that were needed to build the image. I ended up automating several of these steps and these notes are the result. Your mileage may vary!!!
 
-login is: root/raspberry
+For the Lite image I recommend an 8Gb SD card (I often use 4Gb but they are hard to come by)
+If you have an older Pi, I recommend at least a Pi B+ (the start of the micro SD ports and 4 x USB). However if you have a pi B that will work. I haven't tried with the 'A'. 
+
+If you are buying new then get a Pi 3. Note that Pi 3 has some issues with the way they have developed the bluetooth and some other components that make them not 100% compatible with more common Pi Hats, however this should not be a problem here.
+
+Source for lite image:
+
+choose the raspbian Lite image.
+
+https://www.raspberrypi.org/downloads/raspbian/
+
+
+
+login is: pi/raspberry
 
 boots to sh (ssh available)
 
 basic config stuff:
+
+
+DONT BOTHER READING PAST THIS POINT YET its a copy of another project
+
+
 
 <table>
   <tr>
