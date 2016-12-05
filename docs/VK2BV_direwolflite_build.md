@@ -79,7 +79,8 @@ Now we start with some installs, from here I am using apt-get -y to avoid the co
 
 ### Support for soundcard, git and nslookup
 
-```sudo apt-get -y install libasound2-dev git-core dnsutils gawk
+```
+sudo apt-get -y install libasound2-dev git-core dnsutils gawk
 ```
 
 
