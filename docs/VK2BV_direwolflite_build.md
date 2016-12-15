@@ -96,6 +96,10 @@ These entries may not be needed for most interactions with git so dont enter yet
   - git config --global user.name “vkxxx"<br>
   - git config --global user.email xxx@xxx.com<br>
 
+### Clone these documents and script files
+```shell
+git clone git://github.com/sgtsmall/VK2BV_direwolf
+```
 ### Install and build hamlib
  This is not strictly necessary unless you are dealing with a radio that uses it. But it is a good exercise of your system, if you build it now it will be available to the direwolf build.
 

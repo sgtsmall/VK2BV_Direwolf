@@ -34,7 +34,7 @@ function getparam {
  fi
  term="$termn"
 #
- passcode=`~/aprx/keygen.py "$user"`
+ passcode=`~/VK2BV_direwolf/bin/keygen.py "$user"`
  echo "Passcode is unique for your Callsign "
  echo -e "Passcode for [$user] calculated as [$passcode] "
  echo -e "APRSIS Passcode number [$passcode]\c"
