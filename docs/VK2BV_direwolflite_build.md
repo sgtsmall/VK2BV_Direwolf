@@ -69,7 +69,7 @@ The Raspi-config is curses menu based uses arrow, tab and enter keys. The follow
 
 After the reboot log in and we will install some software
 
-```
+```shell
 sudo apt-get update
 sudo apt-get upgrade
 sudo reboot
@@ -99,7 +99,7 @@ These entries may not be needed for most interactions with git so dont enter yet
 ### Install and build hamlib
  This is not strictly necessary unless you are dealing with a radio that uses it. But it is a good exercise of your system, if you build it now it will be available to the direwolf build.
 
-```
+```shell
 cd ~
 git clone git://hamlib.git.sourceforge.net/gitroot/hamlib/hamlib
 cd hamlib
