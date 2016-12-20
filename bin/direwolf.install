@@ -1,0 +1,11 @@
+if [ ! -d /etc/direwolf.d ]; then
+    mkdir /etc/direwolf.d || return 2
+fi
+touch /etc/direwolf.d/README
+#
+cp direwolf.initd /etc/init.d/direwolf
+chmod 644 /lib/systemd/system/direwolf.service
+chmod 644 /etc/init.d/direwolf
+systemctl daemon-reload
+systemctl enable direwolf.service
+#systemctl start direwolf.service

@@ -96,6 +96,9 @@ function writesed {
  KISSPORT 8001
  #Fixed Position Beacon
  PBEACON delay=1  every=30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
+ #Tracker
+ GPSD
+ SMARTBEACONING 50 2:00 5 15:00 0:15 20 255
  #Digipeater
  DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE 
  #Igate

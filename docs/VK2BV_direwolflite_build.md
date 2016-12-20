@@ -81,6 +81,7 @@ Now we start with some installs, from here I am using apt-get -y to avoid the co
 
 ```
 sudo apt-get -y install libasound2-dev git-core dnsutils gawk
+sudo apt-get install  automake libtool
 ```
 
 
@@ -98,7 +99,11 @@ These entries may not be needed for most interactions with git so dont enter yet
 
 ### Clone these documents and script files
 ```shell
+cd ~
 git clone git://github.com/sgtsmall/VK2BV_direwolf
+git clone git://git.drogon.net/wiringPi
+cd wiringPi
+./build
 ```
 ### Install and build hamlib
  This is not strictly necessary unless you are dealing with a radio that uses it. But it is a good exercise of your system, if you build it now it will be available to the direwolf build.
@@ -134,6 +139,87 @@ So now direwolf is installed but not yet configured.
 ## todo configure gpsd
 ## todo configure alsa
 ## todo configure direwolf
+
+By default direwolf creates a file  direwolf.conf  in the home directory, this contains the information you need to create most configs. I have included a script that will gather some details and create a new file called direwolf.sample.
+
+first of all keep a copy of the default direwolf.config
+
+```shell 
+mv direwolf.conf direwolf.origconf
+```
+
+
+To get started a simple script has been created that will generate a file direwolf.sample this creates several config entries that can be used. Some should be deleted or commented, more infor required here....
+
+```shell
+cd ~
+VK2BV_direwolf/bin/configdirew
+```
+
+Sample here [find a new markdown for screen sample]
+Note the format for lat and lon
+
+```
+Params are Callsign NOCALL Terminal 1 creating NOCALL-1
+ APRSIS passcode 12345
+lat is 33^51.43S  lon is 151^12.91E
+gpio BCM DCD 23  PTT 22 
+
+Valid Callsign [e.g. VK2ABC] [NOCALL]VK2ABC
+Terminal number [e.g. 1] [1]
+Passcode is unique for your Callsign 
+Passcode for [VK2ABC] calculated as [21931] 
+APRSIS Passcode number [21931]
+lat and long for your igate location
+Format is deg^MM.MMS  use the aprs.is google map to get the value
+lat value [e.g. 33^51.12S] [33^51.43S]
+lon value [e.g. 151^51.12E] [151^12.91E]
+GPIO pin selection
+Uses the BCM number for the PTT signal and DCD
+ptt value [e.g. pin 15 BCM 22] [22]
+dcd value e.g. pin 14 BCM [23]
+Params are Callsign VK2ABC Terminal 1 creating VK2ABC-1
+ APRSIS passcode 21931
+lat is 33^51.43S  lon is 151^12.91E
+gpio BCM DCD 23  PTT 22 
+
+ If the values are correct enter Y  [n]Y
+```
+
+This generates the sample file
+```
+ #device
+ ADEVICE plughw:1,0
+ ACHANNELS 1
+ #channel
+ CHANNEL 0
+ MYCALL VK2ABC-1
+ MODEM 1200
+ PTT GPIO 22
+ DCD GPIO 23
+ AGWPORT 8000
+ KISSPORT 8001
+ #Fixed Position Beacon
+ PBEACON delay=1  every=30 overlay=S symbol="digi" lat=33^51.43S long=151^12.91E power=10 height=20 gain=4 comment="Test Direwolf Node"
+ #Digipeater
+ DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE 
+ #Igate
+ IGSERVER sydney.aprs2.net
+ IGLOGIN VK2ABC-1 21931
+ PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=33^51.43S long=151^12.91E 
+```
+copy this file to direwolf.conf and edit
+I suggest commenting out the PBEACON and DIGIPEAT statements initially until the receiver mode is running
+
+```
+cp direwolf.sample direwolf.conf
+```
+
+Longer discussion on configs here
+
+
+
+
 
 ### Testing the RPi board and GPIO ports
 
@@ -192,6 +278,32 @@ now issue the ptt off.
 Adjust the pot and repeat until you get to 20 seconds for most usage. (That is a fairly long transmission, however if you are going to use other digital modes you may need longer [JT65 50 seconds])
 
 Finally connect the radio and you should see ptt come on and off by command above.
+
+### Testing direwolf
+
+```
+cd ~
+direwolf -t 0
+```
+
+This should read /home/pi/direwolf.conf and start up (-t 0 turns off the colour outputs)
+
+### Configuring direwolf as a service
+
+If you want direwolf to always run on startup then we should configure as a service. Scripts and files for this are contained in the github, although it is recommended to do refresh your git to make sure you have the latest.
+
+```
+cd ~
+cd VK2BV_direwolf
+git pull
+cd bin
+sudo sh -x direwolf.install
+cd ~
+```
+This should copy the relevant files in place.
+To start manually 
+sudo service start direwolf.service
+
 
 
 

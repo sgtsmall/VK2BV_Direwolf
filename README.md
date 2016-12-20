@@ -22,7 +22,13 @@ more text here
 
 ## Installation
 
-Need to put more here at the moment the main action is to create an SD card with the image and boot. And then all th e build steps.
+Need to put more here at the moment the main action is to create an SD card with the image and boot. And then all the build steps.
+
+Most (98%) of this information is taken from the direwolf configuration documents. One of the steps you perform in the install notes below is downloading the direwolf package to the Pi, this contains all the code and documents.
+You should probably download the files to your pc for esay access to the documents.
+go to the github site and download the project as a zip file, from there you can get to the documents located in the doc directory.
+
+https://github.com/wb2osz/direwolf
 
 There are 2 build documents the lite version is command line based and the full version is screen based.
 I recommend the lite version to start with particularly for beacons, digipeaters or SARTrack.
