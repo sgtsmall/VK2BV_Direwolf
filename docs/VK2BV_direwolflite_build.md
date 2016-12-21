@@ -156,58 +156,58 @@ cd ~
 VK2BV_direwolf/bin/configdirew
 ```
 
-Sample here [find a new markdown for screen sample]
+Sample here 
+
 Note the format for lat and lon
 
-```
-Params are Callsign NOCALL Terminal 1 creating NOCALL-1
- APRSIS passcode 12345
-lat is 33^51.43S  lon is 151^12.91E
-gpio BCM DCD 23  PTT 22 
 
-Valid Callsign [e.g. VK2ABC] [NOCALL]VK2ABC
-Terminal number [e.g. 1] [1]
-Passcode is unique for your Callsign 
-Passcode for [VK2ABC] calculated as [21931] 
-APRSIS Passcode number [21931]
-lat and long for your igate location
-Format is deg^MM.MMS  use the aprs.is google map to get the value
-lat value [e.g. 33^51.12S] [33^51.43S]
-lon value [e.g. 151^51.12E] [151^12.91E]
-GPIO pin selection
-Uses the BCM number for the PTT signal and DCD
-ptt value [e.g. pin 15 BCM 22] [22]
-dcd value e.g. pin 14 BCM [23]
-Params are Callsign VK2ABC Terminal 1 creating VK2ABC-1
- APRSIS passcode 21931
-lat is 33^51.43S  lon is 151^12.91E
-gpio BCM DCD 23  PTT 22 
-
- If the values are correct enter Y  [n]Y
-```
+> Params are Callsign NOCALL Terminal 1 creating NOCALL-1  
+> APRSIS passcode 12345  
+> lat is 33^51.43S  lon is 151^12.91E  
+> gpio BCM DCD 23  PTT 22   
+>   
+> Valid Callsign [e.g. VK2ABC] [NOCALL]VK2ABC  
+> Terminal number [e.g. 1] [1]  
+> Passcode is unique for your Callsign   
+> Passcode for [VK2ABC] calculated as [21931]   
+> APRSIS Passcode number [21931]  
+> lat and long for your igate location  
+> Format is deg^MM.MMS  use the aprs.is google map to get the value  
+> lat value [e.g. 33^51.12S] [33^51.43S]  
+> lon value [e.g. 151^51.12E] [151^12.91E]  
+> GPIO pin selection  
+> Uses the BCM number for the PTT signal and DCD  
+> ptt value [e.g. pin 15 BCM 22] [22]  
+> dcd value e.g. pin 14 BCM [23]  
+> Params are Callsign VK2ABC Terminal 1 creating VK2ABC-1  
+>  APRSIS passcode 21931  
+> lat is 33^51.43S  lon is 151^12.91E  
+> gpio BCM DCD 23  PTT 22  
+>  
+> If the values are correct enter Y  [n]Y  
 
 This generates the sample file
-```
- #device
- ADEVICE plughw:1,0
- ACHANNELS 1
- #channel
- CHANNEL 0
- MYCALL VK2ABC-1
- MODEM 1200
- PTT GPIO 22
- DCD GPIO 23
- AGWPORT 8000
- KISSPORT 8001
- #Fixed Position Beacon
- PBEACON delay=1  every=30 overlay=S symbol="digi" lat=33^51.43S long=151^12.91E power=10 height=20 gain=4 comment="Test Direwolf Node"
- #Digipeater
- DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE 
- #Igate
- IGSERVER sydney.aprs2.net
- IGLOGIN VK2ABC-1 21931
- PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=33^51.43S long=151^12.91E 
-```
+
+> \# device  
+> ADEVICE plughw:1,0  
+> ACHANNELS 1  
+> \# channel  
+> CHANNEL 0  
+> MYCALL VK2ABC-1  
+> MODEM 1200  
+> PTT GPIO 22  
+> DCD GPIO 23  
+> AGWPORT 8000  
+> KISSPORT 8001  
+> \# Fixed Position Beacon  
+> PBEACON delay=1  every=30 overlay=S symbol="digi" lat=33^51.43S long=151^12.91E power=10 height=20 gain=4 comment="Test Direwolf Node"  
+> \# Digipeater   
+> DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE  
+> \# Igate  
+> IGSERVER sydney.aprs2.net  
+> IGLOGIN VK2ABC-1 21931  
+> PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=33^51.43S long=151^12.91E 
+
 copy this file to direwolf.conf and edit
 I suggest commenting out the PBEACON and DIGIPEAT statements initially until the receiver mode is running
 
@@ -241,19 +241,19 @@ Direwolf (and fldigi)  refers to the BCM Number
 
 The connection that I prefer is to use a strip of 10way IDC cable attached from physical pins 11-20 on the 50way header.
 I then use:
-11,12,13 - No connect
-14 - Gnd
-15 - GPIO22 (BCM Number)
-16 - GPIO23 (BCM Number)
-17 - 3.3V
-18,19,20 - No Connect
+> 11,12,13 - No connect
+> 14 - Gnd
+> 15 - GPIO22 (BCM Number)
+> 16 - GPIO23 (BCM Number)
+> 17 - 3.3V
+> 18,19,20 - No Connect
 
 These 4 cables conveniently line up with the RPi board
 
-14 <-> gnd
-15 <-> ptt
-16 <-> dcd
-17 <-> 3.3v
+> 14 <-> gnd
+> 15 <-> ptt
+> 16 <-> dcd
+> 17 <-> 3.3v
 
 
 To test the pinouts - ensure direwolf shutdown, radio disconnected.
@@ -301,8 +301,7 @@ sudo sh -x direwolf.install
 cd ~
 ```
 This should copy the relevant files in place.
-To start manually 
-sudo service start direwolf.service
+To start manually `sudo service start direwolf.service`
 
 
 
@@ -314,7 +313,7 @@ sudo service start direwolf.service
 
 ### Fixed IP Address on the new raspbian since jessie
 
-The fixed ip address information is now located in /etc/dhcpcd.conf
+The fixed ip address information is now located in `/etc/dhcpcd.conf`
 
 This creates a static entry 192.168.5.50
 
@@ -324,4 +323,10 @@ static ip_address=192.168.5.50/24
 static routers=192.168.5.1
 # static domain_name_servers=8.8.8.8
 ```
+### Other
 
+The avahi/bonjour daemon seems to have become annoying with polling nearby sleeping printers and log entries.
+
+```shell
+sudo systemctl disable avahi-daemo
+```
