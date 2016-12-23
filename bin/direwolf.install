@@ -3,6 +3,8 @@ if [ ! -d /etc/direwolf.d ]; then
 fi
 touch /etc/direwolf.d/README
 #
+if [ -r /etc/init.d/direwolf ]; then
+    rm /etc/init.d/direwolf || return 2
 cp direwolf.initd /etc/init.d/direwolf
 chmod 644 /lib/systemd/system/direwolf.service
 chmod 744 /etc/init.d/direwolf
