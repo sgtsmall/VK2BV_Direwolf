@@ -71,7 +71,7 @@ After the reboot log in and we will install some software
 
 ```shell
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get -y upgrade
 sudo reboot
 ```
 
@@ -80,8 +80,8 @@ Now we start with some installs, from here I am using apt-get -y to avoid the co
 ### Support for soundcard, git and nslookup
 
 ```
-sudo apt-get -y install libasound2-dev git-core dnsutils gawk
-sudo apt-get install  automake libtool
+sudo apt-get -y install libasound2-dev git-core dnsutils gawk automake libtool 
+sudo apt-get -y install libudev-dev python-dev swig libusb-1.0 texinfo
 ```
 
 

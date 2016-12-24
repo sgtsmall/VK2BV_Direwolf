@@ -5,6 +5,7 @@ touch /etc/direwolf.d/README
 #
 if [ -r /etc/init.d/direwolf ]; then
     rm /etc/init.d/direwolf || return 2
+fi    
 cp direwolf.initd /etc/init.d/direwolf
 cp direwolf.service /lib/systemd/system/direwolf.service
 chmod 644 /lib/systemd/system/direwolf.service
