@@ -137,6 +137,43 @@ make install-conf
 So now direwolf is installed but not yet configured.
 
 ## todo configure gpsd
+
+The USB style GPS units should come up on port /dev/ttyACM0
+some troubleshooting hints are [here](https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=123989)
+
+The earlier install of the gpsd software, should have created the service entries for gpsd. 
+
+Check the status
+
+```
+sudo systemctl status gpsd.socket
+```
+
+Stop the services
+
+```
+sudo systemctl stop gpsd.socket
+sudo systemctl disable gpsd.socket
+```
+
+Starting the gps manually 
+
+```
+\# 
+sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock
+
+gpsmon
+```
+
+Start the services
+
+```
+sudo systemctl enable gpsd.socket
+sudo systemctl start gpsd.socket
+```
+
+
+
 ## todo configure alsa
 ## todo configure direwolf
 

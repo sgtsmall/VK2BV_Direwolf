@@ -16,6 +16,21 @@ more text here
 *   My common setup with this is a Raspi B+ with the soundcard and 
   *       UV-5R and purpose built cable to support Audio In/Out and PTT. To power it I use an Ebay 12+V to 5V USB adapter module and the battery eliminator module for the 5R.
   *       Yaesu/iCom Mobile Rig with 6 pin data cable to support Audio In/Out and PTT. 
+  
+***
+
+**Important:** These guides expects you to have a more than basic grasp of the Linux command line. In order to follow it you'll need to know:
+
+  * how to issue commands on the shell,
+  * how to edit a text file from the command line,
+  * what the difference is between your user account (e.g. `pi`) and the superuser account `root`,
+  * how to SSH into your Pi (so you don't need to also attach keyboard and monitor),
+  * how to use Git and
+  * how to use the Internet to help you if you run into problems.
+
+This is **not** a "Linux for Beginners guide", those can be found for example [here](http://elinux.org/RPi_Beginners) and [here](http://linuxcommand.org/learning_the_shell.php). For some Git basics please take a look [here](http://rogerdudler.github.io/git-guide/).
+
+***  
     
 ## Additional Features
 
