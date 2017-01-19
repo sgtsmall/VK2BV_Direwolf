@@ -6,7 +6,7 @@ VK2BV Direwolf - Build Full Image
 
 This document covers the Full image. It assumes you have a screen keyboard and mouse attached.
 
-There is also a lite image build (https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md) This starts with a network based command line.
+There is also a [lite image build document](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md) This starts with a network based command line.
 
 From time to time you may need to completely rebuild the image. These instructions and some scripts represent a minimal set of installs and script changes that were needed to build the image. I ended up automating several of these steps and these notes are the result. Your mileage may vary!!!
 
@@ -14,7 +14,7 @@ From time to time you may need to completely rebuild the image. These instructio
 
   - Tested with Raspberry Pi 2 to Raspberry Pi 3 (Using B+ model should work, have not tested with A models or zero)'
   - 8Gb SD card
-  - Display (1024x768) a seperate document will discuss smaller displays.
+  - Display (1024x768) (7") a seperate document will discuss smaller displays.
   - Keyboard, Mouse.
   - SoundBlaster USB Play Sound Card
   - Interface cable for your radio
@@ -73,11 +73,11 @@ sudo apt-get autoremove<br>
 ### Initial Setup
 
 You can run the raspi-config from the menu _Preferences/Raspberry Pi Configuration_ or a command line.
-<table>
-  <tr>
-    <td>sudo raspi-config</td>
-  </tr>
-</table>
+
+```
+sudo raspi-config
+```
+
 The Raspi-config is curses menu based uses arrow, tab and enter keys. The following options are what I would suggest changing.  
   
   
@@ -89,80 +89,27 @@ The Raspi-config is curses menu based uses arrow, tab and enter keys. The follow
     -   reboot  
 
 After the reboot log in and we will install some software, first we refresh the repository and the system software.
-<table>
-  <tr>
-    <td>sudo apt-get update<br>
-sudo apt-get upgrade<br>
-sudo reboot</td>
-  </tr>
-</table>
+
+```shell
+sudo apt-get update
+sudo apt-get -y upgrade
+sudo reboot
+```
 
 Now we start with some installs, from here I am using apt-get -y to avoid the confirmation prompt
 
-### Support for soundcard, git and nslookup
-<table>
-  <tr>
-    <td>sudo apt-get -y install libasound2-dev git-core dnsutils gawk</td>
-  </tr>
-</table>
+At this point you need to refer to the [lite image build](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md)
 
-### gpsd install
-This next section is to support gps attached to the Pi, even if you don't have the gps you can install this now and it will build in the right bits for later.
-<table>
-  <tr>
-    <td>
-sudo apt-get -y install gpsd libgps-dev</td>
-  </tr>
-</table>
-
-#### optional git settings - not sure if these are needed
-These entries may not be needed for most interactions with git so dont enter yet (unless git prompts you for the information)<br>
-  - git config --global user.name “vkxxx"<br>
-  - git config --global user.email xxx@xxx.com<br>
-
-### Install and build hamlib 
- This is not strictly necessary unless you are dealing with a radio that uses it. But it is a good exercise of your system, if you build it now it will be available to the direwolf build.
-
-<table>
-  <tr>
-    <td>
-cd ~<br>
-git clone git://hamlib.git.sourceforge.net/gitroot/hamlib/hamlib<br>
-cd hamlib<br>
-sh autogen.sh --with-xml-support --with-python-binding<br>
-make<br>
-make check<br>
-sudo make install<br>
-sudo reboot
-</td>
-  </tr>
-</table>
-
-### Now we get direwolf
-
-We are using some extra commands here git tab will list the versions available in the git repository, git checkout will select the one we want _currently 1.3_.
-
-<table>
-  <tr>
-    <td>
-cd ~<br>
-git clone https://www.github.com/wb2osz/direwolf<br>
-cd direwolf<br>
-git tag<br>
-git checkout 1.3<br>
-make<br>
-sudo make install<br>
-make install-conf<br>
-make install-rpi </td>
-  </tr>
-</table>
-Note that the make install-rpi created a desktop icon for direwolf
-
-So now direwolf is installed but not yet configured.
-
-## todo configure gpsd
-## todo configure rtc
-## todo configure alsa
-## todo configure direwolf
+From the section 
+Support for soundcard, git and nslookup
 
 
+
+That document will send you back here eventually
+
+
+### Setting up icons and menus
+
+If the other bits worked you should have a default desktop to run direwolf manually, however the steps in the other document show how to start it in the background anyway.
+
+rest coming soon

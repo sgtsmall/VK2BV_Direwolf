@@ -6,7 +6,7 @@ VK2BV Direwolf - Build Lite Image
 
 This document covers the lite image. The lite image does not include the desktop components and is meant to be run via ssh access, network and or boot files.
 
-There is also a full image build (https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md) This starts with the full desktop version. This opens a whole can of worms in its own right.
+There is also a [full image build](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md) This starts with the full desktop version. This opens a whole can of worms in its own right.
 
 From time to time you may need to completely rebuild the image. These instructions and some scripts represent a minimal set of installs and script changes that were needed to build the image. I ended up automating several of these steps and these notes are the result. Your mileage may vary!!!
 
@@ -78,6 +78,8 @@ sudo reboot
 Now we start with some installs, from here I am using apt-get -y to avoid the confirmation prompt
 
 ### Support for soundcard, git and nslookup
+
+full_build users can follow these steps in a console(x-terminal)
 
 ```
 sudo apt-get -y install libasound2-dev git-core dnsutils gawk automake libtool 
@@ -175,7 +177,33 @@ sudo systemctl start gpsd.socket
 
 
 ## todo configure alsa
-## todo configure direwolf
+
+Need more detail here but basically you use the command 
+
+```
+alsamixer
+```
+
+This gves you a curses based application for the soundcard. By default it is pointing at the sound card within the Pi. You need to use F6 to select the USB device.
+
+If you look at the top left you are likely in F3: Playback
+
+Speaker, Mic, AGC
+
+The Mic you see here is a Mic Monitor level.
+Use F5: All to see both output and input.
+
+You should get 
+Speaker, Mic [Monitor], Mic and AGC
+
+OutputSpeaker and Mic input should be set around 50%. Use up/down arrows
+Mic Monitor should be muted MM use M key.
+AGC should be off as well [M].
+
+The settings are automatically saved on exit.
+
+
+## Configure direwolf
 
 By default direwolf creates a file  direwolf.conf  in the home directory, this contains the information you need to create most configs. I have included a script that will gather some details and create a new file called direwolf.sample.
 
@@ -343,7 +371,9 @@ To start manually `sudo service start direwolf.service`
 
 
 
+Full_build (displays) should now go back to the [full image build](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md) document section
 
+Setting up icons and menus
 
 
 
