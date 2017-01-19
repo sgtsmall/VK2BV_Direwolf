@@ -98,7 +98,7 @@ sudo reboot
 
 Now we start with some installs, from here I am using apt-get -y to avoid the confirmation prompt
 
-At this point you need to refer to the [lite image build](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md)
+At this point you need to refer to the [lite image build](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md#support-for-soundcard-git-and-nslookup)
 
 From the section 
 Support for soundcard, git and nslookup

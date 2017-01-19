@@ -371,7 +371,7 @@ To start manually `sudo service start direwolf.service`
 
 
 
-Full_build (displays) should now go back to the [full image build](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md) document section
+Full_build (displays) should now go back to the [full image build](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md#setting-up-icons-and-menus) document section
 
 Setting up icons and menus
 
