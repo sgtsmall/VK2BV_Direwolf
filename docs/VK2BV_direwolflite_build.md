@@ -91,7 +91,7 @@ sudo apt-get -y install libudev-dev python-dev swig libusb-1.0 texinfo
 This next section is to support gps attached to the Pi, even if you don't have the gps you can install this now and it will build in the right bits for later.
 
 ```
-sudo apt-get -y install gpsd libgps-dev
+sudo apt-get -y install gpsd libgps-dev gpsd-clients python-gps
 ```
 
 #### optional git settings - not sure if these are needed

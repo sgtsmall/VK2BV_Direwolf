@@ -61,14 +61,13 @@ basic config stuff:
 This step is optional, however I currently have no need for this software and it significantly adds to the update times as the packages are very large. I'm not particularly concerned with saving the disk space just the download times.
 The particular packages are the wolfram and libreoffice.
 Start a terminal for these bits _Acessories/Terminal_ You may be able to do these through the WIMP's interface I'll probably find out one day! [Windows, Icons and Mouse Pointing]
-<table>
-  <tr>
-    <td>sudo apt-get remove --purge wolfram-engine<br>
-sudo apt-get remove --purge libreoffice*<br>
-sudo apt-get clean<br>
-sudo apt-get autoremove<br>
-  </tr>
-</table>
+
+```
+sudo apt-get remove --purge wolfram-engine
+sudo apt-get remove --purge libreoffice*
+sudo apt-get clean
+sudo apt-get autoremove
+```
 
 ### Initial Setup
 
