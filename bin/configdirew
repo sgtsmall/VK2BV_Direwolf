@@ -81,8 +81,10 @@ echo -e "dcd value e.g. pin 14 BCM [$gpiodcd]\c"
 
 function writesed {
  echo ""
+mkdir dconf
+mkdir dconf/sample
+cat << EOF > dconf/sample/direwolf.hdr
 
- cat << EOF > direwolf.sample
 ## Device Section
 ADEVICE plughw:1,0
 ACHANNELS 1
@@ -94,21 +96,43 @@ PTT GPIO $gpioptt
 DCD GPIO $gpiodcd
 AGWPORT 8000
 KISSPORT 8001
+##
+EOF
+cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.tnc
+cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.fbeacon
+cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.gbeacon
+cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.igate
+cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.digi
+
+cat << EOF >> dconf/sample/direwolf.conf.fbeacon
 ## Fixed Position Beacon Uncomment for a fixed position option.
 
-#PBEACON delay=1  every=30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
-
+PBEACON delay=1  every=30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
+EOF
+#
+cat << EOF >> dconf/sample/direwolf.conf.gbeacon
 ## Tracker uncomment this if using the GPS 
-#GPSD
-#SMARTBEACONING 50 2:00 5 15:00 0:15 20 255
-## Digipeater options
-#DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE 
+GPSD
+SMARTBEACONING 50 2:00 5 15:00 0:15 20 255
+EOF
+#
+cat << EOF >> dconf/sample/direwolf.conf.igate
 ## Igate 
 #IGSERVER sydney.aprs2.net
 #IGLOGIN $user-$term $passcode
 #PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=$loclat long=$loclon 
 EOF
-cat direwolf.sample
+#
+cat << EOF >> dconf/sample/direwolf.conf.digi
+## Fixed Position Beacon Uncomment for a fixed position option.
+
+PBEACON delay=1  every=30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
+#
+## Digipeater options
+DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE 
+#
+EOF
+
 }
 
 
