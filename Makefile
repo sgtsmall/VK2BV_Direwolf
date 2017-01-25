@@ -6,10 +6,10 @@ APPS := diremenu configdirew
 
 all : $(APPS)
 
-   @echo " "
-   @echo " Install with "
-   @echo "      sudo make install"
-   @echo "" 
+    @echo " "
+    @echo " Install with "
+    @echo "      sudo make install"
+    @echo "" 
    
 diremenu : diremenu
 
