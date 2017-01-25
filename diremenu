@@ -4,7 +4,7 @@ option="o"
 #
 cmda="tail -f $HOME/direwolf.output"
 cmdb="ls -al $HOME/direwolf.conf"
-cmdc="VK2BV_direwolf/bin/configdirew"
+cmdc="direconf"
 cmdd="sudo service direwolf stop"
 cmde="sudo service direwolf start"
 cmdf="sudo service direwolf restart"

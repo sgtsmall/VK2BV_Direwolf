@@ -2,18 +2,20 @@
 # Makefile for local scripts
 #
 
-APPS := diremenu configdirew
+APPS := diremenu direconf direswit
 
 all : $(APPS)
 
-    @echo " "
-    @echo " Install with "
-    @echo "      sudo make install"
-    @echo "" 
+	@echo " "
+	@echo " Install with "
+	@echo "      sudo make install"
+	@echo "" 
    
-diremenu : diremenu
+diremenu : 
 
-configdirew : configdirew
+direconf : 
+
+direswit :
 
 INSTALLDIR := /usr/local
 
@@ -22,6 +24,7 @@ INSTALL=install
 .PHONY: install
 install : $(APPS)
 
-    $(INSTALL) diremenu $(INSTALLDIR)/bin
-    $(INSTALL) configdirew $(INSTALLDIR)/bin
+	$(INSTALL) diremenu $(INSTALLDIR)/bin
+	$(INSTALL) direconf $(INSTALLDIR)/bin
+	$(INSTALL) direswit $(INSTALLDIR)/bin
 

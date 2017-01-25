@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+option="o"
+#
+cmda="tail -f $HOME/direwolf.output"
+cmdb="ls -al $HOME/direwolf.conf"
+cmdc="direconf"
+cmdd="sudo service direwolf stop"
+cmde="sudo service direwolf start"
+cmdf="sudo service direwolf restart"
+cmdg="cp -r $HOME/dconf/sample/direwolf.conf.tnc $HOME/dconf/direwolf.conf.tnc"
+cmdh="ln -s dconf/direwolf.conf.tnc direwolf.conf"
+cmdi="direwolf -t 0 -c dconf/direwolf.conf.igate"
+
+while [ $option != "q" ] ; do
+ echo ""
+ echo "a) $cmda"
+ echo "b) $cmdb"
+ echo "c) $cmdc"
+ echo "d) $cmdd"
+ echo "e) $cmde"
+ echo "f) $cmdf"
+ echo "g) $cmdg"
+ echo "h) $cmdh"
+ echo "i) $cmdi"
+ echo "q) quit this menu"
+ echo ""
+ echo -e "Enter option :\c"
+ read ans
+ if [ -z $ans ] ; then
+  ans="$option"
+ fi
+ option="$ans"
+ case $option in
+  a) $cmda ;;
+  b) $cmdb ;;
+  c) $cmdc ;;
+  d) $cmdd ;;
+  e) $cmde ;;
+  f) $cmdf ;;
+  g) $cmdg ;;
+  h) $cmdh ;;
+  i) $cmdi ;;
+  q) echo "good bye"
+ esac
+done
+
