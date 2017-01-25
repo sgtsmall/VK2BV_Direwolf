@@ -134,6 +134,7 @@ git checkout 1.3
 make
 sudo make install
 make install-conf
+cd ~
 ```
 
 So now direwolf is installed but not yet configured.
@@ -160,8 +161,7 @@ sudo systemctl disable gpsd.socket
 
 Starting the gps manually 
 
-```
-\# 
+``` 
 sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock
 
 gpsmon
@@ -218,7 +218,8 @@ To get started a simple script has been created that will generate a file direwo
 
 ```shell
 cd ~
-VK2BV_direwolf/bin/configdirew
+sh VK2BV_direwolf/bin/dinstall  (this will have the chmod commands)
+VK2BV_direwolf/bin/diremenu
 ```
 
 Sample here 
@@ -250,6 +251,8 @@ Note the format for lat and lon
 > gpio BCM DCD 23  PTT 22  
 >  
 > If the values are correct enter Y  [n]Y  
+
+Sample files are now in dconf
 
 This generates the sample file
 
