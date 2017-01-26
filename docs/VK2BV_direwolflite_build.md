@@ -57,12 +57,13 @@ basic config stuff:
 sudo raspi-config
 ```
 
-The Raspi-config is curses menu based uses arrow, tab and enter keys. The following options are what I would suggest changing.
+The Raspi-config is curses based menu,  uses arrow, tab and enter keys, space bar to de/select options. The following options are what I would suggest changing.
 
 
 
     -   expand filesystem
-    -   Internationalization/Change locale : en_AU.UTF-8
+    -   Internationalization/Change locale : en_AU.UTF-8 and remove en_GB entry 
+    -     Select en_AU.UTF-8 as default
     -   Internationalization/Change timezone : AU/Sydney
     -   advanced/hostname   : vkxxxpi
     -   reboot
@@ -102,7 +103,6 @@ These entries may not be needed for most interactions with git so dont enter yet
 ### Clone these documents and script files
 ```shell
 cd ~
-git clone git://github.com/sgtsmall/VK2BV_direwolf
 git clone git://git.drogon.net/wiringPi
 cd wiringPi
 ./build
@@ -165,6 +165,7 @@ Starting the gps manually
 sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock
 
 gpsmon
+[Ctrl-C to quit]
 ```
 
 Start the services
@@ -207,17 +208,54 @@ The settings are automatically saved on exit.
 
 By default direwolf creates a file  direwolf.conf  in the home directory, this contains the information you need to create most configs. I have included a script that will gather some details and create a new file called direwolf.sample.
 
-first of all keep a copy of the default direwolf.config
+first of all keep a copy of the default direwolfconfig
 
 ```shell 
+cd ~
 mv direwolf.conf direwolf.origconf
 ```
 
+I have included a script that will gather some details and create a new series of files for different usage.
 
-To get started a simple script has been created that will generate a file direwolf.sample this creates several config entries that can be used. Some should be deleted or commented, more infor required here....
+This section is under active development at the moment so the scripts and commands are guides and should be read with the documents from direwolf.
+
+
+
+more info required here....
 
 ```shell
 cd ~
+git clone git://github.com/sgtsmall/VK2BV_direwolf
+cd VK2BV_direwolf
+sudo make install
+```
+
+This installs some basic command files
+
+# diremenu
+
+Diremenu is a very simple script that displays some commands and executes them when the letter is typed with return.
+
+It will try and run the command as seen, there is no validation or checking if you are in the right directory (almost always expects $HOME ). It is provided to get you started and to see some of the commands you should use.
+
+# direconf
+
+This script asks some basic questions and creates a set of sample config files. The logic is minimal but should get you started, you should edit the files for more settings when you are ready.
+
+# direswit
+
+This script is used to creat a link between different setups and a common direwolf.conf file.
+This is especially useful if you are running direwolf as a service (see below) such that you can choose the startup after the next boot.
+
+As a worked example, I usually run the unit just as a (direwolf.conf.tnc) TNC that I can connect to SARTrack or other software (YAAC - Yet Another APRS Client) It doesn't beacon itself. Then I may set it as a fixed position beacon (direwolf.conf.pbeacon) for a while. Later I may use it as a tracker (direwolf.conf.gbeacon) or as a digipeater (direwolf.conf.digi)
+
+```shell
+direswit
+```
+
+lets me reset the link for the next startup.
+
+
 sh VK2BV_direwolf/bin/dinstall  (this will have the chmod commands)
 VK2BV_direwolf/bin/diremenu
 ```

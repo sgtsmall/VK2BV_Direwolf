@@ -11,18 +11,26 @@ cmdf="sudo service direwolf restart"
 cmdg="cp -r $HOME/dconf/sample/direwolf.conf.tnc $HOME/dconf/direwolf.conf.tnc"
 cmdh="ln -s dconf/direwolf.conf.tnc direwolf.conf"
 cmdi="direwolf -t 0 -c dconf/direwolf.conf.igate"
+function testfile {
+
+if [ -e $HOME/direwolf.conf ] ; then
+  if [ -h $HOME/direwolf.conf ] ; then
+    echo "direwolf.conf is linked "
+    ls -l direwolf.conf
+  elif [ -f $HOME/direwolf.conf ] ; then
+    echo "direwolf.conf is not linked"
+  fi  
+else
+  echo "no file here?"
+fi  
+}
 
 while [ $option != "q" ] ; do
  echo ""
- echo "a) $cmda"
- echo "b) $cmdb"
- echo "c) $cmdc"
- echo "d) $cmdd"
- echo "e) $cmde"
- echo "f) $cmdf"
- echo "g) $cmdg"
- echo "h) $cmdh"
- echo "i) $cmdi"
+ echo ""
+ testfile
+ echo ""
+ 
  echo "q) quit this menu"
  echo ""
  echo -e "Enter option :\c"
