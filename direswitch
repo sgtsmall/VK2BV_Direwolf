@@ -16,7 +16,9 @@ cmdi="link digi"
 cmdj="link igate"
 cmdk="link gbeacon"
 cmdl="link pbeacon"
-cmdm="direwolf -t 0 -c direwolf.conf" 
+cmdm="link custom"
+
+cmdn="direwolf -t 0 -c direwolf.conf" 
 
 function promotesample {
 ls -1 $SAMPDIR|grep conf > /tmp/samplist
@@ -35,6 +37,9 @@ do
  fi
  if [ $ans = "Y" ] ; then
   cp $SAMPDIR/$f $CONFDIR
+  echo "\nCopied $SAMPDIR/$f to $CONFDIR \n"
+ else
+  echo "Ignored \n"
  fi
 done
 }
@@ -44,7 +49,7 @@ function linktest {
 if [ -e $HOME/direwolf.conf ] ; then
   if [ -h $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is linked "
-    ls -l i$HOME/direwolf.conf
+    ls -l $HOME/direwolf.conf
   elif [ -f $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is not linked"
   fi  
@@ -88,6 +93,7 @@ while [ $option != "q" ] ; do
  echo "k) $cmdk"
  echo "l) $cmdl"
  echo "m) $cmdm"
+ echo "n) $cmdn"
      
  
  echo "q) quit this menu"
@@ -116,7 +122,9 @@ while [ $option != "q" ] ; do
     linkfile;;
   l) typef="pbeacon"
      linkfile;;
-  m) $cmdm ;;
+  m) typef="custom"
+     linkfile;;
+  n) $cmdm ;;
   q) echo "good bye"
  esac
 done

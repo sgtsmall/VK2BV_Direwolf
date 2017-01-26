@@ -16,7 +16,7 @@ CONFIG_FILE=/home/pi/direwolf.conf
 NAME=direwolf
 DESC="TNC and APRS server"
 
-test -e /etc/direwolf.d/README || exit 0
+test -e $CONFIG_FILE || exit 0
 
 test -x $DAEMON || exit 0
 

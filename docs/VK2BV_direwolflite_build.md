@@ -217,17 +217,14 @@ mv direwolf.conf direwolf.origconf
 
 I have included a script that will gather some details and create a new series of files for different usage.
 
-This section is under active development at the moment so the scripts and commands are guides and should be read with the documents from direwolf.
 
-
-
-more info required here....
+The following install section adds some local scripts to the programs and installs the service files for direwolf in the background. Additional commands are needed to start the background job.
 
 ```shell
-cd ~
-git clone git://github.com/sgtsmall/VK2BV_Direwolf
 cd VK2BV_Direwolf
 sudo make install
+cd ~
+sudo systemctl daemon-reload
 ```
 
 This installs some basic command files
@@ -244,16 +241,20 @@ This script asks some basic questions and creates a set of sample config files. 
 
 # direswitch
 
-This script is used to creat a link between different setups and a common direwolf.conf file.
+This script is used to create a link between different setups and a common direwolf.conf file.
 This is especially useful if you are running direwolf as a service (see below) such that you can choose the startup after the next boot.
 
 As a worked example, I usually run the unit just as a (direwolf.conf.tnc) TNC that I can connect to SARTrack or other software (YAAC - Yet Another APRS Client) It doesn't beacon itself. Then I may set it as a fixed position beacon (direwolf.conf.pbeacon) for a while. Later I may use it as a tracker (direwolf.conf.gbeacon) or as a digipeater (direwolf.conf.digi)
+
+
+
+## Sample Configurations
 
 ```shell
 direconfig
 ```
 
-Sample here 
+Configuration examples
 
 Note the format for lat and lon
 
@@ -283,9 +284,10 @@ Note the format for lat and lon
 >  
 > If the values are correct enter Y  [n]Y  
 
-Sample files are now in dconf/sample
+Sample files are now in $HOME/dconf/sample
 
-This generates the sample file
+This generates the sample files.
+They all start with this section:
 
 > \# device  
 > ADEVICE plughw:1,0  
@@ -296,21 +298,36 @@ This generates the sample file
 > MODEM 1200  
 > PTT GPIO 22  
 > DCD GPIO 23  
+> \# Network TNC  
 > AGWPORT 8000  
 > KISSPORT 8001  
+
+They then finish with different tail sections
+
 > \# Fixed Position Beacon  
 > PBEACON delay=1  every=30 overlay=S symbol="digi" lat=33^51.43S long=151^12.91E power=10 height=20 gain=4 comment="Test Direwolf Node"  
+
+> \# Tracker  
+> GPSD  
+> SMARTBEACONING 50 2:00 5 15:00 0:15 20 255
+
 > \# Digipeater   
+> PBEACON delay=1  every=30 overlay=S symbol="digi" lat=33^51.43S long=151^12.91E power=10 height=20 gain=4 comment="Test Direwolf Node"  
+> \#  
 > DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE  
+
 > \# Igate  
 > IGSERVER sydney.aprs2.net  
 > IGLOGIN VK2ABC-1 21931  
 > PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=33^51.43S long=151^12.91E 
 
+# Switching startups
 
 ```shell
 direswitch
 ```
+
+
 
 This command now supports, cat the config, linking, stop and restarting the service
 

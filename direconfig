@@ -105,7 +105,7 @@ cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.igate
 cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.digi
 
 cat << EOF >> dconf/sample/direwolf.conf.fbeacon
-## Fixed Position Beacon Uncomment for a fixed position option.
+## Fixed Position Beacon 
 
 PBEACON delay=1  every=30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
 EOF
@@ -118,17 +118,16 @@ EOF
 #
 cat << EOF >> dconf/sample/direwolf.conf.igate
 ## Igate 
-#IGSERVER sydney.aprs2.net
-#IGLOGIN $user-$term $passcode
-#PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=$loclat long=$loclon 
+IGSERVER sydney.aprs2.net
+IGLOGIN $user-$term $passcode
+PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=$loclat long=$loclon 
 EOF
 #
 cat << EOF >> dconf/sample/direwolf.conf.digi
-## Fixed Position Beacon Uncomment for a fixed position option.
+## Digipeater options
 
 PBEACON delay=1  every=30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
 #
-## Digipeater options
 DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE 
 #
 EOF
