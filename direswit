@@ -22,22 +22,25 @@ function promotesample {
 ls -1 $SAMPDIR/*conf* > /tmp/samplist
 for f in `cat /tmp/samplist`
 do
-correct = "n"
-if [ -f $CONFDIR/$f ]
- then
+ correct = "n"
+ if [ -f $CONFDIR/$f ]
+  then
    echo -e "$CONFDIR/$f exists replace ?\c"
- else
+  else
    echo -e "Copy sample $f to dconf folder ?\c"
-fi
-   read ans
-   if [ -z $ans ] ; then
-    ans="n"
-   fi
-   if [ $ans = "Y" ] ; then
-    cp $SAMPDIR/f $CONFDIR
-   fi
+ fi
+ read ans
+ if [ -z $ans ] ; then
+  ans="n"
+ fi
+ if [ $ans = "Y" ] ; then
+  cp $SAMPDIR/f $CONFDIR
+ fi
+done
 }
-function linkfile {
+
+
+}function linkfile {
 
 if [ -e $CONFDIR/dirwolf.conf.$type ] ; then
 if [ -e $HOME/direwolf.conf ] ; then

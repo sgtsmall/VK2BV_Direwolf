@@ -225,8 +225,8 @@ more info required here....
 
 ```shell
 cd ~
-git clone git://github.com/sgtsmall/VK2BV_direwolf
-cd VK2BV_direwolf
+git clone git://github.com/sgtsmall/VK2BV_Direwolf
+cd VK2BV_Direwolf
 sudo make install
 ```
 
@@ -250,14 +250,7 @@ This is especially useful if you are running direwolf as a service (see below) s
 As a worked example, I usually run the unit just as a (direwolf.conf.tnc) TNC that I can connect to SARTrack or other software (YAAC - Yet Another APRS Client) It doesn't beacon itself. Then I may set it as a fixed position beacon (direwolf.conf.pbeacon) for a while. Later I may use it as a tracker (direwolf.conf.gbeacon) or as a digipeater (direwolf.conf.digi)
 
 ```shell
-direswit
-```
-
-lets me reset the link for the next startup.
-
-
-sh VK2BV_direwolf/bin/dinstall  (this will have the chmod commands)
-VK2BV_direwolf/bin/diremenu
+direconf
 ```
 
 Sample here 
@@ -290,7 +283,7 @@ Note the format for lat and lon
 >  
 > If the values are correct enter Y  [n]Y  
 
-Sample files are now in dconf
+Sample files are now in dconf/sample
 
 This generates the sample file
 
@@ -314,17 +307,14 @@ This generates the sample file
 > IGLOGIN VK2ABC-1 21931  
 > PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=33^51.43S long=151^12.91E 
 
-copy this file to direwolf.conf and edit
-I suggest commenting out the PBEACON and DIGIPEAT statements initially until the receiver mode is running
 
-```
-cp direwolf.sample direwolf.conf
+```shell
+direswit
 ```
 
-Longer discussion on configs here
+This command now supports, cat the config, linking, stop and restarting the service
 
-
-
+Installing the service is still missing
 
 
 ### Testing the RPi board and GPIO ports
@@ -400,7 +390,7 @@ If you want direwolf to always run on startup then we should configure as a serv
 
 ```
 cd ~
-cd VK2BV_direwolf
+cd VK2BV_Direwolf
 git pull
 cd bin
 sudo sh -x direwolf.install
