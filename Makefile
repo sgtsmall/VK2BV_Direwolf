@@ -18,7 +18,7 @@ direconfig :
 direswitch :
 
 INSTALLDIR := /usr/local
-SSERVIVEDIR := /lib/systemd/system
+SSERVICEDIR := /lib/systemd/system
 
 INSTALL=install
 
@@ -28,5 +28,5 @@ install : $(APPS)
 	$(INSTALL) diremenu $(INSTALLDIR)/bin
 	$(INSTALL) direconfig $(INSTALLDIR)/bin
 	$(INSTALL) direswitch $(INSTALLDIR)/bin
-	$(INSTALL) direwolf.service $(SSERVICEDIR)
+	$(INSTALL) -m 644 direwolf.service $(SSERVICEDIR)
 	$(INSTALL) direwolf.initd /etc/init.d/direwolf
