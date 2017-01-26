@@ -21,6 +21,10 @@ cmdm="link custom"
 cmdn="direwolf -t 0 -c direwolf.conf" 
 
 function promotesample {
+echo ""
+echo " Each copy/replace statement is looking for a   Y to be entered"
+echo " anything else and it will go to the next entry"
+echo ""
 ls -1 $SAMPDIR|grep conf > /tmp/samplist
 for f in `cat /tmp/samplist`
 do
@@ -37,16 +41,16 @@ do
  fi
  if [ $ans = "Y" ] ; then
   cp $SAMPDIR/$f $CONFDIR
-  echo "\nCopied $SAMPDIR/$f to $CONFDIR \n"
+  echo "Copied $SAMPDIR/$f to $CONFDIR "
  else
-  echo "Ignored \n"
+  echo "Ignored "
  fi
 done
 }
 
 function linktest {
 
-echo "Current: \n"
+echo "Current: "
 if [ -e $HOME/direwolf.conf ] ; then
   if [ -h $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is linked "
@@ -63,7 +67,7 @@ fi
 function linkfile {
 
 if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
- echo "Current : \n"
+ echo "Current : "
  if [ -e $HOME/direwolf.conf ] ; then
   if [ -h $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is linked "
@@ -73,11 +77,11 @@ if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
   fi  
   rm $HOME/direwolf.conf
  else
-  echo "no file here?"
+  echo "first time? no direwolf.conf here"
  fi  
  ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
  else
- echo "File not found ? $CONFDIR/direwolf.conf.$typef \n"
+ echo "File not found ? $CONFDIR/direwolf.conf.$typef "
 fi
 }
 
