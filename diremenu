@@ -5,12 +5,13 @@ option="o"
 cmda="tail -f $HOME/direwolf.output"
 cmdb="ls -al $HOME/direwolf.conf"
 cmdc="direconfig"
-cmdd="sudo service direwolf stop"
-cmde="sudo service direwolf start"
-cmdf="sudo service direwolf restart"
-cmdg="sudo service direwolf status"
-cmdh="sudo systemctl enable direwolf.service"
-cmdi="sudo systemctl disable direwolf.service"
+cmdd="direswitch"
+cmde="sudo service direwolf stop"
+cmdf="sudo service direwolf start"
+cmdg="sudo service direwolf restart"
+cmdh="sudo service direwolf status"
+cmdi="sudo systemctl enable direwolf.service"
+cmdj="sudo systemctl disable direwolf.service"
 
 while [ $option != "q" ] ; do
  echo ""
@@ -23,6 +24,7 @@ while [ $option != "q" ] ; do
  echo "g) $cmdg"
  echo "h) $cmdh"
  echo "i) $cmdi"
+ echo "j) $cmdj"
  echo "q) quit this menu"
  echo ""
  echo -e "Enter option :\c"
@@ -41,6 +43,7 @@ while [ $option != "q" ] ; do
   g) $cmdg ;;
   h) $cmdh ;;
   i) $cmdi ;;
+  j) $cmdj ;;
   q) echo "good bye"
  esac
 done

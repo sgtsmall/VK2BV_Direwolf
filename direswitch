@@ -46,6 +46,7 @@ done
 
 function linktest {
 
+echo "Current: \n"
 if [ -e $HOME/direwolf.conf ] ; then
   if [ -h $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is linked "
@@ -62,18 +63,21 @@ fi
 function linkfile {
 
 if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
-if [ -e $HOME/direwolf.conf ] ; then
+ echo "Current : \n"
+ if [ -e $HOME/direwolf.conf ] ; then
   if [ -h $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is linked "
-    ls -l i$HOME/direwolf.conf
+    ls -l $HOME/direwolf.conf
   elif [ -f $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is not linked"
   fi  
-rm $HOME/direwolf.conf
-else
+  rm $HOME/direwolf.conf
+ else
   echo "no file here?"
-fi  
-ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
+ fi  
+ ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
+ else
+ echo "File not found ? $CONFDIR/direwolf.conf.$typef \n"
 fi
 }
 
