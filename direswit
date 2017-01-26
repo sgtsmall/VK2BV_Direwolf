@@ -99,7 +99,7 @@ while [ $option != "q" ] ; do
     linkfile;;
   k) typef="gbeacon"
     linkfile;;
-  l) typef=pbeacon"
+  l) typef="pbeacon"
      linkfile;;
   m) $cmdm ;;
   q) echo "good bye"
