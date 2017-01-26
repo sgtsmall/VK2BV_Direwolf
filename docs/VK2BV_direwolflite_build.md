@@ -238,11 +238,11 @@ Diremenu is a very simple script that displays some commands and executes them w
 
 It will try and run the command as seen, there is no validation or checking if you are in the right directory (almost always expects $HOME ). It is provided to get you started and to see some of the commands you should use.
 
-# direconf
+# direconfig
 
 This script asks some basic questions and creates a set of sample config files. The logic is minimal but should get you started, you should edit the files for more settings when you are ready.
 
-# direswit
+# direswitch
 
 This script is used to creat a link between different setups and a common direwolf.conf file.
 This is especially useful if you are running direwolf as a service (see below) such that you can choose the startup after the next boot.
@@ -250,7 +250,7 @@ This is especially useful if you are running direwolf as a service (see below) s
 As a worked example, I usually run the unit just as a (direwolf.conf.tnc) TNC that I can connect to SARTrack or other software (YAAC - Yet Another APRS Client) It doesn't beacon itself. Then I may set it as a fixed position beacon (direwolf.conf.pbeacon) for a while. Later I may use it as a tracker (direwolf.conf.gbeacon) or as a digipeater (direwolf.conf.digi)
 
 ```shell
-direconf
+direconfig
 ```
 
 Sample here 
@@ -309,7 +309,7 @@ This generates the sample file
 
 
 ```shell
-direswit
+direswitch
 ```
 
 This command now supports, cat the config, linking, stop and restarting the service

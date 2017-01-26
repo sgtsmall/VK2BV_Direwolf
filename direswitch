@@ -6,7 +6,7 @@ option="o"
 #
 cmda="ls -al $CONFDIR/*conf* "
 cmdb="cat $HOME/direwolf.conf"
-cmdc="direconf"
+cmdc="direconfig"
 cmdd="sudo service direwolf stop"
 cmde="sudo service direwolf start"
 cmdf="sudo service direwolf restart"
@@ -22,7 +22,7 @@ function promotesample {
 ls -1 $SAMPDIR|grep conf > /tmp/samplist
 for f in `cat /tmp/samplist`
 do
- correct = "n"
+ correct="n"
  if [ -f $CONFDIR/$f ]
   then
    echo -e "$CONFDIR/$f exists replace ?\c"
@@ -39,14 +39,28 @@ do
 done
 }
 
+function linktest {
 
-function linkfile {
-
-if [ -e $CONFDIR/direwolf.conf.$type ] ; then
 if [ -e $HOME/direwolf.conf ] ; then
   if [ -h $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is linked "
-    ls -l direwolf.conf
+    ls -l i$HOME/direwolf.conf
+  elif [ -f $HOME/direwolf.conf ] ; then
+    echo "direwolf.conf is not linked"
+  fi  
+else
+  echo "no file here?"
+fi  
+}
+
+
+function linkfile {
+
+if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
+if [ -e $HOME/direwolf.conf ] ; then
+  if [ -h $HOME/direwolf.conf ] ; then
+    echo "direwolf.conf is linked "
+    ls -l i$HOME/direwolf.conf
   elif [ -f $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is not linked"
   fi  
@@ -54,11 +68,12 @@ rm $HOME/direwolf.conf
 else
   echo "no file here?"
 fi  
-ln -s $CONFDIR/direwolf.conf.$type $HOME/direwolf.conf
+ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
 fi
 }
 
 while [ $option != "q" ] ; do
+ linktest
  echo ""
  echo "a) $cmda"
  echo "b) $cmdb"

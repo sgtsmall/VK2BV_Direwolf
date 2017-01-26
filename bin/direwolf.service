@@ -5,12 +5,6 @@ Description=direwolf - A TNC and aprs
 Type=forking
 PIDFile=/var/run/direwolf/direwolf.pid
 
-## Test the config file and refuse starting if it is not valid.
-#ExecStartPre=/usr/local/bin/dnsmasq --test
-
-# We run dnsmasq via the /etc/init.d/dnsmasq script which acts as a
-# wrapper picking up extra configuration files and then execs dnsmasq
-# itself, when called with the "systemd-exec" function.
 ExecStart=/etc/init.d/direwolf systemd-exec
 
 ExecReload=/bin/kill -HUP $MAINPID

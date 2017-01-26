@@ -2,7 +2,7 @@
 # Makefile for local scripts
 #
 
-APPS := diremenu direconf direswit
+APPS := diremenu direconfig direswitch
 
 all : $(APPS)
 
@@ -13,11 +13,12 @@ all : $(APPS)
    
 diremenu : 
 
-direconf : 
+direconfig : 
 
-direswit :
+direswitch :
 
 INSTALLDIR := /usr/local
+SSERVIVEDIR := /lib/systemd/system
 
 INSTALL=install
 
@@ -25,6 +26,7 @@ INSTALL=install
 install : $(APPS)
 
 	$(INSTALL) diremenu $(INSTALLDIR)/bin
-	$(INSTALL) direconf $(INSTALLDIR)/bin
-	$(INSTALL) direswit $(INSTALLDIR)/bin
-
+	$(INSTALL) direconfig $(INSTALLDIR)/bin
+	$(INSTALL) direswitch $(INSTALLDIR)/bin
+	$(INSTALL) direwolf.service $(SSERVICEDIR)
+	$(INSTALL) direwolf.initd /etc/init.d/direwolf
