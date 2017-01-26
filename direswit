@@ -2,17 +2,44 @@
 #
 option="o"
 #
-cmda="tail -f $HOME/direwolf.output"
-cmdb="ls -al $HOME/direwolf.conf"
+cmda="ls -al $CONFDIR/*conf* "
+cmdb="cat $HOME/direwolf.conf"
 cmdc="direconf"
 cmdd="sudo service direwolf stop"
 cmde="sudo service direwolf start"
 cmdf="sudo service direwolf restart"
-cmdg="cp -r $HOME/dconf/sample/direwolf.conf.tnc $HOME/dconf/direwolf.conf.tnc"
-cmdh="ln -s dconf/direwolf.conf.tnc direwolf.conf"
-cmdi="direwolf -t 0 -c dconf/direwolf.conf.igate"
-function testfile {
+cmdg="copy samples to config directory"
+cmdh="link tnc"
+cmdi="link digi"
+cmdj="link igate"
+cmdk="link gbeacon"
+cmdl="link pbeacon"
+cmdm="direwolf -t 0 -c direwolf.conf" 
+CONFDIR=$HOME/dconf
+SAMPDIR=$CONFDIR/sample
 
+function promotesample {
+ls -1 $SAMPDIR/*conf* > /tmp/samplist
+for f in `cat /tmp/samplist`
+do
+correct = "n"
+if [ -f $CONFDIR/$f ]
+ then
+   echo -e "$CONFDIR/$f exists replace ?\c"
+ else
+   echo -e "Copy sample $f to dconf folder ?\c"
+fi
+   read ans
+   if [ -z $ans ] ; then
+    ans="n"
+   fi
+   if [ $ans = "Y" ] ; then
+    cp $SAMPDIR/f $CONFDIR
+   fi
+}
+function linkfile {
+
+if [ -e $CONFDIR/dirwolf.conf.$type ] ; then
 if [ -e $HOME/direwolf.conf ] ; then
   if [ -h $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is linked "
@@ -20,16 +47,30 @@ if [ -e $HOME/direwolf.conf ] ; then
   elif [ -f $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is not linked"
   fi  
+rm $HOME/direwolf.conf
 else
   echo "no file here?"
 fi  
+ln -s $CONFDIR/direwolf.conf.$type $HOME/direwolf.conf
+fi
 }
 
 while [ $option != "q" ] ; do
  echo ""
- echo ""
- testfile
- echo ""
+ echo "a) $cmda"
+ echo "b) $cmdb"
+ echo "c) $cmdc"
+ echo "d) $cmdd"
+ echo "e) $cmde"
+ echo "f) $cmdf"
+ echo "g) $cmdg"
+ echo "h) $cmdh"
+ echo "i) $cmdi"
+ echo "j $cmdj"
+ echo "k) $cmdk"
+ echo "l) $cmdl"
+ echo "m) $cmdm"
+     
  
  echo "q) quit this menu"
  echo ""
@@ -46,9 +87,13 @@ while [ $option != "q" ] ; do
   d) $cmdd ;;
   e) $cmde ;;
   f) $cmdf ;;
-  g) $cmdg ;;
-  h) $cmdh ;;
-  i) $cmdi ;;
+  g) promotesample ;;
+  h) linkfile tnc ;;
+  i) linkfile digi ;;
+  j) linkfile igate ;;
+  k) linkfile gbeacon ;;
+  l) linkfile pbeacon ;;
+  m) $cmdm ;;
   q) echo "good bye"
  esac
 done
