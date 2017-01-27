@@ -79,6 +79,8 @@ if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
  else
   echo "first time? no direwolf.conf here"
  fi  
+ echo " Changing link"
+ echo ""
  ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
  else
  echo "File not found ? $CONFDIR/direwolf.conf.$typef "
@@ -87,6 +89,8 @@ fi
 
 while [ $option != "q" ] ; do
  linktest
+ echo ""
+ echo "direswitch choices"
  echo ""
  echo "a) $cmda"
  echo "b) $cmdb"

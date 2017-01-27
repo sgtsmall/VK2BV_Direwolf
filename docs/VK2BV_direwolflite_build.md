@@ -139,7 +139,7 @@ cd ~
 
 So now direwolf is installed but not yet configured.
 
-## todo configure gpsd
+## configure gpsd
 
 The USB style GPS units should come up on port /dev/ttyACM0
 some troubleshooting hints are [here](https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=123989)
@@ -177,7 +177,7 @@ sudo systemctl start gpsd.socket
 
 
 
-## todo configure alsa
+## configure alsa (Sound card)
 
 Need more detail here but basically you use the command 
 
@@ -229,17 +229,17 @@ sudo systemctl daemon-reload
 
 This installs some basic command files
 
-# diremenu
+### diremenu
 
 Diremenu is a very simple script that displays some commands and executes them when the letter is typed with return.
 
 It will try and run the command as seen, there is no validation or checking if you are in the right directory (almost always expects $HOME ). It is provided to get you started and to see some of the commands you should use.
 
-# direconfig
+### direconfig
 
 This script asks some basic questions and creates a set of sample config files. The logic is minimal but should get you started, you should edit the files for more settings when you are ready.
 
-# direswitch
+### direswitch
 
 This script is used to create a link between different setups and a common direwolf.conf file.
 This is especially useful if you are running direwolf as a service (see below) such that you can choose the startup after the next boot.
@@ -250,11 +250,15 @@ As a worked example, I usually run the unit just as a (direwolf.conf.tnc) TNC th
 
 ## Sample Configurations
 
+Use the command direconfig or select from the diremenu option
+
 ```shell
 direconfig
 ```
 
 Configuration examples
+This is a simple text menu that will prompt for entries. The default entry is shown in brackets.
+If you make a mistake you can rerun the command or just go around the entries again until correct.
 
 Note the format for lat and lon
 
@@ -321,20 +325,64 @@ They then finish with different tail sections
 > IGLOGIN VK2ABC-1 21931  
 > PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=33^51.43S long=151^12.91E 
 
-# Switching startups
+## Switching startups
 
 ```shell
 direswitch
 ```
 
-
-
 This command now supports, cat the config, linking, stop and restarting the service
 
-Installing the service is still missing
+> a) ls -al /home/pi/dconf/*conf*   
+> b) cat /home/pi/direwolf.conf  
+> c) direconfig  
+> d) sudo service direwolf stop  
+> e) sudo service direwolf start  
+> f) sudo service direwolf restart  
+> g) copy samples to config directory  
+> h) link tnc  
+> i) link digi  
+> j) link igate  
+> k) link gbeacon  
+> l) link pbeacon  
+> m) link custom  
+> n) direwolf -t 0 -c direwolf.conf  
+> q) quit this menu  
+
+In particular:
+Use option c) to rebuild your config file with a different location. This will only put the ouput into the sample directory ($HOME/dconf/sample/).
+Use option g) to copy the samples into the configuration directory. The prompt is looking for 'Y' to perform the copy.
+option h) links the network tnc mode. This is useful to start testing receive. 
 
 
-### Testing the RPi board and GPIO ports
+## Basic Menu
+
+```shell 
+diremenu
+```
+
+This is some basic commands, the menu uses the actual commands as prompts, more as reminders of what you may need to do.
+
+> a) tail -f $HOME/direwolf.output  
+> b) ls -al $HOME/direwolf.conf  
+> c) direconfig  
+> d) direswitch  
+> e) sudo service direwolf stop  
+> f) sudo service direwolf start  
+> g) sudo service direwolf restart  
+> h) sudo service direwolf status  
+> i) sudo systemctl enable direwolf.service  
+> j) sudo systemctl disable direwolf.service  
+
+
+
+command i) enable and j) disable are used to start and stop direwolf restarting after a boot.
+
+command a) is used to monitor the output of the direwolf job.
+
+
+
+# Testing the RPi board and GPIO ports
 
 Make sure wiringpi is installed and you should have the gpio program available
 
@@ -392,7 +440,7 @@ Adjust the pot and repeat until you get to 20 seconds for most usage. (That is a
 
 Finally connect the radio and you should see ptt come on and off by command above.
 
-### Testing direwolf
+## Testing direwolf
 
 ```
 cd ~
@@ -401,7 +449,7 @@ direwolf -t 0
 
 This should read /home/pi/direwolf.conf and start up (-t 0 turns off the colour outputs)
 
-### Configuring direwolf as a service
+## Configuring direwolf as a service
 
 If you want direwolf to always run on startup then we should configure as a service. Scripts and files for this are contained in the github, although it is recommended to do refresh your git to make sure you have the latest.
 
@@ -409,12 +457,13 @@ If you want direwolf to always run on startup then we should configure as a serv
 cd ~
 cd VK2BV_Direwolf
 git pull
-cd bin
-sudo sh -x direwolf.install
+sudo make install
 cd ~
 ```
+
 This should copy the relevant files in place.
-To start manually `sudo service start direwolf.service`
+
+You can use the diremenu commands to enable and disable the service
 
 
 
@@ -424,7 +473,7 @@ Full_build (displays) should now go back to the [full image build](https://githu
 Setting up icons and menus
 
 
-
+# Extra Pieces
 
 ### Fixed IP Address on the new raspbian since jessie
 
@@ -432,12 +481,60 @@ The fixed ip address information is now located in `/etc/dhcpcd.conf`
 
 This creates a static entry 192.168.5.50
 
+
+
+> interface eth0  
+> static ip_address=192.168.5.50/24  
+> static routers=192.168.5.1  
+>\# static domain_name_servers=8.8.8.8  
+
+### Command line wifi
+
+THIS SECTION IS EXPERIMENTAL NOT EXTENSIVELY TESTED
+
+
+Finding SSID's
+
+```shell
+sudo iwlist wlan0 scan | grep -e Cell -e ESSID -e 'IE: IEEE'
 ```
-interface eth0
-static ip_address=192.168.5.50/24
-static routers=192.168.5.1
-# static domain_name_servers=8.8.8.8
+
+Edit the file 
+
 ```
+sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
+```
+
+Create an entry
+
+> network={  
+>     ssid="The_ESSID_from_earlier"  
+>     psk="Your_wifi_password"  
+> }  
+> network={  
+>     ssid="anotherSSID"  
+>     psk="Thepassphrase"  
+> }  
+
+
+Note: creating a secure entry
+You can use the wpa_passphrase command to create an encrypted version of the password
+
+```
+wpa_passphrase anotherSSID Thepassphrase
+```
+Generates
+> network={  
+> 	ssid="anotherSSID"  
+> 	#psk="Thepassphrase"  
+> 	psk=8ecbe91f1a0eea741cdc1f8415383c732cddc9701a0262b26198d3f87d80a10e  
+> }  
+
+which can be used in the supplicant file (without the text based password line!)
+
+
+
+
 ### Other
 
 The avahi/bonjour daemon seems to have become annoying with polling nearby sleeping printers and log entries.
