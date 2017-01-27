@@ -136,7 +136,7 @@ while [ $option != "q" ] ; do
      linkfile;;
   m) typef="custom"
      linkfile;;
-  n) $cmdm ;;
+  n) $cmdn ;;
   q) echo "good bye"
  esac
 done

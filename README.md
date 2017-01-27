@@ -55,7 +55,7 @@ https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_b
 
 ## Documentation
 
-There will be lots of documentation here: https://github.com/sgtsmall/VK2BV_direwolf/tree/master/docs (oneday)
+There will be lots of documentation here: https://github.com/sgtsmall/VK2BV_Direwolf/tree/master/docs (oneday)
 
 ## Support
 
@@ -81,7 +81,7 @@ Contributions are welcome and encouraged.  You can contribute in many ways:
 
 Next place is the github issue tracker:
 
-https://github.com/sgtsmall/VK2BV_direwolf/issues
+https://github.com/sgtsmall/VK2BV_Direwolf/issues
 
 Before creating new issues please check to see if there is an existing one, search first otherwise you waste peoples time when they could be coding instead!
 
@@ -91,6 +91,6 @@ Please refer to the development section in the `docs/development` folder.
 
 
 ## VK2BV Direwolf Releases
-https://github.com/sgtsmall/VK2BV_direwolf/releases
+https://github.com/sgtsmall/VK2BV_Direwolf/releases
 
 

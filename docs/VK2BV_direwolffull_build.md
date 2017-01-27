@@ -39,6 +39,8 @@ https://www.raspberrypi.org/downloads/raspbian/
 
 There are several articles on how to create an image on the SD using these files.
 
+
+
 _At this point you can build the system all plugged in. I personally do most of these steps initially via ssh because it is easier to cut and paste. I also get VNC going fairly early._
 
 ssh software - it's builtin on most Mac and Linux. For windows 
@@ -49,6 +51,14 @@ ssh software - it's builtin on most Mac and Linux. For windows
 For the install I am asuming you are using an ethernet connection and have reasonable internet access.
 
 To start the process you just need the Pi plugged in.
+
+> I have just tested the latest image 2017-01-11-raspbian-jessie  
+> The image does not enable ssh by default.  
+> On the 7" touch screen use Raspberry Menu/Preferences/Raspberry Pi Configuration/Interfaces  
+>  SSH enabled  
+> reboot  
+
+
 
 login is: pi/raspberry
 
@@ -63,10 +73,10 @@ The particular packages are the wolfram and libreoffice.
 Start a terminal for these bits _Acessories/Terminal_ You may be able to do these through the WIMP's interface I'll probably find out one day! [Windows, Icons and Mouse Pointing]
 
 ```
-sudo apt-get remove --purge wolfram-engine
-sudo apt-get remove --purge libreoffice*
+sudo apt-get -y remove --purge wolfram-engine
+sudo apt-get -y remove --purge libreoffice*
 sudo apt-get clean
-sudo apt-get autoremove
+sudo apt-get -y autoremove
 ```
 
 ### Initial Setup
@@ -82,7 +92,8 @@ The Raspi-config is curses menu based uses arrow, tab and enter keys. The follow
   
     
     -   expand filesystem  
-    -   Internationalization/Change locale : en_AU.UTF-8  
+    -   Internationalization/Change locale : en_AU.UTF-8 and remove en_GB entry 
+    -     Select en_AU.UTF-8 as default
     -   Internationalization/Change timezone : AU/Sydney  
     -   advanced/hostname   : vkxxxpi  
     -   reboot  
@@ -112,3 +123,70 @@ That document will send you back here eventually
 If the other bits worked you should have a default desktop to run direwolf manually, however the steps in the other document show how to start it in the background anyway.
 
 rest coming soon
+
+## experimental YAAC gps
+
+These notes are in progress.... your mileage may vary
+
+At about this stage having vnc working is handy for setup.
+I like x11vnc, although by default the realvnc is available
+there is also tightvnc
+
+> sudo apt-get install x11vnc  
+> x11vnc -storepasswd  
+
+To run a session this can be started in the network ssh to get the main screen 
+> x11vnc -bg -nevershared -forever -tightfilexfer -usepw -display :0  
+
+Running YAAC requires a keyboard and running a teminal from the Raspi sceen.
+
+- use direswitch to configure as tnc with service enabled (and start it or reboot)
+- 
+> cd  
+> wget http://www.ka2ddo.org/ka2ddo/YAAC.zip  
+> sudo apt-get -y install openjdk-7-jre librxtx-java unzip
+> mkdir YAAC
+> cd YAAC
+> unzip ../YAAC.zip
+
+From this point you need to be on the console screen
+
+> java -jar YAAC.jar
+
+
+> No APRS configured would you like help
+
+Enter your callsign and select an SSID from the dropdown
+
+choose an SSID different to what you entered in Direwolf... just in case.
+Then next
+Select Mobile and turn off Digi/I-gate for now
+Select an icon
+Then NEXT
+for position choose Yes, via GPSD
+...
+For port choose AGWPE
+
+localhost
+8000
+
+Transmit ... leave disabled for now
+
+and here we open the worm can.... the screen is slightly too large you need to carefully move it up a bit to see the next button.
+
+select enable station beacon and use gps
+change text and Finish
+Stop yaac and reboot
+
+start yaac again and you should be receiving.
+
+Go into the configure Expert mode  make it full screen and ports AGWPE set to transmit.
+
+About now you need some maps. The default map connectors don't work so you need to download some stuff
+
+You have to get pre built tiles (find the ones for NSW and link here)
+
+
+... more later including the install icons
+
+

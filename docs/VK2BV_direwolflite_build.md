@@ -134,6 +134,11 @@ git checkout 1.3
 make
 sudo make install
 make install-conf
+
+#If you are building a full display version also run the next command
+make install-rpi
+#This step created a desktop icon for Direwolf
+
 cd ~
 ```
 
@@ -167,6 +172,22 @@ sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock
 gpsmon
 [Ctrl-C to quit]
 ```
+
+If you have finished testing gpsd interactively then kill the running process (or just leave it, you will be able to enable the background startup but not start it, because it is already running)
+
+Edit the defaults file for startup
+
+> sudo nano /etc/defaults/gpsd  
+> ...  
+> DEVICES="/dev/ttyACM0"  
+> ...  
+> GPSD_OPTIONS="-F /var/run/gpsd.sock"  
+
+```
+sudo kilall gpsd
+```
+
+
 
 Start the services
 
@@ -221,6 +242,7 @@ I have included a script that will gather some details and create a new series o
 The following install section adds some local scripts to the programs and installs the service files for direwolf in the background. Additional commands are needed to start the background job.
 
 ```shell
+git clone https://github.com/sgtsmall/VK2BV_Direwolf.git
 cd VK2BV_Direwolf
 sudo make install
 cd ~
@@ -452,6 +474,7 @@ This should read /home/pi/direwolf.conf and start up (-t 0 turns off the colour 
 ## Configuring direwolf as a service
 
 If you want direwolf to always run on startup then we should configure as a service. Scripts and files for this are contained in the github, although it is recommended to do refresh your git to make sure you have the latest.
+If it has been sometime since you last installed these scripts then refresh them, otherwise next step.
 
 ```
 cd ~
@@ -464,6 +487,30 @@ cd ~
 This should copy the relevant files in place.
 
 You can use the diremenu commands to enable and disable the service
+
+> ...  
+> h) sudo service direwolf status  
+> i) sudo systemctl enable direwolf.service  
+> j) sudo systemctl disable direwolf.service  
+> q) quit this menu  
+>   
+> Enter option :h  
+> ● direwolf.service - direwolf - A TNC and aprs  
+>    Loaded: loaded (/lib/systemd/system/direwolf.service; disabled)  
+
+The service is currently disabled from automatic startup
+
+>    Active: inactive (dead)  
+
+The service is not running 
+
+>  
+> Jan 27 15:20:45 vk2psfpi sudo[1899]: pam_unix(sudo:session): se....  
+
+recent log of activity
+
+Use menu option i) sudo systemctl enable direwolf.service  
+to enable startup after reboots
 
 
 
