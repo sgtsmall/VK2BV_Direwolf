@@ -126,7 +126,7 @@ rest coming soon
 
 ## experimental YAAC gps
 
-These notes are in progress.... your mileage may vary
+These notes are in progress.... your mileage may vary. I recommend for this you use a Pi3 or one of the other "large pi clones"
 
 At about this stage having vnc working is handy for setup.
 I like x11vnc, although by default the realvnc is available
@@ -143,11 +143,11 @@ Running YAAC requires a keyboard and running a teminal from the Raspi sceen.
 - use direswitch to configure as tnc with service enabled (and start it or reboot)
 - 
 > cd  
-> wget http://www.ka2ddo.org/ka2ddo/YAAC.zip  
-> sudo apt-get -y install openjdk-7-jre librxtx-java unzip
-> mkdir YAAC
-> cd YAAC
-> unzip ../YAAC.zip
+> wget http://www.ka2ddo.org/ka2ddo/YAAC.zip    
+> sudo apt-get -y install openjdk-7-jre librxtx-java unzip  
+> mkdir YAAC  
+> cd YAAC  
+> unzip ../YAAC.zip  
 
 From this point you need to be on the console screen
 
@@ -184,8 +184,9 @@ Go into the configure Expert mode  make it full screen and ports AGWPE set to tr
 
 About now you need some maps. The default map connectors don't work so you need to download some stuff
 
-You have to get pre built tiles (find the ones for NSW and link here)
+You have to get pre built tiles 
 
+I downloaded a whole of australia file and ran the import function on another large debian workstation (you need a large amount of CPU, memory and disk -60GB to do this but the resulting files are only a few hundred MB) I will make the file available soon.
 
 ... more later including the install icons
 

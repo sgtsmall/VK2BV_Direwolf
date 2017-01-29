@@ -2,7 +2,7 @@
 # Makefile for local scripts
 #
 
-APPS := diremenu direconfig direswitch
+APPS := diremenu direconfig direswitch diretail.desktop YAAC.desktop
 
 all : $(APPS)
 
@@ -30,3 +30,46 @@ install : $(APPS)
 	$(INSTALL) direswitch $(INSTALLDIR)/bin
 	$(INSTALL) -m 644 direwolf.service $(SSERVICEDIR)
 	$(INSTALL) direwolf.initd /etc/init.d/direwolf
+	$(INSTALL) -m 644 diretail.desktop /usr/share/applications/diretail.desktop
+	$(INSTALL) -m 644 YAAC.desktop /usr/share/applications/YAAC.desktop
+
+diretail.desktop :
+	
+	@echo "Generating customized diretail.desktop ..."
+	@echo '[Desktop Entry]' > $@
+	@echo 'Type=Application' >> $@
+ifneq ($(wildcard /usr/bin/lxterminal),)
+	@echo "Exec=lxterminal -t \"Dire Tail\" -e \"tail -f $HOME/direwolf.output\"" >> $@ 
+else ifneq ($(wildcard /usr/bin/lxterm),)
+	@echo "Exec=lxterm -hold -title \"Dire Tail\"  -e \"tail -f $HOME/direwolf.output\"" >> $@ 
+else
+	@echo "Exec=xterm -hold -title \"Dire Tail\" -e \"tail -f $HOME/direwolf.output\"" >> $@
+endif
+	@echo 'Name=Dire Tail' >> $@
+	@echo 'Comment=View direwolf background' >> $@
+	@echo 'Icon=/usr/share/direwolf/dw-icon.png' >> $@
+	@echo "Path=$(HOME)" >> $@
+	@echo '#Terminal=true' >> $@
+	@echo 'Categories=HamRadio' >> $@
+	@echo 'Keywords=Ham Radio;APRS;Soundcard TNC;KISS;AGWPE;AX.25' >> $@
+
+YAAC.desktop :
+	
+	@echo "Generating customized YAAC.desktop ..."
+	@echo '[Desktop Entry]' > $@
+	@echo 'Type=Application' >> $@
+ifneq ($(wildcard /usr/bin/lxterminal),)
+	@echo "Exec=lxterminal -t \"YAAC\" -e \"$HOME/YAAC.sh\"" >> $@ 
+else ifneq ($(wildcard /usr/bin/lxterm),)
+	@echo "Exec=lxterm -hold -title \"YAAC\"  -e \"$HOME/YAAC.sh\"" >> $@ 
+else
+	@echo "Exec=xterm -hold -title \"YAAC\" -e \"$HOME/YAAC.sh\"" >> $@
+endif
+	@echo 'Name=YAAC' >> $@
+	@echo 'Comment=Yet Another APRS Client' >> $@
+	@echo 'Icon=/usr/share/direwolf/dw-icon.png' >> $@
+	@echo "Path=$(HOME)" >> $@
+	@echo '#Terminal=true' >> $@
+	@echo 'Categories=HamRadio' >> $@
+	@echo 'Keywords=Ham Radio;APRS;Soundcard TNC;KISS;AGWPE;AX.25' >> $@
+
