@@ -31,6 +31,7 @@ install : $(APPS)
 	$(INSTALL) -m 644 direwolf.service $(SSERVICEDIR)
 	$(INSTALL) direwolf.initd /etc/init.d/direwolf
 	$(INSTALL) -m 644 diretail.desktop /usr/share/applications/diretail.desktop
+	$(INSTALL) YAAC.sh $(INSTALLDIR)/bin
 	$(INSTALL) -m 644 YAAC.desktop /usr/share/applications/YAAC.desktop
 
 diretail.desktop :
@@ -39,11 +40,11 @@ diretail.desktop :
 	@echo '[Desktop Entry]' > $@
 	@echo 'Type=Application' >> $@
 ifneq ($(wildcard /usr/bin/lxterminal),)
-	@echo "Exec=lxterminal -t \"Dire Tail\" -e \"tail -f $HOME/direwolf.output\"" >> $@ 
+	@echo "Exec=lxterminal -t \"Dire Tail\" -e \"tail -f $(HOME)/direwolf.output\"" >> $@ 
 else ifneq ($(wildcard /usr/bin/lxterm),)
-	@echo "Exec=lxterm -hold -title \"Dire Tail\"  -e \"tail -f $HOME/direwolf.output\"" >> $@ 
+	@echo "Exec=lxterm -hold -title \"Dire Tail\"  -e \"tail -f $(HOME)/direwolf.output\"" >> $@ 
 else
-	@echo "Exec=xterm -hold -title \"Dire Tail\" -e \"tail -f $HOME/direwolf.output\"" >> $@
+	@echo "Exec=xterm -hold -title \"Dire Tail\" -e \"tail -f $(HOME)/direwolf.output\"" >> $@
 endif
 	@echo 'Name=Dire Tail' >> $@
 	@echo 'Comment=View direwolf background' >> $@
@@ -59,11 +60,11 @@ YAAC.desktop :
 	@echo '[Desktop Entry]' > $@
 	@echo 'Type=Application' >> $@
 ifneq ($(wildcard /usr/bin/lxterminal),)
-	@echo "Exec=lxterminal -t \"YAAC\" -e \"$HOME/YAAC.sh\"" >> $@ 
+	@echo "Exec=lxterminal -t \"YAAC\" -e \"$(HOME)/YAAC.sh\"" >> $@ 
 else ifneq ($(wildcard /usr/bin/lxterm),)
-	@echo "Exec=lxterm -hold -title \"YAAC\"  -e \"$HOME/YAAC.sh\"" >> $@ 
+	@echo "Exec=lxterm -hold -title \"YAAC\"  -e \"($HOME)/YAAC.sh\"" >> $@ 
 else
-	@echo "Exec=xterm -hold -title \"YAAC\" -e \"$HOME/YAAC.sh\"" >> $@
+	@echo "Exec=xterm -hold -title \"YAAC\" -e \"($HOME)/YAAC.sh\"" >> $@
 endif
 	@echo 'Name=YAAC' >> $@
 	@echo 'Comment=Yet Another APRS Client' >> $@
@@ -72,4 +73,10 @@ endif
 	@echo '#Terminal=true' >> $@
 	@echo 'Categories=HamRadio' >> $@
 	@echo 'Keywords=Ham Radio;APRS;Soundcard TNC;KISS;AGWPE;AX.25' >> $@
+
+.PHONY: install-rpi
+install-rpi : YAAC.sh
+	ln -f -s $(INSTALLDIR)/bin/YACC.sh $(HOME)/YACC.sh
+	ln -f -s /usr/share/applications/diretail.desktop ~/Desktop/diretail.desktop
+	ln -f -s /usr/share/applications/YAAC.desktop ~/Desktop/YAAC.desktop
 
