@@ -76,7 +76,7 @@ endif
 
 .PHONY: install-rpi
 install-rpi : YAAC.sh
-	ln -f -s $(INSTALLDIR)/bin/YACC.sh $(HOME)/YACC.sh
+	ln -f -s $(INSTALLDIR)/bin/YAAC.sh $(HOME)/YAAC.sh
 	ln -f -s /usr/share/applications/diretail.desktop ~/Desktop/diretail.desktop
 	ln -f -s /usr/share/applications/YAAC.desktop ~/Desktop/YAAC.desktop
 

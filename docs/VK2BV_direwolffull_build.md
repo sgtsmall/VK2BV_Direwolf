@@ -190,4 +190,15 @@ I downloaded a whole of australia file and ran the import function on another la
 
 ... more later including the install icons
 
+OK I have built the icon command but not the right png files.
+
+```
+cd VK2BV_direwolf
+make install-rpi
+cd
+```
+
+This will add some desktop icons and the YAAC.sh script
+I actually recommend just using the menu entries under HamRadio or Other, rather than the desktop icon as it is hard to click.
+
 

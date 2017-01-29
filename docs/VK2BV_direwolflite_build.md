@@ -239,11 +239,12 @@ mv direwolf.conf direwolf.origconf
 I have included a script that will gather some details and create a new series of files for different usage.
 
 
-The following install section adds some local scripts to the programs and installs the service files for direwolf in the background. Additional commands are needed to start the background job.
+The following install section adds some local scripts to the programs and installs the service files for direwolf in the background. This also generates desktop files for the Full image. Additional commands are needed to start the background job. 
 
 ```shell
 git clone https://github.com/sgtsmall/VK2BV_Direwolf.git
 cd VK2BV_Direwolf
+make
 sudo make install
 cd ~
 sudo systemctl daemon-reload
