@@ -99,7 +99,7 @@ KISSPORT 8001
 ##
 EOF
 cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.tnc
-cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.fbeacon
+cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.pbeacon
 cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.gbeacon
 cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.igate
 cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.digi

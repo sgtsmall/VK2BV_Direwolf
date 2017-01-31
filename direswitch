@@ -15,7 +15,7 @@ cmdh="link tnc"
 cmdi="link digi"
 cmdj="link igate"
 cmdk="link gbeacon"
-cmdl="link fbeacon"
+cmdl="link pbeacon"
 cmdm="link custom"
 
 cmdn="direwolf -t 0 -c direwolf.conf" 
