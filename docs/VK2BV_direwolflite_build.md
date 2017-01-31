@@ -184,7 +184,7 @@ Edit the defaults file for startup
 > GPSD_OPTIONS="-F /var/run/gpsd.sock"  
 
 ```
-sudo kilall gpsd
+sudo killall gpsd
 ```
 
 
