@@ -177,7 +177,7 @@ If you have finished testing gpsd interactively then kill the running process (o
 
 Edit the defaults file for startup
 
-> sudo nano /etc/defaults/gpsd  
+> sudo nano /etc/default/gpsd  
 > ...  
 > DEVICES="/dev/ttyACM0"  
 > ...  
