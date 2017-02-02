@@ -44,6 +44,7 @@ There are several articles on how to create an image on the SD using these files
 _At this point you can build the system all plugged in. I personally do most of these steps initially via ssh because it is easier to cut and paste. I also get VNC going fairly early._
 
 ssh software - it's builtin on most Mac and Linux. For windows 
+  - MobaXterm
   - Bitvise SSH Client
   - More here
 
