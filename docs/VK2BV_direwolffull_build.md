@@ -52,12 +52,20 @@ For the install I am asuming you are using an ethernet connection and have reaso
 
 To start the process you just need the Pi plugged in.
 
-> I have just tested the latest image 2017-01-11-raspbian-jessie  
-> The image does not enable ssh by default.  
+### Latest Raspberry Jessie image does not enable ssh by default.
+
+> To fix
+> Option A:
+> If you have a screen/keyboard attached
 > On the 7" touch screen use Raspberry Menu/Preferences/Raspberry Pi Configuration/Interfaces  
 >  SSH enabled  
 > reboot  
-
+>  
+> Option B:
+> after you have created the image load the sd card up on the pc again and you should get a disk volume called "boot".
+> Open this drive in explorer/finder and create a file called ```ssh``` in the directory. In windows you can right click and create a text file saving as ssh (without the .txt)
+> and then reboot with this image. 
+> 
 
 
 login is: pi/raspberry

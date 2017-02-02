@@ -36,11 +36,20 @@ https://www.raspberrypi.org/downloads/raspbian/
 There are several articles on how to create an image on the SD using these files. I don't recommend using NOOBS for this project. (If you have that in your kit set aside for now)
 
 ssh software - it's builtin on most Mac and Linux. For windows
+  - MobaXterm (this seems very good and the free limitations should not be a problem)
   - Bitvise SSH Client
-  - More here
+  - More here in future
 
 
 For the install I am asuming you are using an ethernet connection and have reasonable internet access.
+
+### Latest Raspberry Jessie image does not enable ssh by default.
+
+To fix, after you have created the image load the sd card up on the pc again and you should get a disk volume called "boot".
+Open this drive in explorer/finder and create a file called ```ssh``` in the directory. In windows you can right click and create a text file saving as ssh (without the .txt)
+
+
+
 
 To start the process you just need the Pi plugged in.
 
