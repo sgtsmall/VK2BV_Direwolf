@@ -83,7 +83,8 @@ install-rpi : YAAC.sh
 
 .PHONY: clean
 clean :
-	rm -f $(APPS)  diretail.desktop YAAC.desktop
+	rm -f diretail.desktop YAAC.desktop
+	git fetch --force && git reset --hard origin/master
 
 
 depend : $(wildcard *.c)
