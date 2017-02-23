@@ -34,6 +34,7 @@ install : $(APPS)
 	$(INSTALL) -m 644 diretail.desktop /usr/share/applications/diretail.desktop
 	$(INSTALL) YAAC.sh $(INSTALLDIR)/bin
 	$(INSTALL) -m 644 YAAC.desktop /usr/share/applications/YAAC.desktop
+	systemctl daemon-reload
 
 diretail.desktop :
 	
