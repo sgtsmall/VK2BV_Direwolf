@@ -2,24 +2,32 @@
 #
 CONFDIR=$HOME/dconf
 SAMPDIR=$CONFDIR/sample
-option="Q"
+optionm="Q"
+optionc="Q"
 #
-cmda="gpio readall"
-cmdb="gpio -g mode 22 out"
-cmdc="gpio -g mode 23 out"
-cmdd="gpio -g write 22 1"
-cmde="gpio -g write 22 0"
-cmdf="gpio -g write 23 1"
-cmdg="gpio -g write 23 0"
-cmdh="direwolf -t 0 -x -c direwolf.conf"
-cmdi="link testbeac"
-cmdj="link custom"
-cmdk="alsamixer"
-cmdl="direwolf -t 0 -c direwolf.conf"
-cmdm="sudo systemctl status gpsd.socket"
-cmdn="sudo systemctl stop gpsd.socket"
-cmdo="sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock"
-cmdp="sudo systemctl start gpsd.socket"
+menua="GPIO Menu"
+cmdpa="gpio readall"
+cmdpb="gpio -g mode 22 out"
+cmdpc="gpio -g mode 23 out"
+cmdpd="gpio -g write 22 1"
+cmdpe="gpio -g write 22 0"
+cmdpf="gpio -g write 23 1"
+cmdpg="gpio -g write 23 0"
+
+menub="Direwolf Test Menu"
+cmdta="direwolf -t 0 -x -c direwolf.conf"
+cmdtb="link testbeac"
+cmdtc="link custom"
+cmdtd="alsamixer"
+cmdte="direwolf -t 0 -c direwolf.conf"
+
+menuc="GPS Menu"
+cmdga="sudo systemctl status gpsd.socket"
+cmdgb="sudo systemctl stop gpsd.socket"
+cmdgc="sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock"
+cmdgd="cgps"
+cmdge="sudo killall gpsd"
+cmdgf="sudo systemctl start gpsd.socket"
 
 function linktest {
 
@@ -69,57 +77,131 @@ echo " You can always go back later and create better settings by rerunning the 
  echo -e "[Ret] to continue :\c"
  read ans
 
-while [ $option != "q" ] ; do
+while [ $optionm != "q" ] ; do
+ optionc="Q"
  linktest
  echo ""
  echo "diresetup choices"
  echo ""
- echo "a) $cmda"
- echo "b) $cmdb"
- echo "c) $cmdc"
- echo "d) $cmdd"
- echo "e) $cmde"
- echo "f) $cmdf"
- echo "g) $cmdg"
- echo "h) $cmdh"
- echo "i) $cmdi"
- echo "j) $cmdj"
- echo "k) $cmdk"
- echo "l) $cmdl"
- echo "m) $cmdm"
- echo "n) $cmdn"
- echo "o) $cmdo"
- echo "p) $cmdp"
-     
- 
+ echo "a) $menua"
+ echo "b) $menub"
+ echo "c) $menuc"
+
  echo "q) quit this menu"
  echo ""
- echo -e "Enter option :\c"
+ echo -e "Enter optionm :\c"
  read ans
  if [ -z $ans ] ; then
-  ans="$option"
+  ans="$optionm"
  fi
- option="$ans"
- case $option in
-  a) $cmda ;;
-  b) $cmdb ;;
-  c) $cmdc ;;
-  d) $cmdd ;;
-  e) $cmde ;;
-  f) $cmdf ;;
-  g) $cmdg ;;
-  h) $cmdh ;;
-  i) typef="testbeac"
-     linkfile ;;
-  j) typef="custom"
-    linkfile;;
-  k) $cmdk ;;
-  l) $cmdl ;;
-  m) $cmdm ;;
-  n) $cmdn ;;
-  o) $cmdo ;;
-  p) $cmdp ;;
+ optionm="$ans"
+ case $optionm in
+  a) 
+  while [ $optionc != "q" ] ; do
+  echo $menua
+
+optionm="Q"
+ echo "a) $cmdpa"
+ echo "b) $cmdpb"
+ echo "c) $cmdpc"
+ echo "d) $cmdpd"
+ echo "e) $cmdpe"
+ echo "f) $cmdpf"
+ echo "g) $cmdpg"
+
+ echo "q) quit this menu"
+ echo ""
+ echo -e "Enter optionc :\c"
+ read ans
+ if [ -z $ans ] ; then
+  ans="$optionc"
+ fi
+ optionc="$ans"
+ case $optionc in
+
+  a) $cmdpa ;;
+  b) $cmdpb ;;
+  c) $cmdpc ;;
+  d) $cmdpd ;;
+  e) $cmdpe ;;
+  f) $cmdpf ;;
+  g) $cmdpg ;;
+
   q) echo "good bye"
+  esac
+  done
+ ;;
+
+  b) 
+  while [ $optionc != "q" ] ; do
+  echo $menub
+
+optionm="Q"
+ echo "a) $cmdta"
+ echo "b) $cmdtb"
+ echo "c) $cmdtc"
+ echo "d) $cmdtd"
+ echo "e) $cmdte"
+ echo "f) $cmdtf"
+ echo "g) $cmdtg"
+
+ echo "q) quit this menu"
+ echo ""
+ echo -e "Enter optionc :\c"
+ read ans
+ if [ -z $ans ] ; then
+  ans="$optionc"
+ fi
+ optionc="$ans"
+ case $optionc in
+
+  a) $cmdta ;;
+  b) typef="testbeac"
+   linkfile ;;
+  c) typef="custom"
+   linkfile ;;
+  d) $cmdtd ;;
+  e) $cmdte ;;
+  f) $cmdtf ;;
+  g) $cmdtg ;;
+
+  q) echo "good bye"
+esac 
+done
+;;
+  c) 
+  while [ $optionc != "q" ] ; do
+  echo $menuc
+
+optionm="Q"
+ echo "a) $cmdga"
+ echo "b) $cmdgb"
+ echo "c) $cmdgc"
+ echo "d) $cmdgd"
+ echo "e) $cmdge"
+ echo "f) $cmdgf"
+ echo "g) $cmdgg"
+
+ echo "q) quit this menu"
+ echo ""
+ echo -e "Enter optionc :\c"
+ read ans
+ if [ -z $ans ] ; then
+  ans="$optionc"
+ fi
+ optionc="$ans"
+ case $optionc in
+
+  a) $cmdga ;;
+  b) $cmdgb ;;
+  c) $cmdgc ;;
+  d) $cmdgd ;;
+  e) $cmdge ;;
+  f) $cmdgf ;;
+  g) $cmdgg ;;
+
+  q) echo "good bye"
+  esac
+  done;;
  esac
 done
-

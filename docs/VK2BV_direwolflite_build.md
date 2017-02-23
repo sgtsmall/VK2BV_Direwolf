@@ -256,7 +256,6 @@ cd VK2BV_Direwolf
 make
 sudo make install
 cd ~
-sudo systemctl daemon-reload
 ```
 
 This installs some basic command files
@@ -278,7 +277,43 @@ This is especially useful if you are running direwolf as a service (see below) s
 
 As a worked example, I usually run the unit just as a (direwolf.conf.tnc) TNC that I can connect to SARTrack or other software (YAAC - Yet Another APRS Client) It doesn't beacon itself. Then I may set it as a fixed position beacon (direwolf.conf.pbeacon) for a while. Later I may use it as a tracker (direwolf.conf.gbeacon) or as a digipeater (direwolf.conf.digi)
 
+### diresetup
 
+This script contains most of the one off commands used during the setup process. Rather than constantly scrolling through the notes I put them together.
+
+Things like the gpio commands the gpsd commands and a new feature direwolf -x and a direwolf test beacon, are arranged in 3 sub menus.
+
+As the script highlights you need to have run the direconfig and copied the sample configs with direswitch.
+
+```
+Direwolf Test menu
+
+a) direwolf -t 0 -x -c direwolf.conf
+```
+
+Will transmit a test tone to the radio to help with levels (listen with another radio for overmodulation).
+
+```
+b) link testbeac
+
+e) direwolf -t 0 -c direwolf.conf
+```
+
+Will transmit a fixed beacon after 30 seconds every 30 seconds. You should also see decoded packets.
+
+####
+GPS Menu
+To check if the gps is sending data you need to stop the background, start gpsd sock, run cgps, then kill the gpsd and restart the background.
+
+```
+GPS Menu
+a) sudo systemctl status gpsd.socket
+b) sudo systemctl stop gpsd.socket
+c) sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock
+d) cgps
+e) sudo killall gpsd
+f) sudo systemctl start gpsd.socket
+```
 
 ## Sample Configurations
 
