@@ -2,7 +2,7 @@
 #
 CONFDIR=$HOME/dconf
 SAMPDIR=$CONFDIR/sample
-option="q"
+option="Q"
 #
 cmda="gpio readall"
 cmdb="gpio -g mode 22 out"
