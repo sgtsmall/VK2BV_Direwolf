@@ -2,7 +2,7 @@
 #
 CONFDIR=$HOME/dconf
 SAMPDIR=$CONFDIR/sample
-option="o"
+option="q"
 #
 cmda="gpio readall"
 cmdb="gpio -g mode 22 out"
@@ -14,10 +14,12 @@ cmdg="gpio -g write 23 0"
 cmdh="direwolf -t 0 -x -c direwolf.conf"
 cmdi="link testbeac"
 cmdj="link custom"
-cmdk="sudo systemctl status gpsd.socket"
-cmdl="sudo systemctl stop gpsd.socket"
-cmdm="sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock"
-cmdn="sudo systemctl start gpsd.socket"
+cmdk="alsamixer"
+cmdl="direwolf -t 0 -c direwolf.conf"
+cmdm="sudo systemctl status gpsd.socket"
+cmdn="sudo systemctl stop gpsd.socket"
+cmdo="sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock"
+cmdp="sudo systemctl start gpsd.socket"
 
 function linktest {
 
@@ -58,6 +60,15 @@ if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
 fi
 }
 
+echo ""
+echo " YOU NEED TO HAVE RUN direconfig AND direswitch BEFORE USING THIS MENU"
+echo ""
+echo " JUST USE DEFAULT VALUES IF YOU DONT KNOW YOUR DETAILS "
+echo " "
+echo " You can always go back later and create better settings by rerunning the config and switch"
+ echo -e "[Ret] to continue :\c"
+ read ans
+
 while [ $option != "q" ] ; do
  linktest
  echo ""
@@ -77,6 +88,8 @@ while [ $option != "q" ] ; do
  echo "l) $cmdl"
  echo "m) $cmdm"
  echo "n) $cmdn"
+ echo "o) $cmdo"
+ echo "p) $cmdp"
      
  
  echo "q) quit this menu"
@@ -104,6 +117,8 @@ while [ $option != "q" ] ; do
   l) $cmdl ;;
   m) $cmdm ;;
   n) $cmdn ;;
+  o) $cmdo ;;
+  p) $cmdp ;;
   q) echo "good bye"
  esac
 done
