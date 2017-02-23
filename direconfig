@@ -103,8 +103,10 @@ cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.pbeacon
 cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.gbeacon
 cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.igate
 cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.digi
+cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.testbeac
 
-cat << EOF >> dconf/sample/direwolf.conf.fbeacon
+
+cat << EOF >> dconf/sample/direwolf.conf.pbeacon
 ## Fixed Position Beacon 
 
 PBEACON delay=1  every=30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
@@ -131,6 +133,15 @@ PBEACON delay=1  every=30 overlay=S symbol="digi" lat=$loclat long=$loclon power
 DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE 
 #
 EOF
+
+
+cat << EOF >> dconf/sample/direwolf.conf.testbeac
+## Fixed Position Beacon 
+
+PBEACON delay=0:30  every=0:30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
+EOF
+#
+
 
 }
 

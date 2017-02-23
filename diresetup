@@ -1,0 +1,110 @@
+#!/bin/bash
+#
+CONFDIR=$HOME/dconf
+SAMPDIR=$CONFDIR/sample
+option="o"
+#
+cmda="gpio readall"
+cmdb="gpio -g mode 22 out"
+cmdc="gpio -g mode 23 out"
+cmdd="gpio -g write 22 1"
+cmde="gpio -g write 22 0"
+cmdf="gpio -g write 23 1"
+cmdg="gpio -g write 23 0"
+cmdh="direwolf -t 0 -x -c direwolf.conf"
+cmdi="link testbeac"
+cmdj="link custom"
+cmdk="sudo systemctl status gpsd.socket"
+cmdl="sudo systemctl stop gpsd.socket"
+cmdm="sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock"
+cmdn="sudo systemctl start gpsd.socket"
+
+function linktest {
+
+echo "Current: "
+if [ -e $HOME/direwolf.conf ] ; then
+  if [ -h $HOME/direwolf.conf ] ; then
+    echo "direwolf.conf is linked "
+    ls -l $HOME/direwolf.conf
+  elif [ -f $HOME/direwolf.conf ] ; then
+    echo "direwolf.conf is not linked"
+  fi  
+else
+  echo "no file here?"
+fi  
+}
+
+
+function linkfile {
+
+if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
+ echo "Current : "
+ if [ -e $HOME/direwolf.conf ] ; then
+  if [ -h $HOME/direwolf.conf ] ; then
+    echo "direwolf.conf is linked "
+    ls -l $HOME/direwolf.conf
+  elif [ -f $HOME/direwolf.conf ] ; then
+    echo "direwolf.conf is not linked"
+  fi  
+  rm $HOME/direwolf.conf
+ else
+  echo "first time? no direwolf.conf here"
+ fi  
+ echo " Changing link"
+ echo ""
+ ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
+ else
+ echo "File not found ? $CONFDIR/direwolf.conf.$typef "
+fi
+}
+
+while [ $option != "q" ] ; do
+ linktest
+ echo ""
+ echo "diresetup choices"
+ echo ""
+ echo "a) $cmda"
+ echo "b) $cmdb"
+ echo "c) $cmdc"
+ echo "d) $cmdd"
+ echo "e) $cmde"
+ echo "f) $cmdf"
+ echo "g) $cmdg"
+ echo "h) $cmdh"
+ echo "i) $cmdi"
+ echo "j) $cmdj"
+ echo "k) $cmdk"
+ echo "l) $cmdl"
+ echo "m) $cmdm"
+ echo "n) $cmdn"
+     
+ 
+ echo "q) quit this menu"
+ echo ""
+ echo -e "Enter option :\c"
+ read ans
+ if [ -z $ans ] ; then
+  ans="$option"
+ fi
+ option="$ans"
+ case $option in
+  a) $cmda ;;
+  b) $cmdb ;;
+  c) $cmdc ;;
+  d) $cmdd ;;
+  e) $cmde ;;
+  f) $cmdf ;;
+  g) $cmdg ;;
+  h) $cmdh ;;
+  i) typef="testbeac"
+     linkfile ;;
+  j) typef="custom"
+    linkfile;;
+  k) $cmdk ;;
+  l) $cmdl ;;
+  m) $cmdm ;;
+  n) $cmdn ;;
+  q) echo "good bye"
+ esac
+done
+

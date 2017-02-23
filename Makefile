@@ -2,7 +2,7 @@
 # Makefile for local scripts
 #
 
-APPS := diremenu direconfig direswitch diretail.desktop YAAC.desktop
+APPS := diremenu diresetup direconfig direswitch diretail.desktop YAAC.desktop
 
 all : $(APPS)
 
@@ -26,6 +26,7 @@ INSTALL=install
 install : $(APPS)
 
 	$(INSTALL) diremenu $(INSTALLDIR)/bin
+	$(INSTALL) diresetup $(INSTALLDIR)/bin
 	$(INSTALL) direconfig $(INSTALLDIR)/bin
 	$(INSTALL) direswitch $(INSTALLDIR)/bin
 	$(INSTALL) -m 644 direwolf.service $(SSERVICEDIR)
@@ -80,3 +81,16 @@ install-rpi : YAAC.sh
 	ln -f -s /usr/share/applications/diretail.desktop ~/Desktop/diretail.desktop
 	ln -f -s /usr/share/applications/YAAC.desktop ~/Desktop/YAAC.desktop
 
+.PHONY: clean
+clean :
+	rm -f $(APPS)  diretail.desktop YAAC.desktop
+
+
+depend : $(wildcard *.c)
+	makedepend -f $(lastword $(MAKEFILE_LIST)) -- $(CFLAGS) -- $^
+
+
+#
+# The following is updated by "make depend"
+#
+# DO NOT DELETE
