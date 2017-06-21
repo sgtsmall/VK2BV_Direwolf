@@ -28,6 +28,8 @@ cmdgc="sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock"
 cmdgd="cgps"
 cmdge="sudo killall gpsd"
 cmdgf="sudo systemctl start gpsd.socket"
+cmdgg="sudo systemctl enable gpsd.socket"
+cmdgh="sudo systemctl disable gpsd.socket"
 
 function linktest {
 
@@ -181,6 +183,7 @@ optionm="Q"
  echo "e) $cmdge"
  echo "f) $cmdgf"
  echo "g) $cmdgg"
+ echo "h) $cmdgh"
 
  echo "q) quit this menu"
  echo ""
@@ -199,6 +202,7 @@ optionm="Q"
   e) $cmdge ;;
   f) $cmdgf ;;
   g) $cmdgg ;;
+  h) $cmdgh ;;
 
   q) echo "good bye"
   esac

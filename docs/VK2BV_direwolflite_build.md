@@ -433,13 +433,14 @@ This is some basic commands, the menu uses the actual commands as prompts, more 
 > a) tail -f $HOME/direwolf.output  
 > b) ls -al $HOME/direwolf.conf  
 > c) direconfig  
-> d) direswitch  
-> e) sudo service direwolf stop  
-> f) sudo service direwolf start  
-> g) sudo service direwolf restart  
-> h) sudo service direwolf status  
-> i) sudo systemctl enable direwolf.service  
-> j) sudo systemctl disable direwolf.service  
+> d) direswitch
+> e) diresetup
+> f) sudo service direwolf stop  
+> g) sudo service direwolf start  
+> h) sudo service direwolf restart  
+> i) sudo service direwolf status  
+> j) sudo systemctl enable direwolf.service  
+> l) sudo systemctl disable direwolf.service  
 
 
 
