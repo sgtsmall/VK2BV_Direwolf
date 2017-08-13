@@ -1,4 +1,4 @@
-Cables for Packet/Data Interfaces
+ Cables for Packet/Data Interfaces
 
 # Example Cables - Built
 
@@ -38,7 +38,7 @@ Jumper required for PTT
 | 7 +Ve |     |     |  +  |
 
 ## Yaesu handheld (VX-6R, FT-2D, ...)
-3.5mm TRRS 
+3.5mm TRRS
 Jumper required for PTT
 
 On most yaesu handhelds the shoulder of the plug is too wide, find a thin one or trim a regular one down.
@@ -53,7 +53,7 @@ On most yaesu handhelds the shoulder of the plug is too wide, find a thin one or
 | 7 +Ve |     |     |  +  |
 
 ## 8 pin DIN ACC1 (Late Model Icom)
-8 pin DIN 
+8 pin DIN
 The number sequence of DIN is tricky (I will try and put a diagram here...)
 
 
@@ -64,5 +64,3 @@ The number sequence of DIN is tricky (I will try and put a diagram here...)
 | 5 Spk |  5  |
 | 6 Gnd |  2  |
 | 7 +Ve |  7  |
-
-
