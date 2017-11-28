@@ -1,6 +1,6 @@
 VK2BV Direwolf - Build Full Image
 
- 
+
 
 # Build the Full Image
 
@@ -20,7 +20,7 @@ From time to time you may need to completely rebuild the image. These instructio
   - Interface cable for your radio
   - 5V power for the Pi (initially it can be built from your PC USB, but later you will need around 2A [10W])
   - Optional
-    - rPi interface board kit or the circuit can be assembled on any proto board. 
+    - rPi interface board kit or the circuit can be assembled on any proto board.
     - GPS
     - RTC
 
@@ -43,7 +43,7 @@ There are several articles on how to create an image on the SD using these files
 
 _At this point you can build the system all plugged in. I personally do most of these steps initially via ssh because it is easier to cut and paste. I also get VNC going fairly early._
 
-ssh software - it's builtin on most Mac and Linux. For windows 
+ssh software - it's builtin on most Mac and Linux. For windows
   - MobaXterm
   - Bitvise SSH Client
   - More here
@@ -65,8 +65,8 @@ To start the process you just need the Pi plugged in.
 > Option B:
 > after you have created the image load the sd card up on the pc again and you should get a disk volume called "boot".
 > Open this drive in explorer/finder and create a file called ```ssh``` in the directory. In windows you can right click and create a text file saving as ssh (without the .txt)
-> and then reboot with this image. 
-> 
+> and then reboot with this image.
+>
 
 
 login is: pi/raspberry
@@ -97,11 +97,11 @@ sudo raspi-config
 ```
 
 The Raspi-config is curses menu based uses arrow, tab and enter keys. The following options are what I would suggest changing.  
-  
-  
-    
+
+
+
     -   expand filesystem  
-    -   Internationalization/Change locale : en_AU.UTF-8 and remove en_GB entry 
+    -   Internationalization/Change locale : en_AU.UTF-8 and remove en_GB entry
     -     Select en_AU.UTF-8 as default
     -   Internationalization/Change timezone : AU/Sydney  
     -   advanced/hostname   : vkxxxpi  
@@ -119,7 +119,7 @@ Now we start with some installs, from here I am using apt-get -y to avoid the co
 
 At this point you need to refer to the [lite image build](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md#support-for-soundcard-git-and-nslookup)
 
-From the section 
+From the section
 Support for soundcard, git and nslookup
 
 
@@ -144,13 +144,13 @@ there is also tightvnc
 > sudo apt-get install x11vnc  
 > x11vnc -storepasswd  
 
-To run a session this can be started in the network ssh to get the main screen 
+To run a session this can be started in the network ssh to get the main screen
 > x11vnc -bg -nevershared -forever -tightfilexfer -usepw -display :0  
 
 Running YAAC requires a keyboard and running a teminal from the Raspi sceen.
 
 - use direswitch to configure as tnc with service enabled (and start it or reboot)
-- 
+-
 > cd  
 > wget http://www.ka2ddo.org/ka2ddo/YAAC.zip    
 > sudo apt-get -y install openjdk-7-jre librxtx-java unzip  
@@ -193,7 +193,7 @@ Go into the configure Expert mode  make it full screen and ports AGWPE set to tr
 
 About now you need some maps. The default map connectors don't work so you need to download some stuff
 
-You have to get pre built tiles 
+You have to get pre built tiles
 
 I downloaded a whole of australia file and ran the import function on another large debian workstation (you need a large amount of CPU, memory and disk -60GB to do this but the resulting files are only a few hundred MB) I will make the file available soon.
 
@@ -202,12 +202,10 @@ I downloaded a whole of australia file and ran the import function on another la
 OK I have built the icon command but not the right png files.
 
 ```
-cd VK2BV_direwolf
+cd VK2BV_Direwolf
 make install-rpi
 cd
 ```
 
 This will add some desktop icons and the YAAC.sh script
 I actually recommend just using the menu entries under HamRadio or Other, rather than the desktop icon as it is hard to click.
-
-

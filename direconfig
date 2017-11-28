@@ -34,7 +34,7 @@ function getparam {
  fi
  term="$termn"
 #
- passcode=`~/VK2BV_direwolf/bin/keygen.py "$user"`
+ passcode=`~/VK2BV_Direwolf/bin/keygen.py "$user"`
  echo "Passcode is unique for your Callsign "
  echo -e "Passcode for [$user] calculated as [$passcode] "
  echo -e "APRSIS Passcode number [$passcode]\c"
@@ -61,7 +61,7 @@ function getparam {
 #
  echo "GPIO pin selection"
  echo "Uses the BCM number for the PTT signal and DCD"
- 
+
  echo -e "ptt value [e.g. pin 15 BCM 22] [$gpioptt]\c"
  read gpiopttn
  if [ -z $gpiopttn ] ; then
@@ -75,7 +75,7 @@ echo -e "dcd value e.g. pin 14 BCM [$gpiodcd]\c"
   gpiodcdn="$gpiodcd"
  fi
  gpiodcd="$gpiodcdn"
- 
+
 
 }
 
@@ -107,22 +107,22 @@ cp dconf/sample/direwolf.hdr dconf/sample/direwolf.conf.testbeac
 
 
 cat << EOF >> dconf/sample/direwolf.conf.pbeacon
-## Fixed Position Beacon 
+## Fixed Position Beacon
 
 PBEACON delay=1  every=30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
 EOF
 #
 cat << EOF >> dconf/sample/direwolf.conf.gbeacon
-## Tracker uncomment this if using the GPS 
+## Tracker uncomment this if using the GPS
 GPSD
 SMARTBEACONING 50 2:00 5 15:00 0:15 20 255
 EOF
 #
 cat << EOF >> dconf/sample/direwolf.conf.igate
-## Igate 
+## Igate
 IGSERVER sydney.aprs2.net
 IGLOGIN $user-$term $passcode
-PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=$loclat long=$loclon 
+PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=$loclat long=$loclon
 EOF
 #
 cat << EOF >> dconf/sample/direwolf.conf.digi
@@ -130,13 +130,13 @@ cat << EOF >> dconf/sample/direwolf.conf.digi
 
 PBEACON delay=1  every=30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
 #
-DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE 
+DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE
 #
 EOF
 
 
 cat << EOF >> dconf/sample/direwolf.conf.testbeac
-## Fixed Position Beacon 
+## Fixed Position Beacon
 
 PBEACON delay=0:30  every=0:30 overlay=S symbol="digi" lat=$loclat long=$loclon power=10 height=20 gain=4 comment="Test Direwolf Node"
 EOF
@@ -161,4 +161,3 @@ while [ $correct != "Y" ] ; do
   writesed
  fi
 done
-
