@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+cd ~
+cd VK2BV_Direwolf
+git pull
+sudo make install

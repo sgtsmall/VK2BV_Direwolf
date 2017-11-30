@@ -9,11 +9,11 @@ all : $(APPS)
 	@echo " "
 	@echo " Install with "
 	@echo "      sudo make install"
-	@echo "" 
-   
-diremenu : 
+	@echo ""
 
-direconfig : 
+diremenu :
+
+direconfig :
 
 direswitch :
 
@@ -29,6 +29,7 @@ install : $(APPS)
 	$(INSTALL) diresetup $(INSTALLDIR)/bin
 	$(INSTALL) direconfig $(INSTALLDIR)/bin
 	$(INSTALL) direswitch $(INSTALLDIR)/bin
+	$(INSTALL) diremenuup $(INSTALLDIR)/bin
 	$(INSTALL) -m 644 direwolf.service $(SSERVICEDIR)
 	$(INSTALL) direwolf.initd /etc/init.d/direwolf
 	$(INSTALL) -m 644 diretail.desktop /usr/share/applications/diretail.desktop
@@ -37,14 +38,14 @@ install : $(APPS)
 	systemctl daemon-reload
 
 diretail.desktop :
-	
+
 	@echo "Generating customized diretail.desktop ..."
 	@echo '[Desktop Entry]' > $@
 	@echo 'Type=Application' >> $@
 ifneq ($(wildcard /usr/bin/lxterminal),)
-	@echo "Exec=lxterminal -t \"Dire Tail\" -e \"tail -f $(HOME)/direwolf.output\"" >> $@ 
+	@echo "Exec=lxterminal -t \"Dire Tail\" -e \"tail -f $(HOME)/direwolf.output\"" >> $@
 else ifneq ($(wildcard /usr/bin/lxterm),)
-	@echo "Exec=lxterm -hold -title \"Dire Tail\"  -e \"tail -f $(HOME)/direwolf.output\"" >> $@ 
+	@echo "Exec=lxterm -hold -title \"Dire Tail\"  -e \"tail -f $(HOME)/direwolf.output\"" >> $@
 else
 	@echo "Exec=xterm -hold -title \"Dire Tail\" -e \"tail -f $(HOME)/direwolf.output\"" >> $@
 endif
@@ -57,14 +58,14 @@ endif
 	@echo 'Keywords=Ham Radio;APRS;Soundcard TNC;KISS;AGWPE;AX.25' >> $@
 
 YAAC.desktop :
-	
+
 	@echo "Generating customized YAAC.desktop ..."
 	@echo '[Desktop Entry]' > $@
 	@echo 'Type=Application' >> $@
 ifneq ($(wildcard /usr/bin/lxterminal),)
-	@echo "Exec=lxterminal -t \"YAAC\" -e \"$(HOME)/YAAC.sh\"" >> $@ 
+	@echo "Exec=lxterminal -t \"YAAC\" -e \"$(HOME)/YAAC.sh\"" >> $@
 else ifneq ($(wildcard /usr/bin/lxterm),)
-	@echo "Exec=lxterm -hold -title \"YAAC\"  -e \"($HOME)/YAAC.sh\"" >> $@ 
+	@echo "Exec=lxterm -hold -title \"YAAC\"  -e \"($HOME)/YAAC.sh\"" >> $@
 else
 	@echo "Exec=xterm -hold -title \"YAAC\" -e \"($HOME)/YAAC.sh\"" >> $@
 endif

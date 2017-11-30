@@ -13,6 +13,7 @@ cmdh="sudo service direwolf restart"
 cmdi="sudo service direwolf status"
 cmdj="sudo systemctl enable direwolf.service"
 cmdk="sudo systemctl disable direwolf.service"
+cmdl="diremenuup"
 
 while [ $option != "q" ] ; do
  echo ""
@@ -29,6 +30,7 @@ while [ $option != "q" ] ; do
  echo "i) $cmdi"
  echo "j) $cmdj"
  echo "k) $cmdk"
+ echo "l) $cmdl"
  echo "q) quit this menu"
  echo ""
  echo -e "Enter option :\c"
@@ -49,7 +51,7 @@ while [ $option != "q" ] ; do
   i) $cmdi ;;
   j) $cmdj ;;
   k) $cmdk ;;
+  l) $cmdl ;;
   q) echo "good bye"
  esac
 done
-
