@@ -4,3 +4,4 @@ cd ~
 cd VK2BV_Direwolf
 git pull
 sudo make install
+sudo apt-get -y install bc ibasound2-dev git-core dnsutils gawk automake libtool

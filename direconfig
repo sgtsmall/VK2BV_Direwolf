@@ -10,6 +10,40 @@ gpiodcd="23"
 blank=""
 correct="n"
 
+function checkval () {
+ERRSTR="\n Bad format  nn^nn.nn[SN]  33^15.55S nnn^nn.nn[EW]\n"
+chkstr=$1
+chklen=${#chkstr}
+chkdeg=`expr index "$chkstr" ^`
+chkdegd=`expr index "$chkstr" .`
+chksign=`expr index "$chkstr" [ENSW]`
+chksigx=`expr index "$chkstr" [EN]`
+degindex=`expr $chkdeg - 1`
+minindex=`expr $chkdeg + 1`
+minlength=`expr $chklen - $minindex`
+minval=`expr substr $chkstr $minindex $minlength`
+decdeg=${chkstr:0:$degindex}
+decdegs=""
+if [ "$chksigx" -ne "$chklen" ]
+then
+  decdegs="-"
+fi
+decmin=`echo "scale = 3 ; $minval / 60.00 " | bc`
+echo " $1 $chkstr $chklen $chkdeg $chkdegd $chksign mi $minindex ml $minlength mv $minval dm $decmin dd $decdegs"
+returndec="$decdegs$decdeg$decmin"
+if [ "$chklen" -ne "$chksign" ]
+then
+   echo $ERRSTR
+elif [ "$chkdegd" -le $chkdeg ]
+then
+  echo $ERRSTR
+elif [ "$chkdeg" -eq "0" ]
+then
+  echo $ERRSTR
+fi
+}
+
+
 function paramecho {
 echo "Params are Callsign $user Terminal $term creating $user-$term"
 echo " APRSIS passcode $passcode"
@@ -52,12 +86,16 @@ function getparam {
   loclatn="$loclat"
  fi
  loclat="$loclatn"
+ checkval $loclat
+ decloclat=$returndec
  echo -e "lon value [e.g. 151^51.12E] [$loclon]\c"
  read loclonn
  if [ -z $loclonn ] ; then
   loclonn="$loclon"
  fi
  loclon="$loclonn"
+ checkval $loclon
+ decloclon=$returndec
 #
  echo "GPIO pin selection"
  echo "Uses the BCM number for the PTT signal and DCD"
@@ -137,7 +175,7 @@ EOF
 cat << EOF >> dconf/sample/direwolf.conf.custom
 PBEACON delay=1  every=60 overlay=S symbol="digi" lat=$loclat long=$loclon power=20 height=20 gain=4 comment="Test Direwolf Node"
 DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$|^TEST$ ^WIDE[12]-[12]$ TRACE
-FILTER  0  0  ( r/-33.871/151.265/20 & ! d/* )
+FILTER  0  0  ( r/$decloclat/$decloclon/20 & ! d/* )
 
 ## Igate
 IGSERVER sydney.aprs2.net
