@@ -71,7 +71,7 @@ The Raspi-config is curses based menu,  uses arrow, tab and enter keys, space ba
 
 
     -   expand filesystem
-    -   Internationalization/Change locale : en_AU.UTF-8 and remove en_GB entry 
+    -   Internationalization/Change locale : en_AU.UTF-8 and remove en_GB entry
     -     Select en_AU.UTF-8 as default
     -   Internationalization/Change timezone : AU/Sydney
     -   advanced/hostname   : vkxxxpi
@@ -92,8 +92,8 @@ Now we start with some installs, from here I am using apt-get -y to avoid the co
 full_build users can follow these steps in a console(x-terminal)
 
 ```
-sudo apt-get -y install libasound2-dev git-core dnsutils gawk automake libtool 
-sudo apt-get -y install libudev-dev python-dev swig libusb-1.0 texinfo
+sudo apt-get -y install libasound2-dev git-core dnsutils gawk automake libtool
+sudo apt-get -y install libudev-dev python-dev swig libusb-1.0-0-dev texinfo
 ```
 
 
@@ -120,10 +120,11 @@ cd wiringPi
  This is not strictly necessary unless you are dealing with a radio that uses it. But it is a good exercise of your system, if you build it now it will be available to the direwolf build.
 
 ```shell
-cd ~
-git clone git://hamlib.git.sourceforge.net/gitroot/hamlib/hamlib
+wget https://sourceforge.net/projects/hamlib/files/hamlib/3.0.1/hamlib-3.0.1.tar.gz
+tar -zxf hamlib-3.0.1.tar.gz
+mv hamlib-3.0.1 hamlib
 cd hamlib
-sh autogen.sh --with-xml-support --with-python-binding
+./configure --with-xml-support --with-python-binding
 make
 make check
 sudo make install
@@ -132,14 +133,12 @@ sudo reboot
 
 ### Now we get direwolf
 
-We are using some extra commands here, git tab will list the versions available in the git repository, git checkout will select the one we want _currently 1.3_.
+
 
 ```
 cd ~
 git clone https://www.github.com/wb2osz/direwolf
 cd direwolf
-git tag
-git checkout 1.3
 make
 sudo make install
 make install-conf
@@ -153,63 +152,11 @@ cd ~
 
 So now direwolf is installed but not yet configured.
 
-## configure gpsd
-
-The USB style GPS units should come up on port /dev/ttyACM0
-some troubleshooting hints are [here](https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=123989)
-
-The earlier install of the gpsd software, should have created the service entries for gpsd. 
-
-Check the status
-
-```
-sudo systemctl status gpsd.socket
-```
-
-Stop the services
-
-```
-sudo systemctl stop gpsd.socket
-sudo systemctl disable gpsd.socket
-```
-
-Starting the gps manually 
-
-``` 
-sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock
-
-gpsmon
-[Ctrl-C to quit]
-```
-
-If you have finished testing gpsd interactively then kill the running process (or just leave it, you will be able to enable the background startup but not start it, because it is already running)
-
-Edit the defaults file for startup
-
-> sudo nano /etc/default/gpsd  
-> ...  
-> DEVICES="/dev/ttyACM0"  
-> ...  
-> GPSD_OPTIONS="-F /var/run/gpsd.sock"  
-
-```
-sudo killall gpsd
-```
-
-
-
-Start the services
-
-```
-sudo systemctl enable gpsd.socket
-sudo systemctl start gpsd.socket
-```
-
 
 
 ## configure alsa (Sound card)
 
-Need more detail here but basically you use the command 
+Need more detail here but basically you use the command
 
 ```
 alsamixer
@@ -224,7 +171,7 @@ Speaker, Mic, AGC
 The Mic you see here is a Mic Monitor level.
 Use F5: All to see both output and input.
 
-You should get 
+You should get
 Speaker, Mic [Monitor], Mic and AGC
 
 OutputSpeaker and Mic input should be set around 50%. Use up/down arrows
@@ -240,7 +187,7 @@ By default direwolf creates a file  direwolf.conf  in the home directory, this c
 
 first of all keep a copy of the default direwolfconfig
 
-```shell 
+```shell
 cd ~
 mv direwolf.conf direwolf.origconf
 ```
@@ -248,7 +195,7 @@ mv direwolf.conf direwolf.origconf
 I have included a script that will gather some details and create a new series of files for different usage.
 
 
-The following install section adds some local scripts to the programs and installs the service files for direwolf in the background. This also generates desktop files for the Full image. Additional commands are needed to start the background job. 
+The following install section adds some local scripts to the programs and installs the service files for direwolf in the background. This also generates desktop files for the Full image. Additional commands are needed to start the background job.
 
 ```shell
 git clone https://github.com/sgtsmall/VK2BV_Direwolf.git
@@ -314,6 +261,60 @@ d) cgps
 e) sudo killall gpsd
 f) sudo systemctl start gpsd.socket
 ```
+
+
+## configure gpsd
+
+I moved this section here because the new diresetup menu has all these commands.
+
+The USB style GPS units should come up on port /dev/ttyACM0
+some troubleshooting hints are [here](https://www.raspberrypi.org/forums/viewtopic.php?f=28&t=123989)
+
+The earlier install of the gpsd software, should have created the service entries for gpsd.
+
+Check the status
+
+```
+sudo systemctl status gpsd.socket
+```
+
+Stop the services
+
+```
+sudo systemctl stop gpsd.socket
+sudo systemctl disable gpsd.socket
+```
+
+Starting the gps manually
+
+```
+sudo gpsd /dev/ttyACM0 -F /var/run/gpsd.sock
+
+gpsmon
+[Ctrl-C to quit]
+```
+
+If you have finished testing gpsd interactively then kill the running process (or just leave it, you will be able to enable the background startup but not start it, because it is already running)
+
+Edit the defaults file for startup
+
+> sudo nano /etc/default/gpsd  
+> ...  
+> DEVICES="/dev/ttyACM0"  
+> ...  
+> GPSD_OPTIONS="-F /var/run/gpsd.sock"  
+
+```
+sudo killall gpsd
+```
+
+Start the services
+
+```
+sudo systemctl enable gpsd.socket
+sudo systemctl start gpsd.socket
+```
+
 
 ## Sample Configurations
 
@@ -390,7 +391,7 @@ They then finish with different tail sections
 > \# Igate  
 > IGSERVER sydney.aprs2.net  
 > IGLOGIN VK2ABC-1 21931  
-> PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=33^51.43S long=151^12.91E 
+> PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=33^51.43S long=151^12.91E
 
 ## Switching startups
 
@@ -419,12 +420,12 @@ This command now supports, cat the config, linking, stop and restarting the serv
 In particular:
 Use option c) to rebuild your config file with a different location. This will only put the ouput into the sample directory ($HOME/dconf/sample/).
 Use option g) to copy the samples into the configuration directory. The prompt is looking for 'Y' to perform the copy.
-option h) links the network tnc mode. This is useful to start testing receive. 
+option h) links the network tnc mode. This is useful to start testing receive.
 
 
 ## Basic Menu
 
-```shell 
+```shell
 diremenu
 ```
 
@@ -548,7 +549,7 @@ The service is currently disabled from automatic startup
 
 >    Active: inactive (dead)  
 
-The service is not running 
+The service is not running
 
 >  
 > Jan 27 15:20:45 vk2psfpi sudo[1899]: pam_unix(sudo:session): se....  
@@ -592,7 +593,7 @@ Finding SSID's
 sudo iwlist wlan0 scan | grep -e Cell -e ESSID -e 'IE: IEEE'
 ```
 
-Edit the file 
+Edit the file
 
 ```
 sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
@@ -633,5 +634,5 @@ which can be used in the supplicant file (without the text based password line!)
 The avahi/bonjour daemon seems to have become annoying with polling nearby sleeping printers and log entries.
 
 ```shell
-sudo systemctl disable avahi-daemo
+sudo systemctl disable avahi-daemon
 ```
