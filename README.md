@@ -13,10 +13,10 @@ more text here
 *   I have also had success with some early Logitech Headset USB adapters.
 *   I have had nothing but trouble with $1,2,5,6 ebay adapters. They work perfectly on PC's but not so much on Linux and particularly ARM based units like RasPi.
 
-*   My common setup with this is a Raspi B+ with the soundcard and 
+*   My common setup with this is a Raspi B+ with the soundcard and
   *       UV-5R and purpose built cable to support Audio In/Out and PTT. To power it I use an Ebay 12+V to 5V USB adapter module and the battery eliminator module for the 5R.
-  *       Yaesu/iCom Mobile Rig with 6 pin data cable to support Audio In/Out and PTT. 
-  
+  *       Yaesu/iCom Mobile Rig with 6 pin data cable to support Audio In/Out and PTT.
+
 ***
 
 **Important:** These guides expects you to have a more than basic grasp of the Linux command line. In order to follow it you'll need to know:
@@ -31,7 +31,7 @@ more text here
 This is **not** a "Linux for Beginners guide", those can be found for example [here](http://elinux.org/RPi_Beginners) and [here](http://linuxcommand.org/learning_the_shell.php). For some Git basics please take a look [here](http://rogerdudler.github.io/git-guide/).
 
 ***  
-    
+
 ## Additional Features
 
 
@@ -47,11 +47,16 @@ https://github.com/wb2osz/direwolf
 
 There are 2 build documents the lite version is command line based and the full version is screen based.
 I recommend the lite version to start with particularly for beacons, digipeaters or SARTrack.
-I also recommend starting again if you build a full version. It's not hard and takes a lot less fiddling around that adding the Desktop later.
+I also recommend starting again if you build a "full" version. It's not hard and takes a lot less fiddling around than adding the Desktop later.
 
 https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md
 
 https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md
+
+I have moved the information about the local scripts, diremenu, diresetup, .... to this document
+
+https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolf_scripts.md
+
 
 ## Documentation
 
@@ -63,7 +68,7 @@ ideas and questions can be handled on the http://vk2bv.org website soon
 
 ## Videos
 
-Maybe 
+Maybe
 
 ## Configuration Tool
 
@@ -92,5 +97,3 @@ Please refer to the development section in the `docs/development` folder.
 
 ## VK2BV Direwolf Releases
 https://github.com/sgtsmall/VK2BV_Direwolf/releases
-
-

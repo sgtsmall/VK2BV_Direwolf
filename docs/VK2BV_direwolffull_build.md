@@ -203,7 +203,8 @@ OK I have built the icon command but not the right png files.
 
 ```
 cd VK2BV_Direwolf
-make install-rpi
+make
+sudo make install
 cd
 ```
 
