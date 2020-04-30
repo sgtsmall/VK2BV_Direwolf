@@ -18,7 +18,7 @@ direconfig :
 direswitch :
 
 INSTALLDIR := /usr/local
-SSERVICEDIR := /lib/systemd/system
+SSERVICEDIR := /etc/systemd/system
 
 INSTALL=install
 

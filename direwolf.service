@@ -3,7 +3,7 @@ Description=direwolf - A TNC and aprs
 
 [Service]
 Type=forking
-PIDFile=/var/run/direwolf/direwolf.pid
+PIDFile=/run/direwolf/direwolf.pid
 
 ExecStart=/etc/init.d/direwolf systemd-exec
 
