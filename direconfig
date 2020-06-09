@@ -197,7 +197,30 @@ EOF
 
 
 }
+function writesdr {
+ echo ""
+#mkdir dconf
+#mkdir dconf/sample
+cat << EOF > dconf/sample/direwolfsdr.hdr
 
+## Device Section
+ADEVICE stdin null
+## Channel
+CHANNEL 0
+MYCALL $user-$term
+##
+EOF
+cp dconf/sample/direwolfsdr.hdr dconf/sample/direwolf.conf.sdr
+
+cat << EOF >> dconf/sample/direwolf.conf.sdr
+## Igate
+IGSERVER sydney.aprs2.net
+IGLOGIN $user-$term $passcode
+PBEACON sendto=IG delay=0:30 every=60:00 symbol="igate" overlay=R lat=$loclat long=$loclon
+EOF
+#
+
+}
 
 paramecho
 while [ $correct != "Y" ] ; do
@@ -212,5 +235,6 @@ while [ $correct != "Y" ] ; do
   correct="Y"
   paramecho >> /home/pi/paramecho.txt
   writesed
+  writesdr
  fi
 done

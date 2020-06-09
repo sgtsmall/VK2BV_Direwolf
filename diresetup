@@ -31,43 +31,48 @@ cmdgf="sudo systemctl start gpsd.socket"
 cmdgg="sudo systemctl enable gpsd.socket"
 cmdgh="sudo systemctl disable gpsd.socket"
 
+menud="SDR Test Menu"
+cmdsa="rtl_fm -f 145.175M - | direwolf -x -c direwolf.conf -r 24000 -D 1"
+cmdsb="rtl_test -t"
+cmdsc="link custom"
+
 function linktest {
 
-echo "Current: "
-if [ -e $HOME/direwolf.conf ] ; then
-  if [ -h $HOME/direwolf.conf ] ; then
-    echo "direwolf.conf is linked "
-    ls -l $HOME/direwolf.conf
-  elif [ -f $HOME/direwolf.conf ] ; then
-    echo "direwolf.conf is not linked"
-  fi  
-else
-  echo "no file here?"
-fi  
+  echo "Current: "
+  if [ -e $HOME/direwolf.conf ] ; then
+    if [ -h $HOME/direwolf.conf ] ; then
+      echo "direwolf.conf is linked "
+      ls -l $HOME/direwolf.conf
+    elif [ -f $HOME/direwolf.conf ] ; then
+      echo "direwolf.conf is not linked"
+    fi
+  else
+    echo "no file here?"
+  fi
 }
 
 
 function linkfile {
 
-if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
- echo "Current : "
- if [ -e $HOME/direwolf.conf ] ; then
-  if [ -h $HOME/direwolf.conf ] ; then
-    echo "direwolf.conf is linked "
-    ls -l $HOME/direwolf.conf
-  elif [ -f $HOME/direwolf.conf ] ; then
-    echo "direwolf.conf is not linked"
-  fi  
-  rm $HOME/direwolf.conf
- else
-  echo "first time? no direwolf.conf here"
- fi  
- echo " Changing link"
- echo ""
- ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
- else
- echo "File not found ? $CONFDIR/direwolf.conf.$typef "
-fi
+  if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
+    echo "Current : "
+    if [ -e $HOME/direwolf.conf ] ; then
+      if [ -h $HOME/direwolf.conf ] ; then
+        echo "direwolf.conf is linked "
+        ls -l $HOME/direwolf.conf
+      elif [ -f $HOME/direwolf.conf ] ; then
+        echo "direwolf.conf is not linked"
+      fi
+      rm $HOME/direwolf.conf
+    else
+      echo "first time? no direwolf.conf here"
+    fi
+    echo " Changing link"
+    echo ""
+    ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
+  else
+    echo "File not found ? $CONFDIR/direwolf.conf.$typef "
+  fi
 }
 
 echo ""
@@ -76,136 +81,169 @@ echo ""
 echo " JUST USE DEFAULT VALUES IF YOU DONT KNOW YOUR DETAILS "
 echo " "
 echo " You can always go back later and create better settings by rerunning the config and switch"
- echo -e "[Ret] to continue :\c"
- read ans
+echo -e "[Ret] to continue :\c"
+read ans
 
 while [ $optionm != "q" ] ; do
- optionc="Q"
- linktest
- echo ""
- echo "diresetup choices"
- echo ""
- echo "a) $menua"
- echo "b) $menub"
- echo "c) $menuc"
+  optionc="Q"
+  linktest
+  echo ""
+  echo "diresetup choices"
+  echo ""
+  echo "a) $menua"
+  echo "b) $menub"
+  echo "c) $menuc"
+  echo "d) $menud"
 
- echo "q) quit this menu"
- echo ""
- echo -e "Enter optionm :\c"
- read ans
- if [ -z $ans ] ; then
-  ans="$optionm"
- fi
- optionm="$ans"
- case $optionm in
-  a) 
-  while [ $optionc != "q" ] ; do
-  echo $menua
+  echo "q) quit this menu"
+  echo ""
+  echo -e "Enter optionm :\c"
+  read ans
+  if [ -z $ans ] ; then
+    ans="$optionm"
+  fi
+  optionm="$ans"
+  case $optionm in
+    a)
+      while [ $optionc != "q" ] ; do
+        echo $menua
 
-optionm="Q"
- echo "a) $cmdpa"
- echo "b) $cmdpb"
- echo "c) $cmdpc"
- echo "d) $cmdpd"
- echo "e) $cmdpe"
- echo "f) $cmdpf"
- echo "g) $cmdpg"
+        optionm="Q"
+        echo "a) $cmdpa"
+        echo "b) $cmdpb"
+        echo "c) $cmdpc"
+        echo "d) $cmdpd"
+        echo "e) $cmdpe"
+        echo "f) $cmdpf"
+        echo "g) $cmdpg"
 
- echo "q) quit this menu"
- echo ""
- echo -e "Enter optionc :\c"
- read ans
- if [ -z $ans ] ; then
-  ans="$optionc"
- fi
- optionc="$ans"
- case $optionc in
+        echo "q) quit this menu"
+        echo ""
+        echo -e "Enter optionc :\c"
+        read ans
+        if [ -z $ans ] ; then
+          ans="$optionc"
+        fi
+        optionc="$ans"
+        case $optionc in
 
-  a) $cmdpa ;;
-  b) $cmdpb ;;
-  c) $cmdpc ;;
-  d) $cmdpd ;;
-  e) $cmdpe ;;
-  f) $cmdpf ;;
-  g) $cmdpg ;;
+          a) $cmdpa ;;
+          b) $cmdpb ;;
+          c) $cmdpc ;;
+          d) $cmdpd ;;
+          e) $cmdpe ;;
+          f) $cmdpf ;;
+          g) $cmdpg ;;
 
-  q) echo "good bye"
+          q) echo "good bye"
+        esac
+      done
+    ;;
+
+    b)
+      while [ $optionc != "q" ] ; do
+        echo $menub
+
+        optionm="Q"
+        echo "a) $cmdta"
+        echo "b) $cmdtb"
+        echo "c) $cmdtc"
+        echo "d) $cmdtd"
+        echo "e) $cmdte"
+        echo "f) $cmdtf"
+        echo "g) $cmdtg"
+
+        echo "q) quit this menu"
+        echo ""
+        echo -e "Enter optionc :\c"
+        read ans
+        if [ -z $ans ] ; then
+          ans="$optionc"
+        fi
+        optionc="$ans"
+        case $optionc in
+
+          a) $cmdta ;;
+          b) typef="testbeac"
+          linkfile ;;
+          c) typef="custom"
+          linkfile ;;
+          d) $cmdtd ;;
+          e) $cmdte ;;
+          f) $cmdtf ;;
+          g) $cmdtg ;;
+
+          q) echo "good bye"
+        esac
+      done
+    ;;
+    c)
+      while [ $optionc != "q" ] ; do
+        echo $menuc
+
+        optionm="Q"
+        echo "a) $cmdga"
+        echo "b) $cmdgb"
+        echo "c) $cmdgc"
+        echo "d) $cmdgd"
+        echo "e) $cmdge"
+        echo "f) $cmdgf"
+        echo "g) $cmdgg"
+        echo "h) $cmdgh"
+
+        echo "q) quit this menu"
+        echo ""
+        echo -e "Enter optionc :\c"
+        read ans
+        if [ -z $ans ] ; then
+          ans="$optionc"
+        fi
+        optionc="$ans"
+        case $optionc in
+
+          a) $cmdga ;;
+          b) $cmdgb ;;
+          c) $cmdgc ;;
+          d) $cmdgd ;;
+          e) $cmdge ;;
+          f) $cmdgf ;;
+          g) $cmdgg ;;
+          h) $cmdgh ;;
+
+          q) echo "good bye"
+        esac
+    done;;
+    d)
+      while [ $optionc != "q" ] ; do
+        echo $menud
+
+        optionm="Q"
+        echo "a) $cmdsa"
+        echo "b) $cmdsb"
+        echo "c) $cmdsc"
+
+        echo "q) quit this menu"
+        echo ""
+        echo -e "Enter optionc :\c"
+        read ans
+        if [ -z $ans ] ; then
+          ans="$optionc"
+        fi
+        optionc="$ans"
+        case $optionc in
+
+          a) $cmdsa ;;
+          b) $cmdsb  ;;
+          c) typef="sdr"
+          linkfile ;;
+          d) $cmdtd ;;
+          e) $cmdte ;;
+          f) $cmdtf ;;
+          g) $cmdtg ;;
+
+          q) echo "good bye"
+        esac
+      done
+    ;;
   esac
-  done
- ;;
-
-  b) 
-  while [ $optionc != "q" ] ; do
-  echo $menub
-
-optionm="Q"
- echo "a) $cmdta"
- echo "b) $cmdtb"
- echo "c) $cmdtc"
- echo "d) $cmdtd"
- echo "e) $cmdte"
- echo "f) $cmdtf"
- echo "g) $cmdtg"
-
- echo "q) quit this menu"
- echo ""
- echo -e "Enter optionc :\c"
- read ans
- if [ -z $ans ] ; then
-  ans="$optionc"
- fi
- optionc="$ans"
- case $optionc in
-
-  a) $cmdta ;;
-  b) typef="testbeac"
-   linkfile ;;
-  c) typef="custom"
-   linkfile ;;
-  d) $cmdtd ;;
-  e) $cmdte ;;
-  f) $cmdtf ;;
-  g) $cmdtg ;;
-
-  q) echo "good bye"
-esac 
-done
-;;
-  c) 
-  while [ $optionc != "q" ] ; do
-  echo $menuc
-
-optionm="Q"
- echo "a) $cmdga"
- echo "b) $cmdgb"
- echo "c) $cmdgc"
- echo "d) $cmdgd"
- echo "e) $cmdge"
- echo "f) $cmdgf"
- echo "g) $cmdgg"
- echo "h) $cmdgh"
-
- echo "q) quit this menu"
- echo ""
- echo -e "Enter optionc :\c"
- read ans
- if [ -z $ans ] ; then
-  ans="$optionc"
- fi
- optionc="$ans"
- case $optionc in
-
-  a) $cmdga ;;
-  b) $cmdgb ;;
-  c) $cmdgc ;;
-  d) $cmdgd ;;
-  e) $cmdge ;;
-  f) $cmdgf ;;
-  g) $cmdgg ;;
-  h) $cmdgh ;;
-
-  q) echo "good bye"
-  esac
-  done;;
- esac
 done

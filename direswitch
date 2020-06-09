@@ -17,8 +17,9 @@ cmdj="link igate"
 cmdk="link gbeacon"
 cmdl="link pbeacon"
 cmdm="link custom"
+cmdn="link sdr"
 
-cmdn="direwolf -t 0 -c direwolf.conf" 
+cmdn="direwolf -t 0 -c direwolf.conf"
 
 function promotesample {
 echo ""
@@ -57,10 +58,10 @@ if [ -e $HOME/direwolf.conf ] ; then
     ls -l $HOME/direwolf.conf
   elif [ -f $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is not linked"
-  fi  
+  fi
 else
   echo "no file here?"
-fi  
+fi
 }
 
 
@@ -74,11 +75,11 @@ if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
     ls -l $HOME/direwolf.conf
   elif [ -f $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is not linked"
-  fi  
+  fi
   rm $HOME/direwolf.conf
  else
   echo "first time? no direwolf.conf here"
- fi  
+ fi
  echo " Changing link"
  echo ""
  ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
@@ -106,8 +107,8 @@ while [ $option != "q" ] ; do
  echo "l) $cmdl"
  echo "m) $cmdm"
  echo "n) $cmdn"
-     
- 
+
+
  echo "q) quit this menu"
  echo ""
  echo -e "Enter option :\c"
@@ -136,8 +137,8 @@ while [ $option != "q" ] ; do
      linkfile;;
   m) typef="custom"
      linkfile;;
-  n) $cmdn ;;
+  n) typef="sdr"
+     linkfile;;
   q) echo "good bye"
  esac
 done
-
