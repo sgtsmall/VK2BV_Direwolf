@@ -32,9 +32,10 @@ cmdgg="sudo systemctl enable gpsd.socket"
 cmdgh="sudo systemctl disable gpsd.socket"
 
 menud="SDR Test Menu"
-cmdsa="rtl_fm -f 145.175M - | direwolf -x -c direwolf.conf -r 24000 -D 1"
+cmdsa="/usr/local/bin/direwsdr"
 cmdsb="rtl_test -t"
-cmdsc="link custom"
+cmdsc="link sdr"
+cmdsd="link custom"
 
 function linktest {
 
@@ -221,6 +222,7 @@ while [ $optionm != "q" ] ; do
         echo "a) $cmdsa"
         echo "b) $cmdsb"
         echo "c) $cmdsc"
+        echo "d) $cmdsd"
 
         echo "q) quit this menu"
         echo ""
@@ -236,10 +238,9 @@ while [ $optionm != "q" ] ; do
           b) $cmdsb  ;;
           c) typef="sdr"
           linkfile ;;
-          d) $cmdtd ;;
-          e) $cmdte ;;
-          f) $cmdtf ;;
-          g) $cmdtg ;;
+          d) typef="sdr"
+          linkfile ;;
+
 
           q) echo "good bye"
         esac

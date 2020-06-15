@@ -1,17 +1,17 @@
 # VK2BV_Direwolf
-Scripts and documentation to build Direwolf Raspberry Pi iGate-Beacon-Digipeater-TNC
+Scripts and documentation to build Direwolf Raspberry Pi iGate-Beacon-Digipeater-TNC.
 This Github entry is not finalised... stuff is still all over the place.
 
 
 
 
 ## Overview
-*   Using most Raspberry Pi's with a USB soundcard and GPIO based adapter board create a TNC that can support several APRS functions
+*   Using most Raspberry Pi's with a USB soundcard and GPIO based adapter board to create a TNC that can support several APRS functions.
 
-more text here
-*   Note for these projects I use and recommend a SoundBlaster Play USB (original) I haven't tried the Soundblaster Play 2 yet but I expect it to work.
+*   OR now you can use a standard RTL-SDR type dongle to make a simple iGate.
+
+*   Note for these projects I used to recommend a SoundBlaster Play USB (original) I haven't tried the Soundblaster Play 2 yet but I expect it to work, now there are sufficient drivers around for most of the cheap USB sound dongles that used to be a problem
 *   I have also had success with some early Logitech Headset USB adapters.
-*   I have had nothing but trouble with $1,2,5,6 ebay adapters. They work perfectly on PC's but not so much on Linux and particularly ARM based units like RasPi.
 
 *   My common setup with this is a Raspi B+ with the soundcard and
   *       UV-5R and purpose built cable to support Audio In/Out and PTT. To power it I use an Ebay 12+V to 5V USB adapter module and the battery eliminator module for the 5R.
@@ -32,30 +32,52 @@ This is **not** a "Linux for Beginners guide", those can be found for example [h
 
 ***  
 
-## Additional Features
 
 
 ## Installation
 
-Need to put more here at the moment the main action is to create an SD card with the image and boot. And then all the build steps.
+Follow the full install guides linked below for the full process. To just install scripts:
+
+```shell
+git clone https://github.com/sgtsmall/VK2BV_Direwolf.git
+cd VK2BV_Direwolf
+./diremenuup
+#make
+#sudo make install
+cd ~
+```
+#### After installing this package, running diremenuup will now install the components to the right directories and apt-get additional needed packages.
+
+
+
+There are 3 build versions here.
+
+* SDR build
+* lite build (no display)
+* Full build including some parts to improve the display.
+
+The bit I have added is a set of scripts to go through some of the troubleshooting and configuring startup.
 
 Most (98%) of this information is taken from the direwolf configuration documents. One of the steps you perform in the install notes below is downloading the direwolf package to the Pi, this contains all the code and documents.
-You should probably download the files to your pc for esay access to the documents.
-go to the github site and download the project as a zip file, from there you can get to the documents located in the doc directory.
+You should probably download the files to your pc for easy access to the documents.
+Go to the github site and download the project as a zip file, from there you can get to the documents located in the doc directory.
 
 https://github.com/wb2osz/direwolf
 
-There are 2 build documents the lite version is command line based and the full version is screen based.
+The SDR version creates a very low cost iGate for receiving beacons and putting out to the internet.
 I recommend the lite version to start with particularly for beacons, digipeaters or SARTrack.
+
 I also recommend starting again if you build a "full" version. It's not hard and takes a lot less fiddling around than adding the Desktop later.
 
-https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md
+* SDR https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolfsdr_build.md
 
-https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md
+* Lite https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md
+
+* Full https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md
 
 I have moved the information about the local scripts, diremenu, diresetup, .... to this document
 
-https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolf_scripts.md
+* https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolf_scripts.md
 
 
 ## Documentation

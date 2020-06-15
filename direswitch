@@ -19,7 +19,7 @@ cmdl="link pbeacon"
 cmdm="link custom"
 cmdn="link sdr"
 
-cmdn="direwolf -t 0 -c direwolf.conf"
+cmdo="direwolf -t 0 -c direwolf.conf"
 
 function promotesample {
 echo ""
@@ -33,12 +33,13 @@ do
  if [ -f $CONFDIR/$f ]
   then
    echo -e "$CONFDIR/$f exists replace ?\c"
+   read ans
+   if [ -z $ans ] ; then
+    ans="n"
+   fi
   else
-   echo -e "Copy sample $f to dconf folder ?\c"
- fi
- read ans
- if [ -z $ans ] ; then
-  ans="n"
+   echo -e "Copying sample $f to dconf folder"
+   ans="Y"
  fi
  if [ $ans = "Y" ] ; then
   cp $SAMPDIR/$f $CONFDIR
@@ -82,6 +83,13 @@ if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
  fi
  echo " Changing link"
  echo ""
+ if [ "$typef" == "sdr" ] ; then
+   sudo sed -i '/^DAEMON=/c\DAEMON=/usr/local/bin/direwsdr' /etc/init.d/direwolf
+   echo "changed startup to direwsdr "
+ else
+   sudo sed -i '/^DAEMON=/c\DAEMON=/usr/local/bin/direwolf' /etc/init.d/direwolf
+   echo "changed startup to direwcwolf "
+ fi
  ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
  else
  echo "File not found ? $CONFDIR/direwolf.conf.$typef "
@@ -107,6 +115,7 @@ while [ $option != "q" ] ; do
  echo "l) $cmdl"
  echo "m) $cmdm"
  echo "n) $cmdn"
+ echo "o) $cmdo"
 
 
  echo "q) quit this menu"
@@ -128,7 +137,7 @@ while [ $option != "q" ] ; do
   h) typef="tnc"
      linkfile ;;
   i) typef="digi"
-     linkfile ;;
+     linkfile;;
   j) typef="igate"
     linkfile;;
   k) typef="gbeacon"
@@ -139,6 +148,7 @@ while [ $option != "q" ] ; do
      linkfile;;
   n) typef="sdr"
      linkfile;;
+  o) $cmdo ;;
   q) echo "good bye"
  esac
 done

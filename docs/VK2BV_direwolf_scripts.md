@@ -1,6 +1,6 @@
 VK2BV Direwolf - script files for setup and debug
 
-
+* You need to complete an instalation of direwolf before using these scripts.
 
 # Using the scripts and menus
 
@@ -9,30 +9,35 @@ The following install section adds some local scripts to the programs and instal
 ```shell
 git clone https://github.com/sgtsmall/VK2BV_Direwolf.git
 cd VK2BV_Direwolf
-make
-sudo make install
+./diremenuup
+#make
+#sudo make install
 cd ~
 ```
 
-This will add some desktop icons and the YAAC.sh script
-I actually recommend just using the menu entries under HamRadio or Other, rather than the desktop icon as it is hard to click.
+#### After installing this package from github, running `diremenuup` will now install the components to the right directories and apt-get additional needed packages.
+
 
 This installs some basic command scripts, the scripts show what command they are using.
 
 #### TL;DR Getting started
 
-- Find your lat/lon from google maps or just use the default, you will need "deg mm.mm N/S" (e.g. "33^51.43S" is Sydney), your callsign, and SSID (e.g. 1) and the gpio pins. - Just use defaults if needed, the purpose of the script is to show the structure to get started.  
-- run diremenu from cmd line.
-- opt c) direconfig
-	- answer the questions
-- opt d) direswitch
-	- opt g) copy samples
-	- you have to type Y to each line (safety precaution in case you have customised your own files.)
-	- opt l) link pbeacon
-	- Now you have an example beacon in your config.
-	- opt q) - to quit this menu
-- opt e) diresetup
-	- you now have access to adjust/test GPIO, direwolf, GPS.
+* Find your lat/lon from google maps or just use the default, you will need "deg mm.mm N/S" (e.g. "33^51.43S" is Sydney), your callsign, and SSID (e.g. 1) and the gpio pins for non-sdr builds. - Just use defaults if needed, the purpose of the script is to show the structure to get started.  
+* run `diremenu` from cmd line.
+* opt c) direconfig
+	* answer the questions
+* opt d) direswitch
+	* opt g) copy samples
+		*	 you have to type 'Y' to each line to replace files (safety precaution in case you have customised your own files.)
+	* opt l) link pbeacon
+		* Now you have an example beacon in your config.
+  * OR
+	* opt n) link sdr
+
+	* opt q) - to quit this menu
+* opt e) diresetup
+	* you now have access to adjust/test GPIO, direwolf, GPS.
+
 
 
 ### diremenu
@@ -68,9 +73,24 @@ As a worked example, I usually run the unit just as a (direwolf.conf.tnc) TNC th
 
 This script contains most of the one off commands used during the setup process. Rather than constantly scrolling through the notes I put them together.
 
-Things like the gpio commands the gpsd commands and a new feature direwolf -x and a direwolf test beacon, are arranged in 3 sub menus.
+Things like the gpio commands the gpsd commands and a new feature direwolf -x and a direwolf test beacon, are arranged in sub menus. A new sub menu for SDR is being developed.
+
 
 As the script highlights you need to have run the direconfig and copied the sample configs with direswitch.
+
+```
+Current:
+direwolf.conf is not linked
+
+diresetup choices
+
+a) GPIO Menu
+b) Direwolf Test Menu
+c) GPS Menu
+d) SDR Test Menu
+q) quit this menu
+```
+
 
 ```
 Direwolf Test menu

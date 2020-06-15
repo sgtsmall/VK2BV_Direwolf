@@ -2,7 +2,7 @@
 # Makefile for local scripts
 #
 
-APPS := diremenu diresetup direconfig direswitch diretail.desktop YAAC.desktop
+APPS := diremenu diresetup direconfig direswitch direwsdr diretail.desktop YAAC.desktop
 
 all : $(APPS)
 
@@ -30,6 +30,7 @@ install : $(APPS)
 	$(INSTALL) direconfig $(INSTALLDIR)/bin
 	$(INSTALL) direswitch $(INSTALLDIR)/bin
 	$(INSTALL) diremenuup $(INSTALLDIR)/bin
+	$(INSTALL) direwsdr $(INSTALLDIR)/bin
 	$(INSTALL) -m 644 direwolf.service $(SSERVICEDIR)
 	$(INSTALL) direwolf.initd /etc/init.d/direwolf
 	$(INSTALL) -m 644 diretail.desktop /usr/share/applications/diretail.desktop
