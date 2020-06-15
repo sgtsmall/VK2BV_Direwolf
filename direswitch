@@ -88,7 +88,7 @@ if [ -e $CONFDIR/direwolf.conf.$typef ] ; then
    echo "changed startup to direwsdr "
  else
    sudo sed -i '/^DAEMON=/c\DAEMON=/usr/local/bin/direwolf' /etc/init.d/direwolf
-   echo "changed startup to direwcwolf "
+   echo "changed startup to direwolf "
  fi
  ln -s $CONFDIR/direwolf.conf.$typef $HOME/direwolf.conf
  else
