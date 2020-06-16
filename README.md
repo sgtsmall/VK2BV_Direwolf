@@ -10,7 +10,7 @@ This Github entry is not finalised... stuff is still all over the place.
 
 *   **OR now you can use a standard RTL-SDR type dongle to make a simple iGate.**
 
->  * Note for these projects I used to recommend a SoundBlaster Play USB (original) I haven't tried the Soundblaster Play 2 yet but I expect it to work, now there are sufficient drivers around for most of the cheap USB sound dongles that used to be a problem
+>  * Note: for these projects I used to recommend a SoundBlaster Play USB (original) I haven't tried the Soundblaster Play 2 yet but I expect it to work, now there are sufficient drivers around for most of the cheap USB sound dongles that used to be a problem
 > *  I have also had success with some early Logitech Headset USB adapters.
 
 *   My common setup with this is a Raspi B+ with the soundcard and
@@ -36,7 +36,7 @@ This is **not** a "Linux for Beginners guide", those can be found for example [h
 
 ## Installation
 
-Follow the full install guides linked below for the full process. To just install scripts:
+Follow the full install guides linked below for the full process. To just install these scripts:
 
 ```shell
 cd ~
@@ -57,7 +57,7 @@ There are 3 build versions here.
 
 The bit I have added is a set of scripts to go through some of the troubleshooting and configuring startup.
 
-Most (98%) of this information is taken from the direwolf configuration documents. One of the steps you perform in the install notes below is downloading the direwolf package to the Pi, this contains all the code and documents.
+Most, (98%), of this information is taken from the direwolf configuration documents. One of the steps you perform in the install notes below is downloading the direwolf package to the Pi, this contains all the basic direwolf code and documents.
   > Although this process downloads everything to the Raspberry pi, you should probably download the direwolf package to your pc as well for easy access to the doc folder that has lots of information.
 Go to the github site and download the project as a zip file, from there you can get to the documents located in the doc directory.
 
