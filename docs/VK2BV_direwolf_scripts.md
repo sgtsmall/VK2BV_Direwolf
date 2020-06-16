@@ -282,6 +282,60 @@ Use option c) to rebuild your config file with a different location. This will o
 Use option g) to copy the samples into the configuration directory. The prompt is looking for 'Y' to perform the copy.
 option h) links the network tnc mode. This is useful to start testing receive.
 
+## updating the VK2BV scripts
+
+```shell
+diremenuup
+```
+
+Will download updated versions of these scripts and reinstall them.
+
+* SDR users will need to reset the option for startup as the update will revert back to standard direwolf. Use the direswitch menu to select sdr again to fix it.
+
+
+```shell
+pi@bvdirew:~ $ diremenu
+
+Current Config:
+direwolf.conf is linked
+lrwxrwxrwx 1 pi pi 32 Jun 15 17:37 /home/pi/direwolf.conf -> /home/pi/dconf/direwolf.conf.sdr
+
+Current Start Up:
+DAEMON=/usr/local/bin/direwolf
+Start script linked
+
+diremenu choices
+
+a) tail -f /home/pi/direwolf.output
+b) ls -al /home/pi/direwolf.conf
+c) direconfig
+d) direswitch
+e) diresetup
+...
+
+Enter option :d
+Current:
+direwolf.conf is linked
+lrwxrwxrwx 1 pi pi 32 Jun 15 17:37 /home/pi/direwolf.conf -> /home/pi/dconf/direwolf.conf.sdr
+Current Start Up:
+DAEMON=/usr/local/bin/direwolf
+Start script linked
+
+direswitch choices
+
+a) ls -al /home/pi/dconf/*conf*
+b) cat /home/pi/direwolf.conf
+...
+l) link pbeacon
+m) link custom
+n) link sdr
+o) direwolf -t 0 -c direwolf.conf
+q) quit this menu
+
+Enter option :n
+
+```
+
 
 ## Basic Menu
 
@@ -291,17 +345,19 @@ diremenu
 
 This is some basic commands, the menu uses the actual commands as prompts, more as reminders of what you may need to do.
 
-> a) tail -f $HOME/direwolf.output  
-> b) ls -al $HOME/direwolf.conf  
-> c) direconfig  
+> a) tail -f /home/pi/direwolf.output
+> b) ls -al /home/pi/direwolf.conf
+> c) direconfig
 > d) direswitch
 > e) diresetup
-> f) sudo service direwolf stop  
-> g) sudo service direwolf start  
-> h) sudo service direwolf restart  
-> i) sudo service direwolf status  
-> j) sudo systemctl enable direwolf.service  
-> l) sudo systemctl disable direwolf.service  
+> f) sudo service direwolf stop
+> g) sudo service direwolf start
+> h) sudo service direwolf restart
+> i) sudo service direwolf status
+> j) sudo systemctl enable direwolf.service
+> k) sudo systemctl disable direwolf.service
+> l) diremenuup
+> q) quit this menu
 
 
 

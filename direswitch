@@ -52,7 +52,7 @@ done
 
 function linktest {
 
-echo "Current: "
+echo "Current Config: "
 if [ -e $HOME/direwolf.conf ] ; then
   if [ -h $HOME/direwolf.conf ] ; then
     echo "direwolf.conf is linked "
@@ -63,6 +63,18 @@ if [ -e $HOME/direwolf.conf ] ; then
 else
   echo "no file here?"
 fi
+}
+
+function servicetest {
+
+  echo ""
+  echo "Current Start Up: "
+  if [ -e /etc/init.d/direwolf ] ; then
+    grep 'DAEMON=' /etc/init.d/direwolf
+      echo "Start script linked "
+  else
+    echo "no file here?"
+  fi
 }
 
 
@@ -98,6 +110,7 @@ fi
 
 while [ $option != "q" ] ; do
  linktest
+ servicetest
  echo ""
  echo "direswitch choices"
  echo ""
