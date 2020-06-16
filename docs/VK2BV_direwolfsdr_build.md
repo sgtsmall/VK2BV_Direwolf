@@ -235,28 +235,29 @@ near the top of the file.
 
 * to enable the service:
 
-> ...
-> h) sudo service direwolf status
-> i) sudo systemctl enable direwolf.service
-> j) sudo systemctl disable direwolf.service
-> q) quit this menu
->
-> Enter option :h
-> ● direwolf.service - direwolf - A TNC and aprs
->    Loaded: loaded (/lib/systemd/system/direwolf.service; disabled)
+```
+...
+h) sudo service direwolf status
+i) sudo systemctl enable direwolf.service
+j) sudo systemctl disable direwolf.service
+q) quit this menu
+
+Enter option :h
+ ● direwolf.service - direwolf - A TNC and aprs
+    Loaded: loaded (/lib/systemd/system/direwolf.service; disabled)
 
 The service is currently disabled from automatic startup
 
->    Active: inactive (dead)
+    Active: inactive (dead)
 
 The service is not running
 
->
-> Jan 27 15:20:45 vk2psfpi sudo[1899]: pam_unix(sudo:session): se....
+
+ Jan 27 15:20:45 vk2psfpi sudo[1899]: pam_unix(sudo:session): se....
+```
 
 
-
-Use menu option i) sudo systemctl enable direwolf.service
+Use menu option `i) sudo systemctl enable direwolf.service`
 to enable startup after reboots
 
 
@@ -272,10 +273,12 @@ This creates a static entry 192.168.5.50
 
 
 
-> interface eth0
-> static ip_address=192.168.5.50/24
-> static routers=192.168.5.1
->\# static domain_name_servers=8.8.8.8
+```
+interface eth0
+static ip_address=192.168.5.50/24
+static routers=192.168.5.1
+# static domain_name_servers=8.8.8.8
+```
 
 ### Command line wifi
 
@@ -296,15 +299,17 @@ sudo nano /etc/wpa_supplicant/wpa_supplicant.conf
 
 Create an entry
 
-> network={
->     ssid="The_ESSID_from_earlier"
->     psk="Your_wifi_password"
-> }
->
-> network={
->     ssid="anotherSSID"
->     psk="Thepassphrase"
-> }
+```
+ network={
+     ssid="The_ESSID_from_earlier"
+     psk="Your_wifi_password"
+ }
+
+ network={
+     ssid="anotherSSID"
+     psk="Thepassphrase"
+ }
+ ```
 
 
 Note: creating a secure entry
@@ -314,12 +319,13 @@ You can use the wpa_passphrase command to create an encrypted version of the pas
 wpa_passphrase anotherSSID Thepassphrase
 ```
 Generates
-> network={
-> 	ssid="anotherSSID"
-> 	#psk="Thepassphrase"
-> 	psk=8ecbe91f1a0eea741cdc1f8415383c732cddc9701a0262b26198d3f87d80a10e
-> }
-
+```
+ network={
+ 	ssid="anotherSSID"
+ 	#psk="Thepassphrase"
+ 	psk=8ecbe91f1a0eea741cdc1f8415383c732cddc9701a0262b26198d3f87d80a10e
+ }
+```
 which can be used in the supplicant file (without the text based password line!)
 
 
