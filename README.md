@@ -8,10 +8,10 @@ This Github entry is not finalised... stuff is still all over the place.
 ## Overview
 *   Using most Raspberry Pi's with a USB soundcard and GPIO based adapter board to create a TNC that can support several APRS functions.
 
-*   OR now you can use a standard RTL-SDR type dongle to make a simple iGate.
+*   **OR now you can use a standard RTL-SDR type dongle to make a simple iGate.**
 
-*   Note for these projects I used to recommend a SoundBlaster Play USB (original) I haven't tried the Soundblaster Play 2 yet but I expect it to work, now there are sufficient drivers around for most of the cheap USB sound dongles that used to be a problem
-*   I have also had success with some early Logitech Headset USB adapters.
+>  * Note for these projects I used to recommend a SoundBlaster Play USB (original) I haven't tried the Soundblaster Play 2 yet but I expect it to work, now there are sufficient drivers around for most of the cheap USB sound dongles that used to be a problem
+> *  I have also had success with some early Logitech Headset USB adapters.
 
 *   My common setup with this is a Raspi B+ with the soundcard and
   *       UV-5R and purpose built cable to support Audio In/Out and PTT. To power it I use an Ebay 12+V to 5V USB adapter module and the battery eliminator module for the 5R.
@@ -39,11 +39,10 @@ This is **not** a "Linux for Beginners guide", those can be found for example [h
 Follow the full install guides linked below for the full process. To just install scripts:
 
 ```shell
+cd ~
 git clone https://github.com/sgtsmall/VK2BV_Direwolf.git
 cd VK2BV_Direwolf
 ./diremenuup
-#make
-#sudo make install
 cd ~
 ```
 #### After installing this package, running diremenuup will now install the components to the right directories and apt-get additional needed packages.
@@ -59,25 +58,27 @@ There are 3 build versions here.
 The bit I have added is a set of scripts to go through some of the troubleshooting and configuring startup.
 
 Most (98%) of this information is taken from the direwolf configuration documents. One of the steps you perform in the install notes below is downloading the direwolf package to the Pi, this contains all the code and documents.
-You should probably download the files to your pc for easy access to the documents.
+  > Although this process downloads everything to the Raspberry pi, you should probably download the direwolf package to your pc as well for easy access to the doc folder that has lots of information.
 Go to the github site and download the project as a zip file, from there you can get to the documents located in the doc directory.
 
 https://github.com/wb2osz/direwolf
+
+### VK2BV build instructions
 
 The SDR version creates a very low cost iGate for receiving beacons and putting out to the internet.
 I recommend the lite version to start with particularly for beacons, digipeaters or SARTrack.
 
 I also recommend starting again if you build a "full" version. It's not hard and takes a lot less fiddling around than adding the Desktop later.
 
-* SDR https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolfsdr_build.md
+* SDR - build a version using an SDR dongle for iGate [SDR build instructions link](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolfsdr_build.md)
 
-* Lite https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md
+* Lite - full featured direwolf device can be used as beacon, tnc, digipeater, tracker, ... [Lite build instructions link](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolflite_build.md)
 
-* Full https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md
+* Full - All the function of Lite, with some information on running on the pi desktop with vnc or monitor/keyboard [Full  build instructions link](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolffull_build.md)
 
 I have moved the information about the local scripts, diremenu, diresetup, .... to this document
 
-* https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolf_scripts.md
+* [VK2BV_direwolf scripts link](https://github.com/sgtsmall/VK2BV_Direwolf/blob/master/docs/VK2BV_direwolf_scripts.md)
 
 
 ## Documentation
