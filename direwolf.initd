@@ -128,7 +128,7 @@ case "$1" in
 	if [ "$ENABLED" = "0" ]; then
 	    case "$RETVAL" in
 	       0) log_daemon_msg "Stopping $DESC" "$NAME"; log_end_msg 0 ;;
-            esac 
+            esac
 	    exit 0
 	fi
 	case "$RETVAL" in
@@ -175,7 +175,7 @@ case "$1" in
 	;;
   systemd-exec)
 # /var/run may be volatile, so we need to ensure that
-        # /var/run/direwolf exists here as well as in postinst
+# /var/run/direwolf exists here as well as in postinst
         if [ ! -d /var/run/direwolf ]; then
            mkdir /var/run/direwolf || return 2
            chown pi:nogroup /var/run/direwolf || return 2

@@ -15,43 +15,75 @@ cmdj="sudo systemctl enable direwolf.service"
 cmdk="sudo systemctl disable direwolf.service"
 cmdl="diremenuup"
 
+
+function linktest {
+
+  echo ""
+  echo "Current Config: "
+  if [ -e $HOME/direwolf.conf ] ; then
+    if [ -h $HOME/direwolf.conf ] ; then
+      echo "direwolf.conf is linked "
+      ls -l $HOME/direwolf.conf
+    elif [ -f $HOME/direwolf.conf ] ; then
+      echo "direwolf.conf is not linked"
+    fi
+  else
+    echo "no file here?"
+  fi
+}
+
+function servicetest {
+
+  echo ""
+  echo "Current Start Up: "
+  if [ -e /etc/init.d/direwolf ] ; then
+    grep 'DAEMON=' /etc/init.d/direwolf
+      echo "Start script linked "
+  else
+    echo "no file here?"
+  fi
+}
+
+
 while [ $option != "q" ] ; do
- echo ""
- echo "diremenu choices"
- echo ""
- echo "a) $cmda"
- echo "b) $cmdb"
- echo "c) $cmdc"
- echo "d) $cmdd"
- echo "e) $cmde"
- echo "f) $cmdf"
- echo "g) $cmdg"
- echo "h) $cmdh"
- echo "i) $cmdi"
- echo "j) $cmdj"
- echo "k) $cmdk"
- echo "l) $cmdl"
- echo "q) quit this menu"
- echo ""
- echo -e "Enter option :\c"
- read ans
- if [ -z $ans ] ; then
-  ans="$option"
- fi
- option="$ans"
- case $option in
-  a) $cmda ;;
-  b) $cmdb ;;
-  c) $cmdc ;;
-  d) $cmdd ;;
-  e) $cmde ;;
-  f) $cmdf ;;
-  g) $cmdg ;;
-  h) $cmdh ;;
-  i) $cmdi ;;
-  j) $cmdj ;;
-  k) $cmdk ;;
-  l) $cmdl ;;
-  q) echo "good bye"
- esac
+  linktest
+  servicetest
+  echo ""
+  echo "diremenu choices"
+  echo ""
+  echo "a) $cmda"
+  echo "b) $cmdb"
+  echo "c) $cmdc"
+  echo "d) $cmdd"
+  echo "e) $cmde"
+  echo "f) $cmdf"
+  echo "g) $cmdg"
+  echo "h) $cmdh"
+  echo "i) $cmdi"
+  echo "j) $cmdj"
+  echo "k) $cmdk"
+  echo "l) $cmdl"
+  echo "q) quit this menu"
+  echo ""
+  echo -e "Enter option :\c"
+  read ans
+  if [ -z $ans ] ; then
+    ans="$option"
+  fi
+  option="$ans"
+  case $option in
+    a) $cmda ;;
+    b) $cmdb ;;
+    c) $cmdc ;;
+    d) $cmdd ;;
+    e) $cmde ;;
+    f) $cmdf ;;
+    g) $cmdg ;;
+    h) $cmdh ;;
+    i) $cmdi ;;
+    j) $cmdj ;;
+    k) $cmdk ;;
+    l) $cmdl ;;
+    q) echo "good bye"
+  esac
 done

@@ -205,6 +205,7 @@ cat << EOF > dconf/sample/direwolfsdr.hdr
 
 ## Device Section
 ADEVICE stdin null
+ARATE 24000
 ## Channel
 CHANNEL 0
 MYCALL $user-$term
