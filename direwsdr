@@ -11,4 +11,4 @@ while getopts t:c:f: option
    f) FREQ=${OPTARG};;
   esac
  done
-rtl_fm -N -f $FREQ - | /usr/local/bin/direwolf -t $TOUT -c $CONF
+rtl_fm -f $FREQ - | /usr/local/bin/direwolf -t $TOUT -c $CONF
