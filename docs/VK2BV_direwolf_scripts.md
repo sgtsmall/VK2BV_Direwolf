@@ -9,10 +9,10 @@ The following install section adds some local scripts to the programs and instal
 ```shell
 git clone https://github.com/sgtsmall/VK2BV_Direwolf.git
 cd VK2BV_Direwolf
-./diremenuup
-#make
-#sudo make install
+make
+sudo make install
 cd ~
+diremenuup
 ```
 
 #### After installing this package from github, running `diremenuup` will now install the components to the right directories and apt-get additional needed packages.

@@ -146,7 +146,7 @@ sudo make install
 
 ```shell
 cd ~
-git clone https://www.github.com/wb2osz/direwolf
+git clone -b dev https://www.github.com/wb2osz/direwolf.git
 cd direwolf
 mkdir build
 cd build
