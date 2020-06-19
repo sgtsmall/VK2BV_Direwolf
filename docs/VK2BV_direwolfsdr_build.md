@@ -107,8 +107,11 @@ full_build users can follow these steps in a console(x-terminal)
 
 ```shell
 sudo apt-get -y install libasound2-dev cmake build-essential git-core
+
 sudo apt-get -y install dnsutils gawk automake libtool
+
 sudo apt-get -y install libudev-dev python-dev swig libusb-1.0-0-dev texinfo
+
 ```
 
 
