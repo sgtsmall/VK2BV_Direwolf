@@ -105,13 +105,35 @@ Now we start with some installs, from here I am using apt-get -y to avoid the co
 
 full_build users can follow these steps in a console(x-terminal)
 
-```shell
+* libraries for sound, and software download and compile
+
+```
 sudo apt-get -y install libasound2-dev cmake build-essential git-core
+```
 
+* dnsutils - not strictly needed but handy for debugging network
+
+```
 sudo apt-get -y install dnsutils gawk automake libtool
+```
 
+* libraries for usb and texinfo for documents
+
+```
 sudo apt-get -y install libudev-dev python-dev swig libusb-1.0-0-dev texinfo
 
+```
+
+* basic library parts for hamlib, for full direwolf control of radios
+
+```
+sudo apt-get -y install libhamlib2 libhamlib-dev
+```
+
+* lastly run ldconfig to make sure all libraries available
+
+```
+sudo ldconfig
 ```
 
 
@@ -138,6 +160,7 @@ cd build
 cmake .. -DINSTALL_UDEV_RULES=ON -DDETACH_KERNEL_DRIVER=ON
 make
 sudo make install
+sudo ldconfig
 ```
 
 
