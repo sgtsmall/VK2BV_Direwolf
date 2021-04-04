@@ -344,7 +344,7 @@ diremenu
 ```
 
 This is some basic commands, the menu uses the actual commands as prompts, more as reminders of what you may need to do.
-
+```
 > a) tail -f /home/pi/direwolf.output
 > b) ls -al /home/pi/direwolf.conf
 > c) direconfig
@@ -359,8 +359,64 @@ This is some basic commands, the menu uses the actual commands as prompts, more 
 > l) diremenuup
 > q) quit this menu
 
-
+```
 
 command i) enable and j) disable are used to start and stop direwolf restarting after a boot.
 
 command a) is used to monitor the output of the direwolf job.
+
+
+### Placeholder for wxnow
+
+
+```
+mkdir tempest
+cd tempest
+
+```
+
+copy these files in:
+
+ requirements.txt, tempest.py
+
+```
+sudo apt-get install python3 python3-pip
+pip install -r requirements.txt
+# pip install -r tempest.py
+
+python3 tempest.txt
+```
+
+this should sit and loop 
+
+
+```
+(tempest39) AlexMBPi7:ljtempest AlexS$ python3 tempest.py
+Listening... data time 1615245300 press 997.6 temp 19 humidity 68 sleep...
+```
+
+
+if we get this far add to config edit direwolf.conf
+```
+nano direwolf.conf
+...
+PBEACON delay=0:30  every=0:30 overlay=S SYMBOL="weather station" lat=36^27.04S long=146^26.12E power=10 height=20 gain=4 COMMENTCMD="tail -1 /home/pi/direwolf/tempest/wxnow.txt" 
+
+```
+
+restart direwolf and then back in tempest folder
+
+python3 tempest.py
+
+
+and see if it puts stuff out
+
+check where the tempest folder is  ```pwd```
+
+nohup python3 tempest.py &
+
+that should start it in background and return to $  
+
+cat wxnow.txt
+
+should show recent date time
