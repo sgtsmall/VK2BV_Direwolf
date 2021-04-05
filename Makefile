@@ -18,7 +18,8 @@ direconfig :
 direswitch :
 
 INSTALLDIR := /usr/local
-SSERVICEDIR := /etc/systemd/system
+SSERVICEDIR := /lib/systemd/system
+USERVICEDIR := /usr/lib/systemd/user
 
 INSTALL=install
 
@@ -85,10 +86,11 @@ install-rpi : YAAC.sh
 	ln -f -s /usr/share/applications/YAAC.desktop ~/Desktop/YAAC.desktop
 
 .PHONY: install-tempest
-install-tempest : tempest.service
-	$(INSTALL) default/tempest.conf /etc/default
+install-tempest : service/tempest.service
+	$(INSTALL) bin/tempest.py $(INSTALLDIR)/bin
+  $(INSTALL) default/tempest.conf /etc/default
   $(INSTALL) -m 644 service/tempest.service $(SSERVICEDIR)
-	systemctl daemon-reload
+
 
 
 .PHONY: clean

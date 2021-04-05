@@ -46,14 +46,37 @@ sudo make install
 cd ~
 diremenuup
 ```
-#### After installing this package, running diremenuup will now install the components to the right directories and apt-get additional needed packages.
+### After installing this package, running diremenuup will now install the components to the right directories and apt-get additional needed packages.
 
-#### Add tempest reads to startup
-update config in /etc/default/tempest.conf
+##### Add tempest reads to startup
+
 
 ```shell
-sudo make install direwolf-tempest
+# move to VK2BV_Direwolf if not already there
+cd VK2BV_Direwolf
+sudo make install install-tempest
 ```
+update config in /etc/default/tempest.conf or better create as ~/.my_tempest
+
+```shell
+nano ~/.my_tempest
+
+personal_token 'ec-a-log-string-you-got-from-tempest'
+tempest_ID '123456'
+
+```
+
+The following steps will be ported to makefile Later
+
+```shell
+pip3 install -r requirements.txt
+# enable processes to stay after logout
+sudo loginctl enable-linger $USER
+systemctl --user enable tempest.service
+systemctl --user start tempest.service
+```
+
+#### Note direwolf still runs under system systemd rather than user... this is for permissions on GPIO and USB audio simplification [the great developer permissions cop-out statement!]
 
 There are 3 build versions here.
 

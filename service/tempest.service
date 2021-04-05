@@ -2,13 +2,21 @@
 Description=tempest - read tempest data from internet
 
 [Service]
-Type=forking
-RuntimeDirectory=tempest
-RuntimeDirectoryMode=0775
-PIDFile=/run/tempest/tempest.pid
+# Command to execute when the service is started
 ExecStart=/usr/bin/python3 /usr/local/bin/tempest.py
 
-ExecReload=/bin/kill -HUP $MAINPID
+# Disable Python's buffering of STDOUT and STDERR, so that output from the
+# service shows up immediately in systemd's logs
+Environment=PYTHONUNBUFFERED=1
+
+# Automatically restart the service if it crashes
+Restart=on-failure
+
+# Our service will notify systemd once it is up and running
+Type=notify
+
+# Use a dedicated user to run our service
+#User=python_demo_service
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target

@@ -5,3 +5,5 @@ websocket-client==0.58.0
 zope.event==4.5.0
 zope.interface==5.2.0
 ConfigArgParse==1.4
+systemd==0.16.1
+sd-notify==0.1.0

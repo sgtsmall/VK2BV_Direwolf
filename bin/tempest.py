@@ -1,4 +1,5 @@
 #import urllib
+import sd_notify
 import collections
 import configargparse
 import json
@@ -7,7 +8,7 @@ import time
 from websocket import create_connection
 #from pint import UnitRegistry
 
-
+notify = sd_notify.Notifier()
 
 
 def write_data(filename, data):
@@ -124,19 +125,25 @@ def Connectandread():
     time.sleep(300)
     return
 
-p = configargparse.ArgParser(default_config_files=['/etc/default/tempest.conf', '~/.my_tempest'])
-p.add('--tempest_ID', required=True,  help='nempest station ID')
-p.add('--personal_token', required=True, help='tempest station ID')
+if __name__ == '__main__':
 
-options = p.parse_args()
-"""
-print(options)
-print("----------")
-print(p.format_help())
-print("----------")
-print(p.format_values())    # useful for logging where different settings came from
-exit()
-"""
-while True:
+    if not notify.enabled():
+    # Then it's probably not running is systemd with watchdog enabled
+        raise Exception("Watchdog not enabled")
 
-    Connectandread()
+    # Report a status message
+    notify.status("Initialising my service...")
+    time.sleep(3)
+
+    p = configargparse.ArgParser(default_config_files=['/etc/default/tempest.conf', '~/.my_tempest'])
+    p.add('--tempest_ID', required=True,  help='nempest station ID')
+    p.add('--personal_token', required=True, help='tempest station ID')
+
+    options = p.parse_args()
+
+    notify.ready()
+    notify.status("startingloop for web requesters...")
+    time.sleep(3)
+
+    while True:
+        Connectandread()
