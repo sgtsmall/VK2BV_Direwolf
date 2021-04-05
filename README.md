@@ -72,6 +72,7 @@ The following steps will be ported to makefile Later
 pip3 install -r requirements.txt
 # enable processes to stay after logout
 sudo loginctl enable-linger $USER
+systemctl --user daemon-reload
 systemctl --user enable tempest.service
 systemctl --user start tempest.service
 ```
