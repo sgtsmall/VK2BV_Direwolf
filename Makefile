@@ -88,8 +88,8 @@ install-rpi : YAAC.sh
 .PHONY: install-tempest
 install-tempest : service/tempest.service
 	$(INSTALL) bin/tempest.py $(INSTALLDIR)/bin
-  $(INSTALL) default/tempest.conf /etc/default
-  $(INSTALL) -m 644 service/tempest.service $(USERVICEDIR)
+	$(INSTALL) default/tempest.conf /etc/default
+	$(INSTALL) -m 644 service/tempest.service $(USERVICEDIR)
 
 
 
