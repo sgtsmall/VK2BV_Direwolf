@@ -54,7 +54,7 @@ diremenuup
 ```shell
 # move to VK2BV_Direwolf if not already there
 cd VK2BV_Direwolf
-sudo make install install-tempest
+sudo make install-tempest
 ```
 update config in /etc/default/tempest.conf or better create as ~/.my_tempest
 
@@ -66,7 +66,7 @@ tempest_ID '123456'
 
 ```
 
-The following steps will be ported to makefile Later
+The following steps will be ported to makefile Later ```make tempest-user ``` is the start
 
 ```shell
 pip3 install -r requirements.txt

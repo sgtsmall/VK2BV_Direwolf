@@ -5,4 +5,4 @@ cd VK2BV_Direwolf
 git pull
 sudo make install
 # start of routine to install all packages
-sudo apt-get -y install bc libasound2-dev git-core dnsutils gawk automake libtool
+sudo apt-get -y install bc libasound2-dev git-core dnsutils gawk automake libtool python3 python3-pip
