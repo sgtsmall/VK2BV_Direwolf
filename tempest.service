@@ -1,0 +1,14 @@
+[Unit]
+Description=tempest - read tempest data from internet
+
+[Service]
+Type=forking
+RuntimeDirectory=tempest
+RuntimeDirectoryMode=0775
+PIDFile=/run/tempest/tempest.pid
+ExecStart=/usr/bin/python3 /usr/local/bin/tempest.py
+
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

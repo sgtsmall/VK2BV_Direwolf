@@ -48,7 +48,12 @@ diremenuup
 ```
 #### After installing this package, running diremenuup will now install the components to the right directories and apt-get additional needed packages.
 
+#### Add tempest reads to startup
+update config in /etc/default/tempest.conf
 
+```shell
+sudo make install direwolf-tempest
+```
 
 There are 3 build versions here.
 

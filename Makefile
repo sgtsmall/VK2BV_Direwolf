@@ -84,6 +84,13 @@ install-rpi : YAAC.sh
 	ln -f -s /usr/share/applications/diretail.desktop ~/Desktop/diretail.desktop
 	ln -f -s /usr/share/applications/YAAC.desktop ~/Desktop/YAAC.desktop
 
+.PHONY: install-tempest
+install-tempest : tempest.service
+	$(INSTALL) default/tempest.conf /etc/default
+  $(INSTALL) -m 644 tempest.service $(SSERVICEDIR)
+	systemctl daemon-reload
+
+
 .PHONY: clean
 clean :
 	rm -f diretail.desktop YAAC.desktop
