@@ -31,7 +31,7 @@ install : $(APPS)
 	$(INSTALL) direswitch $(INSTALLDIR)/bin
 	$(INSTALL) diremenuup $(INSTALLDIR)/bin
 	$(INSTALL) direwsdr $(INSTALLDIR)/bin
-	$(INSTALL) -m 644 direwolf.service $(SSERVICEDIR)
+	$(INSTALL) -m 644 service/direwolf.service $(SSERVICEDIR)
 	$(INSTALL) direwolf.initd /etc/init.d/direwolf
 	$(INSTALL) -m 644 diretail.desktop /usr/share/applications/diretail.desktop
 	$(INSTALL) YAAC.sh $(INSTALLDIR)/bin
@@ -87,7 +87,7 @@ install-rpi : YAAC.sh
 .PHONY: install-tempest
 install-tempest : tempest.service
 	$(INSTALL) default/tempest.conf /etc/default
-  $(INSTALL) -m 644 tempest.service $(SSERVICEDIR)
+  $(INSTALL) -m 644 service/tempest.service $(SSERVICEDIR)
 	systemctl daemon-reload
 
 
