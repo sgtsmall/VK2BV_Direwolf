@@ -59,7 +59,7 @@ def Connectandread():
 
 
     ws = create_connection(
-        'wss://ws.weatherflow.com/swd/data?api_key=' + personal_token)
+        'wss://ws.weatherflow.com/swd/data?api_key=' + options.personal_token)
     result = ws.recv()
     #print("Received '%s'" % result)
     #print('')
@@ -67,7 +67,7 @@ def Connectandread():
 
     print('Listening... ', end = '')
     ws.send('{"type":"listen_start",' + ' "device_id":' +
-        tempest_ID + ',' + ' "id":"Tempest"}')
+        options.tempest_ID + ',' + ' "id":"Tempest"}')
     result = ws.recv()
     #print("Received '%s'" % result)
     #print('')
