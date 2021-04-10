@@ -88,16 +88,16 @@ while True:
         elif data_json['type'] == 'rapid_wind':
             observations = dict(zip(RAPID_WIND_MAP, data_json['ob']))
             observations['Datetime'] = datetime.datetime.fromtimestamp(observations[('Time Epoch', 'Seconds')])
-            pprint.pprint(observations)
+            # pprint.pprint(observations)
 
         elif data_json['type'] == 'evt_strike':
             observations = dict(zip(EVT_STRIKE_MAP, data_json['evt']))
             observations['Datetime'] = datetime.datetime.fromtimestamp(observations[('Time Epoch', 'Seconds')])
-            pprint.pprint(observations)
+            # pprint.pprint(observations)
 
         elif data_json['type'] == 'evt_precip':
             # no other information other than the timestamp is included so just print a simple message
-            print('It started raining at {}!'.format(datetime.datetime.fromtimestamp(data_json['evt'][0])))
+            # print('It started raining at {}!'.format(datetime.datetime.fromtimestamp(data_json['evt'][0])))
 
         else:
             print(data_json)
