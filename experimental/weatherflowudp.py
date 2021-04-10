@@ -96,13 +96,13 @@ while True:
             # pprint.pprint(observations)
 
         elif data_json['type'] == 'evt_precip':
-            a = b
+            a = None
             # no other information other than the timestamp is included so just print a simple message
             # print('It started raining at {}!'.format(datetime.datetime.fromtimestamp(data_json['evt'][0])))
 
         elif data_json['type'] == 'hub_status':
             # send to bitbucket for now
-            b = a
+            b = None
 
         else:
             print(data_json)
