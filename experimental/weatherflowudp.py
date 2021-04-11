@@ -106,7 +106,7 @@ while True:
             # Adjusted-to-the-sea barometric pressure
             #a2ts = aap + ((aap * grav * hasl)/(gasconst * (atk + (hasl/400))))
             a2ts = aap * (1 - ((atLapse * hasl) / (atk + atLapse * hasl)))**constsexp
-            print('aap {} atc {} atk {} a2ts {} '.format(aap, atc, atk, a2ts))
+            print('data time {} aap {} atc {} atk {:3.2f} a2ts {:4.1f} '.format(observations['Datetime'],aap, atc, atk, a2ts))
             # pprint.pprint(observations)
 
         elif data_json['type'] == 'rapid_wind':
