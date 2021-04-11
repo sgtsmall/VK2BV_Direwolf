@@ -8,8 +8,7 @@ import time
 from websocket import create_connection
 #from pint import UnitRegistry
 
-notify = sd_notify.Notifier()
-
+# notify = sd_notify.Notifier()
 
 def write_data(filename, data):
     fields = []

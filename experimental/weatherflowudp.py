@@ -63,6 +63,20 @@ BROADCAST_PORT = 50222
 # create the listener socket
 sock_list = [create_broadcast_listener_socket(BROADCAST_IP, BROADCAST_PORT)]
 
+# Constants
+# Height above sea level m
+hasl = 160
+# gravity m/s
+grav = 9.80665
+# gasconst ait  J/(kg K)
+gasconst = 287.053
+# Temp lapse rate near sea level (<11000m) K/m
+tLapse = -0.0065
+# swap the sign for -
+atLapse = 0.0065
+constsexp = grav/(gasconst*tLapse)
+
+
 while True:
     # small sleep otherwise this will loop too fast between messages and eat a lot of CPU
     time.sleep(0.01)
@@ -83,7 +97,17 @@ while True:
             #  to second value, etc
             observations = dict(zip(OBS_ST_MAP, data_json['obs'][0]))
             observations['Datetime'] = datetime.datetime.fromtimestamp(observations[('Time Epoch', 'Seconds')])
-            pprint.pprint(observations)
+            # Actual atmospheric pressure in hPa
+            aap = opservations[('Station Pressure', 'MB')]
+            # Actual temperature in Celsius
+            atc = opservations[('Air Temperature', 'C')]
+            # Temp in Kelvin
+            atk = atc + 273.15
+            # Adjusted-to-the-sea barometric pressure
+            #a2ts = aap + ((aap * grav * hasl)/(gasconst * (atk + (hasl/400))))
+            a2ts = aap * (1 - ((atLapse * hasl) / (atk + atLapse * hasl)))**constsexp
+            print('aap {} atc {} atk {} a2ts {} '.format(aap, atc, atk, a2ts))
+            # pprint.pprint(observations)
 
         elif data_json['type'] == 'rapid_wind':
             observations = dict(zip(RAPID_WIND_MAP, data_json['ob']))
