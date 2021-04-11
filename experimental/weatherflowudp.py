@@ -98,9 +98,9 @@ while True:
             observations = dict(zip(OBS_ST_MAP, data_json['obs'][0]))
             observations['Datetime'] = datetime.datetime.fromtimestamp(observations[('Time Epoch', 'Seconds')])
             # Actual atmospheric pressure in hPa
-            aap = opservations[('Station Pressure', 'MB')]
+            aap = observations[('Station Pressure', 'MB')]
             # Actual temperature in Celsius
-            atc = opservations[('Air Temperature', 'C')]
+            atc = observations[('Air Temperature', 'C')]
             # Temp in Kelvin
             atk = atc + 273.15
             # Adjusted-to-the-sea barometric pressure
