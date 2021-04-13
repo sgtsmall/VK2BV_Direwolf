@@ -88,13 +88,15 @@ install-rpi : YAAC.sh
 .PHONY: install-tempest
 install-tempest : service/tempest.service
 	$(INSTALL) bin/tempest.py $(INSTALLDIR)/bin
+	$(INSTALL) bin/tempestudp.py $(INSTALLDIR)/bin
 	$(INSTALL) default/tempest.conf /etc/default
 	$(INSTALL) -m 644 service/tempest.service $(USERVICEDIR)
+	$(INSTALL) -m 644 service/tempestudp.service $(USERVICEDIR)
 
 .PHONY: tempest-user
 tempest-user : service/tempest.service
 	systemctl --user daemon-reload
-	systemctl --user enable tempest.service
+#	systemctl --user enable tempest.service
 
 
 .PHONY: clean

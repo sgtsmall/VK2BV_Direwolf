@@ -74,8 +74,12 @@ gasconst = 287.053
 tLapse = -0.0065
 # swap the sign for -
 atLapse = 0.0065
-constsexp = grav/(gasconst*tLapse)
-
+# standard Sea Level Temp K
+slTemp = 288.15
+# standard Sea Level Pres mb
+slPres = 1013.25
+constsexp = grav/(gasconst*atLapse)
+constsinv = (gasconst*atLapse)/grav
 
 while True:
     # small sleep otherwise this will loop too fast between messages and eat a lot of CPU
@@ -105,7 +109,8 @@ while True:
             atk = atc + 273.15
             # Adjusted-to-the-sea barometric pressure
             #a2ts = aap + ((aap * grav * hasl)/(gasconst * (atk + (hasl/400))))
-            a2ts = aap * (1 - ((atLapse * hasl) / (atk + atLapse * hasl)))**constsexp
+            #a2ts = aap * (1 - ((atLapse * hasl) / (atk + atLapse * hasl)))**constsexp
+            a2ts = aap * (1 + (((slPres/aap)**constsinv) * ((atLapse * hasl)/slTemp))**constsexp)
             print('data time {} aap {} atc {} atk {:3.2f} a2ts {:4.1f} '.format(observations['Datetime'],aap, atc, atk, a2ts))
             # pprint.pprint(observations)
 

@@ -1,5 +1,6 @@
 #import urllib
 #import sd_notify
+import logging
 import collections
 import configargparse
 import json
@@ -7,7 +8,11 @@ import csv
 import time
 from websocket import create_connection
 #from pint import UnitRegistry
-
+logging.basicConfig(level=logging.DEBUG,
+    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+    )
+logger = logging.getLogger(__name__)
 # notify = sd_notify.Notifier()
 
 def write_data(filename, data):
@@ -37,7 +42,7 @@ def convertJSONStringToSequence(source):
 
 def connectws():
 
-    print('Opening Websocket connection...')
+    logging.info('Opening Websocket connection...')
 
     ws = create_connection(
         'wss://ws.weatherflow.com/swd/data?api_key=' + options.personal_token)
@@ -46,11 +51,11 @@ def connectws():
     #print('')
 
 
-    print('Listening... ', end = '')
+    logging.debug('Listening... ')
     ws.send('{"type":"listen_start",' + ' "device_id":' +
         options.tempest_ID + ',' + ' "id":"Tempest"}')
     result = ws.recv()
-    print("Received '%s'" % result)
+    logging.debug("Received '%s'" % result)
     print('')
     return ws
 
@@ -59,13 +64,13 @@ def readws(ws):
 
     data = dict()
 
-    print('Receiving Tempest data...')
+    logging.debug('Receiving Tempest data...')
     result = ws.recv()
     #print("Received '%s'" % result)
     print('')
     #jstring = convertJSONStringToSequence(result)
     weatherJSON = json.JSONDecoder().decode(result)
-    print(weatherJSON)
+    logging.debug(weatherJSON)
     obsdata = weatherJSON['obs'][0]
     #obsdata = csv.reader(weatherJSON['obs'])
 
@@ -79,7 +84,7 @@ def readws(ws):
     data['windGust'] = windGustms * 2.23694  # convertit
     data['windDir'] = obsdata[4]
     windSampInt = obsdata[5]
-    data['barometer'] = obsdata[6]
+    AirPressure = obsdata[6]
     airTempC = obsdata[7]
     data['outTemp'] = (airTempC * 9 / 5) + 32
     data['outHumidity'] = obsdata[8]
@@ -102,13 +107,13 @@ def readws(ws):
     precipAnalType = obsdata[21]
 
 # Actual atmospheric pressure in hPa
-    aap = data['barometer']
+    aap = AirPressure * 1.0
     # Actual temperature in Celsius
     atc = airTempC
     # Temp in Kelvin K
     atk = atc + 273.15
     # Height above sea level m
-    hasl = 160
+    hasl = 168.479
     # gravity m/s
     grav = 9.80665
     # gasconst ait  J/(kg K)
@@ -116,24 +121,42 @@ def readws(ws):
     # Temp lapse rate near sea level (<11000m) K/m
     tLapse = -0.0065
     atLapse = 0.0065
-    constsexp = grav/(gasconst*tLapse)
+    # standard Sea Level Temp K
+    slTemp = 288.15
+    # standard Sea Level Pres mb
+    slPres = 1013.25
+    constsexp = grav/(gasconst*atLapse)
+    constsinv = (gasconst*tLapse)/grav
     # constsexp
 
     # Adjusted-to-the-sea barometric pressure
     #a2ts = aap + ((aap * grav * hasl)/(gasconst * (atk + (hasl/400))))
-    a2ts = aap * (1 - ((atLapse * hasl) / (atk + atLapse * hasl)))**constsexp
-
+    a2tsx = aap * (1 + ((atLapse * hasl) / (atk + atLapse * hasl)))**constsexp
+    a2ts = 1.0 * (aap * ((1 + (((slPres/aap)**constsinv) * ((atLapse * hasl)/slTemp)))**constsexp))
+    logging.debug('aap {} slp/aap {} atla {} form {} atk {:3.2f} a2ts {:4.1f} a2tsx {:4.1f} humidity {}'.format(
+     aap, ((slPres/aap)**constsinv), ((atLapse * hasl)/slTemp), (((slPres/aap)**constsinv) * ((tLapse * hasl)/slTemp)),  atk, a2ts, a2tsx, data['outHumidity']))
+    data['barometer'] = a2ts
 # in standard places (hasl from 100-800 m, temperature from -10 to 35)
 # is the coeficient something close to hasl/10, meaning simply
 # a2ts is about  aap + hasl/10
 
 
-    print('data time {} press {} a2ts {} temp {} humidity {}'.format(
-        data['dateTime'], data['barometer'], a2ts, airTempC, data['outHumidity']), end = '')
+    logging.debug('data time {} aap {} atc {} atk {:3.2f} a2ts {:4.1f} humidity {}'.format(
+        data['dateTime'], aap, atc, atk, a2ts, data['outHumidity']))
+
     #print(weatherJSON['summary']['feels_like'])
+    write_data('wxnow2.txt', data)
+#        print(json.dumps(policies_list_id, indent=2), file=f)
+#        filename = open("/tmp/wxnow2.txt", "w")
+
+#    close(filename)
+    # ws.close()
+    logging.debug(' sleep...')
+    time.sleep(90)
     return
 
 if __name__ == '__main__':
+
 
     #if not notify.enabled():
     ## Then it's probably not running is systemd with watchdog enabled
@@ -146,9 +169,15 @@ if __name__ == '__main__':
     p = configargparse.ArgParser(default_config_files=['/etc/default/tempest.conf', '~/.my_tempest'])
     p.add('--tempest_ID', required=True,  help='nempest station ID')
     p.add('--personal_token', required=True, help='tempest station ID')
-
+    p.add('-l', '--log_level', default='INFO',
+               choices=['DEBUG', 'INFO', 'WARNING',
+                        'ERROR', 'CRITICAL'],
+               help='Log level for script')
     options = p.parse_args()
-
+    print(options)
+    log_level = getattr(logging, options.log_level.upper())
+    print(log_level)
+    logger.setLevel(log_level)
     #notify.ready()
     #notify.status("startingloop for web requesters...")
     #time.sleep(3)
@@ -156,4 +185,8 @@ if __name__ == '__main__':
     ws = connectws()
 
     while True:
-        readws(ws)
+        try:
+            readws(ws)
+        except Exception:
+            logger.error('An error occurred', exc_info=True)
+            exit(1)
