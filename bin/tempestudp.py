@@ -168,8 +168,8 @@ def readws(socklist):
 # is the coeficient something close to hasl/10, meaning simply
 # a2ts is about  aap + hasl/10
 
-            logging.info("data time {} aap {} atc {} a2ts {:4.1f} a2ts {:4.1f} humidity {}'.format(
-                wxdata['dateTime'], aap, atc,  a2ts, a2tsx, wxdata['outHumidity'])")
+            logging.info('data time {} aap {} atc {} a2ts {:4.1f} a2ts {:4.1f} humidity {}'.format(
+                wxdata['dateTime'], aap, atc,  a2ts, a2tsx, wxdata['outHumidity']))
 
     #print(weatherJSON['summary']['feels_like'])
             write_data('/tmp/wxnow.txt', wxdata)
