@@ -1,6 +1,7 @@
 #import urllib
 import socket
 import select
+import struct
 import sd_notify
 import collections
 import configargparse

@@ -1,5 +1,5 @@
 [Unit]
-Description=tempest - read tempest data from internet
+Description=tempest - read tempest data from local network
 
 [Service]
 # Command to execute when the service is started
