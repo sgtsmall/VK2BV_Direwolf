@@ -8,6 +8,7 @@ import configargparse
 import json
 import csv
 import time
+from collections import defaultdict
 #from websocket import create_connection
 #from pint import UnitRegistry
 
@@ -238,5 +239,5 @@ if __name__ == '__main__':
         try:
             readws(socklist)
         except Exception:
-            logger.error('An error occurred', exc_info=True)
+            logging.error('An error occurred', exc_info=True)
             exit(1)
