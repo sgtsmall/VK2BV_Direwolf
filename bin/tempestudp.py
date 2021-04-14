@@ -1,4 +1,5 @@
 #import urllib
+import logging
 import socket
 import select
 import struct
@@ -11,6 +12,11 @@ import time
 from collections import defaultdict
 #from websocket import create_connection
 #from pint import UnitRegistry
+logging.basicConfig(level=logging.DEBUG,
+    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
+    )
+logger = logging.getLogger(__name__)
 
 notify = sd_notify.Notifier()
 
@@ -76,6 +82,7 @@ def convertJSONStringToSequence(source):
     return j
 
 def connectudp():
+    logging.debug('Opening UDP connection...')
     # create the listener socket
     sock_list = [create_broadcast_listener_socket(BROADCAST_IP, BROADCAST_PORT)]
     return sock_list
@@ -83,7 +90,7 @@ def connectudp():
 
 def connectws():
 
-    print('Opening Websocket connection...')
+    loging.debug('Opening Websocket connection...')
 
     ws = create_connection(
         'wss://ws.weatherflow.com/swd/data?api_key=' + options.personal_token)
@@ -115,12 +122,13 @@ def readws(socklist):
 
         # convert data to json
         data_json = json.loads(data)
-
+        logging.debug('data_json record {} '.format(data_json)
         if data_json['type'] == 'obs_st':
             # takes the map list and the list of observations and creates a dictionary with the first value in
             #  the map as the key and the first value in the list of observations as the value, second value
             #  to second value, etc
             obsdata = data_json['obs'][0]
+            logging.debug('obsdata record {} '.format(obsdata)
             wxdata['dateTime'] = obsdata[0]
             windLullms = obsdata[1]
             windAvgms = obsdata[2]
