@@ -14,7 +14,26 @@ import sys
 from collections import defaultdict
 # from websocket import create_connection
 # from pint import UnitRegistry
+from logging.handlers import TimedRotatingFileHandler
+FORMATTER = logging.Formatter("%(asctime)s — %(name)s — %(levelname)s — %(message)s")
+LOG_FILE = "tempestudpdbg.log"
 
+def get_console_handler():
+   console_handler = logging.StreamHandler(sys.stdout)
+   console_handler.setFormatter(FORMATTER)
+   return console_handler
+def get_file_handler():
+   file_handler = TimedRotatingFileHandler(LOG_FILE, when='midnight')
+   file_handler.setFormatter(FORMATTER)
+   return file_handler
+def get_logger(logger_name):
+   logger = logging.getLogger(logger_name)
+   logger.setLevel(logging.DEBUG) # better to have too much log than not enough
+   logger.addHandler(get_console_handler())
+   logger.addHandler(get_file_handler())
+   # with this pattern, it's rarely necessary to propagate the error up to parent
+   logger.propagate = False
+   return logger
 # notify = sd_notify.Notifier()
 notify = local_notifier.Notifier()
 
@@ -84,7 +103,7 @@ def convertJSONStringToSequence(source):
 
 
 def connectudp():
-    logger.debug('Opening UDP connection...')
+    my_logger.debug('Opening UDP connection...')
     # create the listener socket
     sock_list = [create_broadcast_listener_socket(
         BROADCAST_IP, BROADCAST_PORT)]
@@ -93,7 +112,7 @@ def connectudp():
 
 def connectws():
 
-    logger.debug('Opening Websocket connection...')
+    my_logger.debug('Opening Websocket connection...')
 
     ws = create_connection(
         'wss://ws.weatherflow.com/swd/data?api_key=' + options.personal_token)
@@ -101,22 +120,22 @@ def connectws():
     # print("Received '%s'" % result)
     # print('')
 
-    logger.debug('Listening... ')
+    my_logger.debug('Listening... ')
     ws.send('{"type":"listen_start",' + ' "device_id":' +
             options.tempest_ID + ',' + ' "id":"Tempest"}')
     result = ws.recv()
-    logger.debug('Received {} '.format(result))
+    my_logger.debug('Received {} '.format(result))
     print('')
     return ws
 
 
 def extractobs(obsdata):
     if len(obsdata) < 22:
-        logger.debug('obsdata short list {} '.format(len(obsdata)))
+        my_logger.debug('obsdata short list {} '.format(len(obsdata)))
         return
 
     wxdata = defaultdict(dict)
-    logger.debug('obsdata record {} '.format(obsdata))
+    my_logger.debug('obsdata record {} '.format(obsdata))
     wxdata['dateTime'] = obsdata[0]
     windLullms = obsdata[1]
     windAvgms = obsdata[2]
@@ -160,7 +179,7 @@ def extractobs(obsdata):
         (1 + ((atLapse * hasl) / (atk + atLapse * hasl)))**constsexp
     a2ts = 1.0 * (aap * ((1 + (((slPres / aap)**constsinv)
                                * ((atLapse * hasl) / slTemp)))**constsexp))
-    logger.debug('aap {} atk {:3.2f} a2ts {:4.1f} a2tsx {:4.1f} humidity {}'.format(
+    my_logger.debug('aap {} atk {:3.2f} a2ts {:4.1f} a2tsx {:4.1f} humidity {}'.format(
         aap, atk, a2ts, a2tsx, wxdata['outHumidity']))
     wxdata['barometer'] = a2ts
 
@@ -168,7 +187,7 @@ def extractobs(obsdata):
 # is the coeficient something close to hasl/10, meaning simply
 # a2ts is about  aap + hasl/10
 
-    logger.info('data time {} aap {} atc {} a2ts {:4.1f} a2ts {:4.1f} humidity {}'.format(
+    my_logger.info('data time {} aap {} atc {} a2ts {:4.1f} a2ts {:4.1f} humidity {}'.format(
         wxdata['dateTime'], aap, atc,  a2ts, a2tsx, wxdata['outHumidity']))
 
     # print(weatherJSON['summary']['feels_like'])
@@ -192,7 +211,7 @@ def readws(socklist):
 
         # convert data to json
         data_json = json.loads(data)
-        logger.debug('data_json record {} '.format(data_json))
+        my_logger.debug('data_json record {} '.format(data_json))
 
         if data_json['type'] == 'obs_st':
             # takes the map list and the list of observations and creates a dictionary with the first value in
@@ -230,7 +249,7 @@ def readws(socklist):
             return
 
         else:
-            logger.debug(
+            my_logger.debug(
                 'unexpected type data_json record {} '.format(data_json))
             time.sleep(5)
             return
@@ -240,21 +259,9 @@ if __name__ == '__main__':
     scriptname = os.path.basename(__file__)
     print('started')
     # create logger with 'spam_application'
-    logger = logging.getLogger('tempestudpdbg')
-    logger.setLevel(logging.DEBUG)
-    # create file handler which logs even debug messages
-    fh = logging.FileHandler('tempestudpdbg.log')
-    fh.setLevel(logging.DEBUG)
-    # create console handler with a higher log level
-    ch = logging.StreamHandler(sys.stdout)
-    ch.setLevel(logging.DEBUG)
-    # create formatter and add it to the handlers
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    fh.setFormatter(formatter)
-    ch.setFormatter(formatter)
-    # add the handlers to the logger
-    logger.addHandler(fh)
-    logger.addHandler(ch)
+    my_logger = get_logger("main")
+    my_logger.debug("a debug message")
+    my_logger.setLevel(logging.DEBUG)
 
 # """
 #    logging.basicConfig(level=logging.DEBUG,
@@ -265,7 +272,7 @@ if __name__ == '__main__':
 #    logger = logging.getLogger(__name__)
 # """
 
-    logger.info('Logging level set ')
+    my_logger.info('Logging level set ')
     if not notify.enabled():
         # Then it's probably not running is systemd with watchdog enabled
         raise Exception("Watchdog not enabled")
@@ -285,12 +292,11 @@ if __name__ == '__main__':
     options = p.parse_args()
     print(options)
     # logging.basicConfig(level=options.log_level)
-    logger.setLevel(options.log_level)
-    ch.setLevel(options.log_level)
+    my_logger.setLevel(options.log_level)
 
-    logger.debug('Logging level seems to be')
-    logger.info('Logging level seems to be')
-    logger.warning('Logging level seems to be')
+    my_logger.debug('Logging level seems to be')
+    my_logger.info('Logging level seems to be')
+    my_logger.warning('Logging level seems to be')
 
     notify.ready()
     notify.status("startingloop for udp requesters...")
@@ -303,5 +309,5 @@ if __name__ == '__main__':
             readws(socklist)
             # logging.debug('read loop...')
         except Exception:
-            logger.error('An error occurred', exc_info=True)
+            my_logger.error('An error occurred', exc_info=True)
             exit(1)

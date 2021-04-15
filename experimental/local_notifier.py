@@ -4,7 +4,7 @@ import logging
 
 class Notifier():
     def __init__(self, *, sock=None, addr=None):
-        self.logger = logging.getLogger('local_notifier.init')
+        self.logger = logging.getLogger(__name__)
         # create file handler which logs even debug messages
         self.logger.info(' INIT NOTIFY_SOCKET')
 
