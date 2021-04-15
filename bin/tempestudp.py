@@ -12,11 +12,7 @@ import time
 from collections import defaultdict
 #from websocket import create_connection
 #from pint import UnitRegistry
-logging.basicConfig(level=logging.DEBUG,
-    format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
-    )
-logger = logging.getLogger(__name__)
+
 
 notify = sd_notify.Notifier()
 
@@ -82,7 +78,7 @@ def convertJSONStringToSequence(source):
     return j
 
 def connectudp():
-    logging.debug('Opening UDP connection...')
+    logger.debug('Opening UDP connection...')
     # create the listener socket
     sock_list = [create_broadcast_listener_socket(BROADCAST_IP, BROADCAST_PORT)]
     return sock_list
@@ -99,11 +95,11 @@ def connectws():
     #print('')
 
 
-    print('Listening... ', end = '')
+    logger.debug('Listening... ')
     ws.send('{"type":"listen_start",' + ' "device_id":' +
         options.tempest_ID + ',' + ' "id":"Tempest"}')
     result = ws.recv()
-    print("Received '%s'" % result)
+    logger.debug('Received {} '.format(result))
     print('')
     return ws
 
@@ -122,13 +118,14 @@ def readws(socklist):
 
         # convert data to json
         data_json = json.loads(data)
-        logging.debug('data_json record {} '.format(data_json)
+        logger.debug('data_json record {} '.format(data_json))
+
         if data_json['type'] == 'obs_st':
             # takes the map list and the list of observations and creates a dictionary with the first value in
             #  the map as the key and the first value in the list of observations as the value, second value
             #  to second value, etc
             obsdata = data_json['obs'][0]
-            logging.debug('obsdata record {} '.format(obsdata)
+            logger.debug('obsdata record {} '.format(obsdata))
             wxdata['dateTime'] = obsdata[0]
             windLullms = obsdata[1]
             windAvgms = obsdata[2]
@@ -152,12 +149,14 @@ def readws(socklist):
             lightnCount = obsdata[15]
             battVolt = obsdata[16]
             reportIntm = obsdata[17]
-            dailyRainAccum = obsdata[18]
-            wxdata['dayRain'] = 0.0393701 * dailyRainAccum
-            rainAccumFinal = obsdata[19]
-            rainDailyAccumFinal = obsdata[20]
-            wxdata['rain24'] = 0.0393701 * dailyRainAccum
-            precipAnalType = obsdata[21]
+            wxdata['dayRain'] = 0
+            wxdata['rain24'] = 0
+            # dailyRainAccum = obsdata[18]
+            # wxdata['dayRain'] = 0.0393701 * dailyRainAccum
+            # rainAccumFinal = obsdata[19]
+            # rainDailyAccumFinal = obsdata[20]
+            # wxdata['rain24'] = 0.0393701 * dailyRainAccum
+            # precipAnalType = obsdata[21]
 
             # Actual atmospheric pressure in hPa
             aap = AirPressure
@@ -170,7 +169,7 @@ def readws(socklist):
             # atLapse = 0.0065 constsexp = grav/(gasconst*tLapse)
             a2tsx = aap * (1 + ((atLapse * hasl) / (atk + atLapse * hasl)))**constsexp
             a2ts = 1.0 * (aap * ((1 + (((slPres/aap)**constsinv) * ((atLapse * hasl)/slTemp)))**constsexp))
-            logging.debug('aap {} atk {:3.2f} a2ts {:4.1f} a2tsx {:4.1f} humidity {}'.format(
+            logger.debug('aap {} atk {:3.2f} a2ts {:4.1f} a2tsx {:4.1f} humidity {}'.format(
              aap, atk, a2ts, a2tsx, wxdata['outHumidity']))
             wxdata['barometer'] = a2ts
 
@@ -178,7 +177,7 @@ def readws(socklist):
 # is the coeficient something close to hasl/10, meaning simply
 # a2ts is about  aap + hasl/10
 
-            logging.info('data time {} aap {} atc {} a2ts {:4.1f} a2ts {:4.1f} humidity {}'.format(
+            logger.info('data time {} aap {} atc {} a2ts {:4.1f} a2ts {:4.1f} humidity {}'.format(
                 wxdata['dateTime'], aap, atc,  a2ts, a2tsx, wxdata['outHumidity']))
 
     #print(weatherJSON['summary']['feels_like'])
@@ -215,7 +214,7 @@ def readws(socklist):
             return
 
         else:
-            print(data_json)
+            logger.debug('unexpected type data_json record {} '.format(data_json))
             time.sleep(5)
             return
 
@@ -223,6 +222,11 @@ def readws(socklist):
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG,
+        format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S"
+        )
+    logger = logging.getLogger(__name__)
 
     if not notify.enabled():
     # Then it's probably not running is systemd with watchdog enabled
@@ -234,9 +238,13 @@ if __name__ == '__main__':
 
     p = configargparse.ArgParser(default_config_files=['/etc/default/tempest.conf', '~/.my_tempest'])
     p.add('--tempest_ID', required=False,  help='tempest station ID')
+    p.add('-l', '--log_level', default='INFO',
+               choices=['DEBUG', 'INFO', 'WARNING',
+                        'ERROR', 'CRITICAL'],
+               help='Log level for script')
 
     options = p.parse_args()
-
+    logging.basicConfig(level=options.log_level)
     notify.ready()
     notify.status("startingloop for udp requesters...")
     time.sleep(3)
@@ -247,5 +255,5 @@ if __name__ == '__main__':
         try:
             readws(socklist)
         except Exception:
-            logging.error('An error occurred', exc_info=True)
+            logger.error('An error occurred', exc_info=True)
             exit(1)
