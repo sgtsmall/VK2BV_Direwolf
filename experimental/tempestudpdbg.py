@@ -15,7 +15,7 @@ from collections import defaultdict
 # from websocket import create_connection
 # from pint import UnitRegistry
 from logging.handlers import TimedRotatingFileHandler
-FORMATTER = logging.Formatter("%(asctime)s — %(name)s — %(levelname)s — %(message)s")
+FORMATTER = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 LOG_FILE = "tempestudpdbg.log"
 
 def get_console_handler():
