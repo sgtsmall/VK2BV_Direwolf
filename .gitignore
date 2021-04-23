@@ -2,3 +2,5 @@
 /experimental/*.log
 /experimental/*.txt
 /experimental/Pip*
+/*.log
+/Pipfile*

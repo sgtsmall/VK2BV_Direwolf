@@ -34,6 +34,7 @@ def get_logger(logger_name):
    # with this pattern, it's rarely necessary to propagate the error up to parent
    logger.propagate = False
    return logger
+
 # notify = sd_notify.Notifier()
 notify = local_notifier.Notifier()
 
@@ -197,7 +198,7 @@ def extractobs(obsdata):
     return
 
 
-def readws(socklist):
+def readudp(socklist):
     # small sleep otherwise this will loop too fast between messages and eat a lot of CPU
 
     time.sleep(0.1)
@@ -262,16 +263,6 @@ if __name__ == '__main__':
     my_logger = get_logger("main")
     my_logger.debug("a debug message")
     my_logger.setLevel(logging.DEBUG)
-
-# """
-#    logging.basicConfig(level=logging.DEBUG,
-#                        format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
-#                        datefmt="%Y-%m-%d %H:%M:%S",
-#                        filename=logfile.txt
-#                        )
-#    logger = logging.getLogger(__name__)
-# """
-
     my_logger.info('Logging level set ')
     if not notify.enabled():
         # Then it's probably not running is systemd with watchdog enabled
@@ -290,13 +281,8 @@ if __name__ == '__main__':
           help='Log level for script')
 
     options = p.parse_args()
-    print(options)
-    # logging.basicConfig(level=options.log_level)
     my_logger.setLevel(options.log_level)
 
-    my_logger.debug('Logging level seems to be')
-    my_logger.info('Logging level seems to be')
-    my_logger.warning('Logging level seems to be')
 
     notify.ready()
     notify.status("startingloop for udp requesters...")
@@ -306,7 +292,7 @@ if __name__ == '__main__':
 
     while True:
         try:
-            readws(socklist)
+            readudp(socklist)
             # logging.debug('read loop...')
         except Exception:
             my_logger.error('An error occurred', exc_info=True)

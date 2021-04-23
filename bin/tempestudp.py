@@ -7,18 +7,42 @@ import sd_notify
 import collections
 import configargparse
 import json
-import csv
+import os
+# mport csv
 import time
+import sys
 from collections import defaultdict
-#from websocket import create_connection
-#from pint import UnitRegistry
+# from websocket import create_connection
+# from pint import UnitRegistry
+from logging.handlers import TimedRotatingFileHandler
+FORMATTER = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+LOG_FILE = "tempestudpdbg.log"
 
+def get_console_handler():
+   console_handler = logging.StreamHandler(sys.stdout)
+   console_handler.setFormatter(FORMATTER)
+   return console_handler
+def get_file_handler():
+   file_handler = TimedRotatingFileHandler(LOG_FILE, when='midnight')
+   file_handler.setFormatter(FORMATTER)
+   return file_handler
+def get_logger(logger_name):
+   logger = logging.getLogger(logger_name)
+   logger.setLevel(logging.DEBUG) # better to have too much log than not enough
+   logger.addHandler(get_console_handler())
+   # logger.addHandler(get_file_handler())
+   # with this pattern, it's rarely necessary to propagate the error up to parent
+   logger.propagate = False
+   return logger
 
 notify = sd_notify.Notifier()
+# notify = local_notifier.Notifier()
 
 # Constants
 # Height above sea level m
-hasl = 168
+hasl = 160
+# Height above ground level m
+hasl = 6
 # gravity m/s
 grav = 9.80665
 # gasconst ait  J/(kg K)
@@ -31,27 +55,30 @@ atLapse = 0.0065
 slTemp = 288.15
 # standard Sea Level Pres mb
 slPres = 1013.25
-constsexp = grav/(gasconst*atLapse)
-constsinv = (gasconst*atLapse)/grav
+constsexp = grav / (gasconst * atLapse)
+constsinv = (gasconst * atLapse) / grav
 
 # ip/port to listen to
 BROADCAST_IP = '239.255.255.250'
 BROADCAST_PORT = 50222
 
 
-
 # create broadcast listener socket
 def create_broadcast_listener_socket(broadcast_ip, broadcast_port):
 
-    b_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+    b_sock = socket.socket(
+        socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
     b_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     b_sock.bind(('', broadcast_port))
 
-    mreq = struct.pack("4sl", socket.inet_aton(broadcast_ip), socket.INADDR_ANY)
+    mreq = struct.pack("4sl", socket.inet_aton(
+        broadcast_ip), socket.INADDR_ANY)
     b_sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP, mreq)
 
     return b_sock
+
+
 def write_data(filename, data):
     fields = []
     fields.append("%03d" % int(data['windDir']))
@@ -77,37 +104,106 @@ def convertJSONStringToSequence(source):
         object_pairs_hook=collections.OrderedDict).decode(source)
     return j
 
+
 def connectudp():
-    logger.debug('Opening UDP connection...')
+    my_logger.debug('Opening UDP connection...')
     # create the listener socket
-    sock_list = [create_broadcast_listener_socket(BROADCAST_IP, BROADCAST_PORT)]
+    sock_list = [create_broadcast_listener_socket(
+        BROADCAST_IP, BROADCAST_PORT)]
     return sock_list
 
 
 def connectws():
 
-    loging.debug('Opening Websocket connection...')
+    my_logger.debug('Opening Websocket connection...')
 
     ws = create_connection(
         'wss://ws.weatherflow.com/swd/data?api_key=' + options.personal_token)
     result = ws.recv()
-    #print("Received '%s'" % result)
-    #print('')
+    # print("Received '%s'" % result)
+    # print('')
 
-
-    logger.debug('Listening... ')
+    my_logger.debug('Listening... ')
     ws.send('{"type":"listen_start",' + ' "device_id":' +
-        options.tempest_ID + ',' + ' "id":"Tempest"}')
+            options.tempest_ID + ',' + ' "id":"Tempest"}')
     result = ws.recv()
-    logger.debug('Received {} '.format(result))
+    my_logger.debug('Received {} '.format(result))
     print('')
     return ws
 
 
-def readws(socklist):
-    # small sleep otherwise this will loop too fast between messages and eat a lot of CPU
-    time.sleep(0.01)
+def extractobs(obsdata):
+    if len(obsdata) < 22:
+        my_logger.debug('obsdata short list {} '.format(len(obsdata)))
+        return
+
     wxdata = defaultdict(dict)
+    my_logger.debug('obsdata record {} '.format(obsdata))
+    wxdata['dateTime'] = obsdata[0]
+    windLullms = obsdata[1]
+    windAvgms = obsdata[2]
+    wxdata['windSpeed'] = windAvgms * 2.23694    # convertit
+    windGustms = obsdata[3]
+    wxdata['windGust'] = windGustms * 2.23694  # convertit
+    wxdata['windDir'] = obsdata[4]
+    windSampInt = obsdata[5]
+    AirPressure = obsdata[6]
+    airTempC = obsdata[7]
+    wxdata['outTemp'] = (airTempC * 9 / 5) + 32
+    wxdata['outHumidity'] = obsdata[8]
+    illumlux = obsdata[9]
+    ultravil = obsdata[10]
+    solarRad = obsdata[11]
+    rainAccum = obsdata[12]
+    wxdata['hourRain'] = 0.0393701 * rainAccum
+    precipType = obsdata[13]
+    # 0=none, 1=rain, 2=hail
+    lightnDistkm = obsdata[14]
+    lightnCount = obsdata[15]
+    battVolt = obsdata[16]
+    reportIntm = obsdata[17]
+    dailyRainAccum = obsdata[18]
+    wxdata['dayRain'] = 0.0393701 * dailyRainAccum
+    rainAccumFinal = obsdata[19]
+    rainDailyAccumFinal = obsdata[20]
+    wxdata['rain24'] = 0.0393701 * dailyRainAccum
+    precipAnalType = obsdata[21]
+
+    # Actual atmospheric pressure in hPa
+    aap = AirPressure
+    # Actual temperature in Celsius
+    atc = airTempC
+    # Temp in Kelvin K
+    atk = atc + 273.15
+    # constants defined above , here for readability
+    # hasl = 168 grav = 9.80665 gasconst = 287.053 tLapse = -0.0065
+    # atLapse = 0.0065 constsexp = grav/(gasconst*tLapse)
+    a2tsx = aap * \
+        (1 + ((atLapse * (hasl+hagl)) / (atk + atLapse * (hasl+hagl))))**constsexp
+    a2ts = 1.0 * (aap * ((1 + (((slPres / aap)**constsinv)
+                               * ((atLapse * (hasl+hagl)) / slTemp)))**constsexp))
+    my_logger.debug('aap {} atk {:3.2f} a2ts {:4.1f} a2tsx {:4.1f} humidity {}'.format(
+        aap, atk, a2ts, a2tsx, wxdata['outHumidity']))
+    wxdata['barometer'] = a2ts
+
+# in standard places (hasl from 100-800 m, temperature from -10 to 35)
+# is the coeficient something close to hasl/10, meaning simply
+# a2ts is about  aap + hasl/10
+
+    my_logger.info('data time {} aap {} atc {} a2ts {:4.1f} a2ts {:4.1f} humidity {}'.format(
+        wxdata['dateTime'], aap, atc,  a2ts, a2tsx, wxdata['outHumidity']))
+
+    # print(weatherJSON['summary']['feels_like'])
+    write_data('/tmp/wxnow.txt', wxdata)
+
+    time.sleep(55)
+    return
+
+
+def readudp(socklist):
+    # small sleep otherwise this will loop too fast between messages and eat a lot of CPU
+
+    time.sleep(0.5)
 
     # wait until there is a message to read
     readable, writable, exceptional = select.select(socklist, [], socklist, 0)
@@ -118,72 +214,14 @@ def readws(socklist):
 
         # convert data to json
         data_json = json.loads(data)
-        logger.debug('data_json record {} '.format(data_json))
+        my_logger.debug('data_json record {} '.format(data_json))
 
         if data_json['type'] == 'obs_st':
             # takes the map list and the list of observations and creates a dictionary with the first value in
             #  the map as the key and the first value in the list of observations as the value, second value
             #  to second value, etc
             obsdata = data_json['obs'][0]
-            logger.debug('obsdata record {} '.format(obsdata))
-            wxdata['dateTime'] = obsdata[0]
-            windLullms = obsdata[1]
-            windAvgms = obsdata[2]
-            wxdata['windSpeed'] = windAvgms * 2.23694    # convertit
-            windGustms = obsdata[3]
-            wxdata['windGust'] = windGustms * 2.23694  # convertit
-            wxdata['windDir'] = obsdata[4]
-            windSampInt = obsdata[5]
-            AirPressure = obsdata[6]
-            airTempC = obsdata[7]
-            wxdata['outTemp'] = (airTempC * 9 / 5) + 32
-            wxdata['outHumidity'] = obsdata[8]
-            illumlux = obsdata[9]
-            ultravil = obsdata[10]
-            solarRad = obsdata[11]
-            rainAccum = obsdata[12]
-            wxdata['hourRain'] = 0.0393701 * rainAccum
-            precipType = obsdata[13]
-            # 0=none, 1=rain, 2=hail
-            lightnDistkm = obsdata[14]
-            lightnCount = obsdata[15]
-            battVolt = obsdata[16]
-            reportIntm = obsdata[17]
-            wxdata['dayRain'] = 0
-            wxdata['rain24'] = 0
-            # dailyRainAccum = obsdata[18]
-            # wxdata['dayRain'] = 0.0393701 * dailyRainAccum
-            # rainAccumFinal = obsdata[19]
-            # rainDailyAccumFinal = obsdata[20]
-            # wxdata['rain24'] = 0.0393701 * dailyRainAccum
-            # precipAnalType = obsdata[21]
-
-            # Actual atmospheric pressure in hPa
-            aap = AirPressure
-            # Actual temperature in Celsius
-            atc = airTempC
-            # Temp in Kelvin K
-            atk = atc + 273.15
-            # constants defined above , here for readability
-            # hasl = 168 grav = 9.80665 gasconst = 287.053 tLapse = -0.0065
-            # atLapse = 0.0065 constsexp = grav/(gasconst*tLapse)
-            a2tsx = aap * (1 + ((atLapse * hasl) / (atk + atLapse * hasl)))**constsexp
-            a2ts = 1.0 * (aap * ((1 + (((slPres/aap)**constsinv) * ((atLapse * hasl)/slTemp)))**constsexp))
-            logger.debug('aap {} atk {:3.2f} a2ts {:4.1f} a2tsx {:4.1f} humidity {}'.format(
-             aap, atk, a2ts, a2tsx, wxdata['outHumidity']))
-            wxdata['barometer'] = a2ts
-
-# in standard places (hasl from 100-800 m, temperature from -10 to 35)
-# is the coeficient something close to hasl/10, meaning simply
-# a2ts is about  aap + hasl/10
-
-            logger.info('data time {} aap {} atc {} a2ts {:4.1f} a2ts {:4.1f} humidity {}'.format(
-                wxdata['dateTime'], aap, atc,  a2ts, a2tsx, wxdata['outHumidity']))
-
-    #print(weatherJSON['summary']['feels_like'])
-            write_data('/tmp/wxnow.txt', wxdata)
-
-            time.sleep(30)
+            extractobs(obsdata)
             return
 
         elif data_json['type'] == 'evt_precip':
@@ -214,37 +252,46 @@ def readws(socklist):
             return
 
         else:
-            logger.debug('unexpected type data_json record {} '.format(data_json))
+            my_logger.debug(
+                'unexpected type data_json record {} '.format(data_json))
             time.sleep(5)
             return
 
 
-
-
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO,
-        format="%(asctime)s [%(name)s] %(levelname)s: %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S"
-        )
-    logger = logging.getLogger(__name__)
-
+    scriptname = os.path.basename(__file__)
+    print('started')
+    # create logger with 'spam_application'
+    my_logger = get_logger("main")
+    my_logger.debug("a debug message")
+    my_logger.setLevel(logging.INFO)
+    my_logger.info('Logging level set ')
     if not notify.enabled():
-    # Then it's probably not running is systemd with watchdog enabled
+        # Then it's probably not running is systemd with watchdog enabled
         raise Exception("Watchdog not enabled")
 
     # Report a status message
     notify.status("Initialising my service...")
-    time.sleep(3)
+    # time.sleep(3)
 
-    p = configargparse.ArgParser(default_config_files=['/etc/default/tempest.conf', '~/.my_tempest'])
+    p = configargparse.ArgParser(
+        default_config_files=['/etc/default/tempest.conf', '~/.my_tempest'])
     p.add('--tempest_ID', required=False,  help='tempest station ID')
-    p.add('-l', '--log_level', default='INFO',
-               choices=['DEBUG', 'INFO', 'WARNING',
-                        'ERROR', 'CRITICAL'],
-               help='Log level for script')
+    p.add('--personal_token', required=False, help='tempest API token')
+    p.add('-l', '--log_level', default='WARNING',
+          choices=['DEBUG', 'INFO', 'WARNING',
+                   'ERROR', 'CRITICAL'],
+          help='Log level for script')
 
     options = p.parse_args()
-    logging.basicConfig(level=options.log_level)
+    # print(options)
+    # logging.basicConfig(level=options.log_level)
+    my_logger.setLevel(options.log_level)
+
+    my_logger.debug('Logging level seems to include')
+    my_logger.info('Logging level seems to include')
+    my_logger.warning('Logging level seems to include')
+
     notify.ready()
     notify.status("startingloop for udp requesters...")
     time.sleep(3)
@@ -253,7 +300,8 @@ if __name__ == '__main__':
 
     while True:
         try:
-            readws(socklist)
+            readudp(socklist)
+            # logging.debug('read loop...')
         except Exception:
-            logger.error('An error occurred', exc_info=True)
+            my_logger.error('An error occurred', exc_info=True)
             exit(1)
