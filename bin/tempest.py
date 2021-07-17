@@ -1,42 +1,59 @@
 # import urllib
 import logging
 import sd_notify
+import local_notifier
 import collections
 import configargparse
 import json
 import os
 import sys
-# mport csv
+# import csv
 import time
 from collections import defaultdict
 from websocket import create_connection
-#from pint import UnitRegistry
+# from pint import UnitRegistry
 from logging.handlers import TimedRotatingFileHandler
 FORMATTER = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 LOG_FILE = "tempest.log"
 
-def get_console_handler():
-   console_handler = logging.StreamHandler(sys.stdout)
-   console_handler.setFormatter(FORMATTER)
-   return console_handler
-def get_file_handler():
-   file_handler = TimedRotatingFileHandler(LOG_FILE, when='midnight')
-   file_handler.setFormatter(FORMATTER)
-   return file_handler
-def get_logger(logger_name):
-   logger = logging.getLogger(logger_name)
-   logger.setLevel(logging.DEBUG) # better to have too much log than not enough
-   logger.addHandler(get_console_handler())
-   # logger.addHandler(get_file_handler())
-   # with this pattern, it's rarely necessary to propagate the error up to parent
-   logger.propagate = False
-   return logger
 
-notify = sd_notify.Notifier()
+def get_console_handler():
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(FORMATTER)
+    return console_handler
+
+
+def get_file_handler():
+    file_handler = TimedRotatingFileHandler(LOG_FILE, when='midnight')
+    file_handler.setFormatter(FORMATTER)
+    return file_handler
+
+
+def get_logger(logger_name):
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
+    logger.addHandler(get_console_handler())
+    # logger.addHandler(get_file_handler())
+    # with this pattern, it's rarely necessary to propagate the error up to parent
+    logger.propagate = False
+    return logger
+
+
+def get_logger_file(logger_name):
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
+    logger.addHandler(get_console_handler())
+    logger.addHandler(get_file_handler())
+    # with this pattern, it's rarely necessary to propagate the error up to parent
+    logger.propagate = False
+    return logger
+
 
 # Constants
 # Height above sea level m
-hasl = 168
+hasl = 160
+# Height above ground level m
+hagl = 6
 # gravity m/s
 grav = 9.80665
 # gasconst ait  J/(kg K)
@@ -51,6 +68,11 @@ slTemp = 288.15
 slPres = 1013.25
 constsexp = grav / (gasconst * atLapse)
 constsinv = (gasconst * atLapse) / grav
+
+# ip/port to listen to
+BROADCAST_IP = '239.255.255.250'
+BROADCAST_PORT = 50222
+
 
 def write_data(filename, data):
     fields = []
@@ -76,6 +98,7 @@ def convertJSONStringToSequence(source):
     j = json.JSONDecoder(
         object_pairs_hook=collections.OrderedDict).decode(source)
     return j
+
 
 def connectws():
 
@@ -145,8 +168,8 @@ def extractobs(obsdata):
     wxdata['rain24'] = 0.0393701 * dailyRainAccum
     precipAnalType = obsdata[21]
 
-# Actual atmospheric pressure in hPa
-    aap = AirPressure * 1.0
+    # Actual atmospheric pressure in hPa
+    aap = AirPressure
     # Actual temperature in Celsius
     atc = airTempC
     # Temp in Kelvin K
@@ -155,9 +178,9 @@ def extractobs(obsdata):
     # hasl = 168 grav = 9.80665 gasconst = 287.053 tLapse = -0.0065
     # atLapse = 0.0065 constsexp = grav/(gasconst*tLapse)
     a2tsx = aap * \
-        (1 + ((atLapse * hasl) / (atk + atLapse * hasl)))**constsexp
+        (1 + ((atLapse * (hasl+hagl)) / (atk + atLapse * (hasl+hagl))))**constsexp
     a2ts = 1.0 * (aap * ((1 + (((slPres / aap)**constsinv)
-                               * ((atLapse * hasl) / slTemp)))**constsexp))
+                               * ((atLapse * (hasl+hagl)) / slTemp)))**constsexp))
     my_logger.debug('aap {} atk {:3.2f} a2ts {:4.1f} a2tsx {:4.1f} humidity {}'.format(
         aap, atk, a2ts, a2tsx, wxdata['outHumidity']))
     wxdata['barometer'] = a2ts
@@ -175,30 +198,48 @@ def extractobs(obsdata):
     time.sleep(30)
     return
 
+
 if __name__ == '__main__':
     scriptname = os.path.basename(__file__)
     print('started')
-    # create logger with 'spam_application'
-    my_logger = get_logger("main")
-    my_logger.debug("a debug message")
-    my_logger.setLevel(logging.INFO)
-    my_logger.info('Logging level set ')
 
-    if not notify.enabled():
-    # Then it's probably not running is systemd with watchdog enabled
-        raise Exception("Watchdog not enabled")
-
-    # Report a status message
-    notify.status("Initialising my service...")
-    time.sleep(3)
-
-    p = configargparse.ArgParser(default_config_files=['/etc/default/tempest.conf', '~/.my_tempest'])
-    p.add('--tempest_ID', required=True,  help='nempest station ID')
-    p.add('--personal_token', required=True, help='tempest station ID')
+    p = configargparse.ArgParser(
+        default_config_files=['/etc/default/tempest.conf', '~/.my_tempest'])
+    p.add('--tempest_ID', required=False,  help='tempest station ID')
+    p.add('--personal_token', required=False, help='tempest API token')
+    p.add('--notctl', dest='notctl', action='store_true',
+          help='run on direct not systemctl')
     p.add('-l', '--log_level', default='WARNING',
           choices=['DEBUG', 'INFO', 'WARNING',
                    'ERROR', 'CRITICAL'],
           help='Log level for script')
+
+    options = p.parse_args()
+
+    # create logger with 'spam_application'
+    if options.notctl:
+        my_logger = get_logger_file(__name__)
+        notify = local_notifier.Notifier()
+    else:
+        my_logger = get_logger(__name__)
+        notify = sd_notify.Notifier()
+    # my_logger.debug("a debug message")
+    my_logger.setLevel(logging.INFO)
+    my_logger.info('Logging level set ')
+    if not notify.enabled():
+        # Then it's probably not running is systemd with watchdog enabled
+        raise Exception("Watchdog not enabled")
+
+    # Report a status message
+    notify.status("Initialising my service...")
+    # time.sleep(3)
+    # print(options)
+    # logging.basicConfig(level=options.log_level)
+    my_logger.setLevel(options.log_level)
+
+    my_logger.debug('Logging level seems to include')
+    my_logger.info('Logging level seems to include')
+    my_logger.warning('Logging level seems to include')
 
     options = p.parse_args()
     my_logger.setLevel(options.log_level)

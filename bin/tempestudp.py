@@ -1,48 +1,62 @@
-#import urllib
+# import urllib
 import logging
 import socket
 import select
 import struct
 import sd_notify
+import local_notifier
 import collections
 import configargparse
 import json
 import os
-# mport csv
-import time
 import sys
+# import csv
+import time
 from collections import defaultdict
-# from websocket import create_connection
+from websocket import create_connection
 # from pint import UnitRegistry
 from logging.handlers import TimedRotatingFileHandler
 FORMATTER = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 LOG_FILE = "tempestudpdbg.log"
 
-def get_console_handler():
-   console_handler = logging.StreamHandler(sys.stdout)
-   console_handler.setFormatter(FORMATTER)
-   return console_handler
-def get_file_handler():
-   file_handler = TimedRotatingFileHandler(LOG_FILE, when='midnight')
-   file_handler.setFormatter(FORMATTER)
-   return file_handler
-def get_logger(logger_name):
-   logger = logging.getLogger(logger_name)
-   logger.setLevel(logging.DEBUG) # better to have too much log than not enough
-   logger.addHandler(get_console_handler())
-   # logger.addHandler(get_file_handler())
-   # with this pattern, it's rarely necessary to propagate the error up to parent
-   logger.propagate = False
-   return logger
 
-notify = sd_notify.Notifier()
-# notify = local_notifier.Notifier()
+def get_console_handler():
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setFormatter(FORMATTER)
+    return console_handler
+
+
+def get_file_handler():
+    file_handler = TimedRotatingFileHandler(LOG_FILE, when='midnight')
+    file_handler.setFormatter(FORMATTER)
+    return file_handler
+
+
+def get_logger(logger_name):
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
+    logger.addHandler(get_console_handler())
+    # logger.addHandler(get_file_handler())
+    # with this pattern, it's rarely necessary to propagate the error up to parent
+    logger.propagate = False
+    return logger
+
+
+def get_logger_file(logger_name):
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(logging.DEBUG)  # better to have too much log than not enough
+    logger.addHandler(get_console_handler())
+    logger.addHandler(get_file_handler())
+    # with this pattern, it's rarely necessary to propagate the error up to parent
+    logger.propagate = False
+    return logger
+
 
 # Constants
 # Height above sea level m
 hasl = 160
 # Height above ground level m
-hasl = 6
+hagl = 6
 # gravity m/s
 grav = 9.80665
 # gasconst ait  J/(kg K)
@@ -140,34 +154,34 @@ def extractobs(obsdata):
     wxdata = defaultdict(dict)
     my_logger.debug('obsdata record {} '.format(obsdata))
     wxdata['dateTime'] = obsdata[0]
-    windLullms = obsdata[1]
+    # windLullms = obsdata[1]
     windAvgms = obsdata[2]
     wxdata['windSpeed'] = windAvgms * 2.23694    # convertit
     windGustms = obsdata[3]
     wxdata['windGust'] = windGustms * 2.23694  # convertit
     wxdata['windDir'] = obsdata[4]
-    windSampInt = obsdata[5]
+    # windSampInt = obsdata[5]
     AirPressure = obsdata[6]
     airTempC = obsdata[7]
     wxdata['outTemp'] = (airTempC * 9 / 5) + 32
     wxdata['outHumidity'] = obsdata[8]
-    illumlux = obsdata[9]
-    ultravil = obsdata[10]
-    solarRad = obsdata[11]
+    # illumlux = obsdata[9]
+    # ultravil = obsdata[10]
+    # solarRad = obsdata[11]
     rainAccum = obsdata[12]
     wxdata['hourRain'] = 0.0393701 * rainAccum
-    precipType = obsdata[13]
+    # precipType = obsdata[13]
     # 0=none, 1=rain, 2=hail
-    lightnDistkm = obsdata[14]
-    lightnCount = obsdata[15]
-    battVolt = obsdata[16]
-    reportIntm = obsdata[17]
+    # lightnDistkm = obsdata[14]
+    # lightnCount = obsdata[15]
+    # battVolt = obsdata[16]
+    # reportIntm = obsdata[17]
     dailyRainAccum = obsdata[18]
     wxdata['dayRain'] = 0.0393701 * dailyRainAccum
-    rainAccumFinal = obsdata[19]
-    rainDailyAccumFinal = obsdata[20]
+    # rainAccumFinal = obsdata[19]
+    # rainDailyAccumFinal = obsdata[20]
     wxdata['rain24'] = 0.0393701 * dailyRainAccum
-    precipAnalType = obsdata[21]
+    # precipAnalType = obsdata[21]
 
     # Actual atmospheric pressure in hPa
     aap = AirPressure
@@ -261,9 +275,27 @@ def readudp(socklist):
 if __name__ == '__main__':
     scriptname = os.path.basename(__file__)
     print('started')
-    # create logger with 'spam_application'
-    my_logger = get_logger("main")
-    my_logger.debug("a debug message")
+
+    p = configargparse.ArgParser(
+        default_config_files=['/etc/default/tempest.conf', '~/.my_tempest'])
+    p.add('--tempest_ID', required=False,  help='tempest station ID')
+    p.add('--personal_token', required=False, help='tempest API token')
+    p.add('--notctl', dest='notctl', action='store_true',
+          help='run on direct not systemctl')
+    p.add('-l', '--log_level', default='WARNING',
+          choices=['DEBUG', 'INFO', 'WARNING',
+                   'ERROR', 'CRITICAL'],
+          help='Log level for script')
+
+    options = p.parse_args()
+
+    if options.notctl:
+        my_logger = get_logger_file(__name__)
+        notify = local_notifier.Notifier()
+    else:
+        my_logger = get_logger(__name__)
+        notify = sd_notify.Notifier()
+    # my_logger.debug("a debug message")
     my_logger.setLevel(logging.INFO)
     my_logger.info('Logging level set ')
     if not notify.enabled():
@@ -273,17 +305,6 @@ if __name__ == '__main__':
     # Report a status message
     notify.status("Initialising my service...")
     # time.sleep(3)
-
-    p = configargparse.ArgParser(
-        default_config_files=['/etc/default/tempest.conf', '~/.my_tempest'])
-    p.add('--tempest_ID', required=False,  help='tempest station ID')
-    p.add('--personal_token', required=False, help='tempest API token')
-    p.add('-l', '--log_level', default='WARNING',
-          choices=['DEBUG', 'INFO', 'WARNING',
-                   'ERROR', 'CRITICAL'],
-          help='Log level for script')
-
-    options = p.parse_args()
     # print(options)
     # logging.basicConfig(level=options.log_level)
     my_logger.setLevel(options.log_level)
