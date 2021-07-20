@@ -89,6 +89,7 @@ install-rpi : YAAC.sh
 install-tempest : service/tempest.service
 	$(INSTALL) bin/tempest.py $(INSTALLDIR)/bin
 	$(INSTALL) bin/tempestudp.py $(INSTALLDIR)/bin
+	$(INSTALL) bin/local_notifier.py $(INSTALLDIR)/bin
 	$(INSTALL) default/tempest.conf /etc/default
 	$(INSTALL) -m 644 service/tempest.service $(USERVICEDIR)
 	$(INSTALL) -m 644 service/tempestudp.service $(USERVICEDIR)

@@ -4,3 +4,6 @@
 /experimental/Pip*
 /*.log
 /Pipfile*
+/streamz
+/bin/.direnv
+/bin/.envrc

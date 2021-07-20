@@ -1,0 +1,8 @@
+gevent==21.1.2
+greenlet==1.0.0
+six==1.15.0
+websocket-client==0.58.0
+zope.event==4.5.0
+zope.interface==5.2.0
+ConfigArgParse==1.4
+sd-notify==0.1.0
