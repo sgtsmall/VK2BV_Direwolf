@@ -224,36 +224,36 @@ def readudp(socklist):
             return
 
         elif data_json['type'] == 'evt_precip':
-            time.sleep(5)
+            time.sleep(1)
             return
 
         elif data_json['type'] == 'evt_strike':
-            time.sleep(5)
+            time.sleep(1)
             return
 
         elif data_json['type'] == 'rapid_wind':
-            time.sleep(5)
+            time.sleep(1)
             return
 
         elif data_json['type'] == 'obs_air':
-            time.sleep(5)
+            time.sleep(1)
             return
 
         elif data_json['type'] == 'obs_sky':
-            time.sleep(5)
+            time.sleep(1)
             return
         elif data_json['type'] == 'device_status':
-            time.sleep(5)
+            time.sleep(1)
             return
 
         elif data_json['type'] == 'hub_status':
-            time.sleep(5)
+            time.sleep(1)
             return
 
         else:
             my_logger.debug(
                 'unexpected type data_json record {} '.format(data_json))
-            time.sleep(5)
+            time.sleep(1)
             return
 
 
@@ -372,7 +372,7 @@ def extractobs(obsdata):
         # print(weatherJSON['summary']['feels_like'])
         write_data('/tmp/wxnow.txt', wxdata)
 
-    time.sleep(15)
+    time.sleep(5)
     return
 
 
@@ -424,7 +424,7 @@ if __name__ == '__main__':
 
     notify.ready()
     notify.status("startingloop for requesters...")
-    time.sleep(3)
+    time.sleep(1)
     now = datetime.datetime.now()
     hhour = int(now.strftime('%H')) - 1
 
