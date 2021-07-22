@@ -3,7 +3,7 @@ Description=tempest - read tempest data from local network
 
 [Service]
 # Command to execute when the service is started
-ExecStart=/usr/bin/python3 /usr/local/bin/tempestudp.py
+ExecStart=/usr/bin/python3 /usr/local/bin/tempest.py --udp
 
 # Disable Python's buffering of STDOUT and STDERR, so that output from the
 # service shows up immediately in systemd's logs
