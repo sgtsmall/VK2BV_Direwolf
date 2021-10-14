@@ -1,5 +1,6 @@
+
 ##Position Beacons
-Generally the position of the station that is broadcasting including Location, messages, telemtry,...
+  Generally the position of the station that is broadcasting including Location, messages, telemtry,...
 
 ####Position Report beacon defaults to RF 0
 
@@ -11,7 +12,7 @@ Generally the position of the station that is broadcasting including Location, m
 
 
 ##Object Beacon
-Locations and information about static objects relevant to the location.
+  Locations and information about static objects relevant to the location.
 - If the object is already reported on APRS-IS don't send it to IG, however could be useful to send information over local RF.
 - If the object is not in APRS-IS then send to IG
 
@@ -77,42 +78,51 @@ FREQ=438.525 OFFSET=-5.000 TONE=0.0 COMMENT=”Mt Stanley”`
 
   [7c9ff106]: https://groups.io/g/APRSISCE/topic/34600041 "APRSICE filter test"
 
-
-
-
-
 ##Digipeat rules
-Create rules to manage the Repeating of Information over RF
+  Create rules to manage the Repeating of Information over RF
 - Digipeat rules act on the channel and the address
 - Try to only repeat information that something else doesn't cover.
 - Keep information relevant to the service area.
 - Try to minimise repeating bad records.
 
 ####Digipeat Rule From RF 0 to RF 0  
-`DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$ ^WIDE[12]-[12]$ TRACE`
+  `DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$ ^WIDE[12]-[12]$ TRACE`
 
 #####Fields:
-- From 0
-- To 0
-- Aliases `^WIDE[3-7]-[1-7]$` - e.g. WIDE3-5 is treated as WIDE1-1
-- Wide `^WIDE[12]-[12]$` Patterns we want t treat properly e.g. WIDE2-1 will become WIDE2-*
-- Premptive Digipeat
-  - `TRACE` - show the path
-  - `OFF` - Not digipeated
-  - `DROP` - Hide History - [do not use]
-  - `MARK` - Adjust path - [do not use]
+
+  - From 0
+  - To 0
+  - Aliases `^WIDE[3-7]-[1-7]$` - e.g. WIDE3-5 is treated as WIDE1-1
+  - Wide `^WIDE[12]-[12]$` Patterns we want t treat properly e.g. WIDE2-1 will become WIDE2-*
+  -  Premptive Digipeat
+    - `TRACE` - show the path
+    - `OFF` - Not digipeated
+    - `DROP` - Hide History - [do not use]
+    - `MARK` - Adjust path - [do not use]
 
 
 Example
 
 ```
+#Device Information
+#Channel Information
+IGSERVER xxxxxxxx
+IGLOGIN xxxxxxxx
+
+
+
+
 #Position Report beacon
-PBEACON delay=6:00 every=15:00 overlay=S SYMBOL="weather station" lat-36^27.04s long=146^26.12E COMMENTCMD="tail -l /tmp/wxnow.txt"
+PBEACON delay=3:00 every=15:00 overlay=S SYMBOL="weather station" lat-36^27.04s long=146^26.12E COMMENTCMD="tail -l /tmp/wxnow.txt"
+
+PBEACON delay=4:00 every=15:00 overlay=S SYMBOL="Digi" lat-36^27.04s long=146^26.12E COMMENT=" Radio XXX"
+
 
 #Position Report beacon to IG
 
-PBEACON sendto=IG delay=6:00 every=15:00 overlay=S SYMBOL="weather station" lat-36^27.04s long=146^26.12E COMMENTCMD="tail -l /tmp/wxnow.txt"
+PBEACON sendto=IG delay=5:00 every=15:00 overlay=S SYMBOL="weather station" lat-36^27.04s long=146^26.12E COMMENTCMD="tail -l /tmp/wxnow.txt"
 
+PBEACON sendto=IG delay=6:00 every=15:00 overlay=S SYMBOL="Digi" lat-36^27.04s long=146^26.12E COMMENT=" Radio XXX"
 #Object Beacon
 
 OBEACON OBJNAME=VK3RNU LAT=36^27.08S LONG=146^48.18E SYMBOL=/r FREQ=438.525 OFFSET=-5.000 TONE=0.0 COMMENT=”Mt Stanley”
