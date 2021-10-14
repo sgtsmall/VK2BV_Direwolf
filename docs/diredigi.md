@@ -1,29 +1,29 @@
 
 # Direwolf config
 
-##Position Beacons
+## Position Beacons
   Generally the position of the station that is broadcasting including Location, messages, telemtry,...
 
-####Position Report beacon defaults to RF 0
+#### Position Report beacon defaults to RF 0
 
 `PBEACON delay=6:00 every=15:00 overlay=S SYMBOL="weather station" lat-36^27.04s long=146^26.12E COMMENTCMD="tail -l /tmp/wxnow.txt"`
 
-####Position Report beacon to IG
+#### Position Report beacon to IG
 
 `PBEACON sendto=IG delay=6:00 every=15:00 overlay=S SYMBOL="weather station" lat-36^27.04s long=146^26.12E COMMENTCMD="tail -l /tmp/wxnow.txt"`
 
 
-##Object Beacon
+## Object Beacon
   Locations and information about static objects relevant to the location.
 - If the object is already reported on APRS-IS don't send it to IG, however could be useful to send information over local RF.
 - If the object is not in APRS-IS then send to IG
 
-####Object Report beacon defaults to RF 0
+#### Object Report beacon defaults to RF 0
 
 `OBEACON OBJNAME=VK3RNU LAT=36^27.08S LONG=146^48.18E SYMBOL=/r
 FREQ=438.525 OFFSET=-5.000 TONE=0.0 COMMENT=”Mt Stanley”`
 
-##IGate rules (APRS-IS)
+## IGate rules (APRS-IS)
 
 #### Server side filter
   `IGFILTER t/mw/VK3MS-2/50 p/NTE/NCY`
@@ -80,17 +80,17 @@ FREQ=438.525 OFFSET=-5.000 TONE=0.0 COMMENT=”Mt Stanley”`
 
   [7c9ff106]: https://groups.io/g/APRSISCE/topic/34600041 "APRSICE filter test"
 
-##Digipeat rules
+## Digipeat rules
   Create rules to manage the Repeating of Information over RF
 - Digipeat rules act on the channel and the address
 - Try to only repeat information that something else doesn't cover.
 - Keep information relevant to the service area.
 - Try to minimise repeating bad records.
 
-####Digipeat Rule From RF 0 to RF 0  
+#### Digipeat Rule From RF 0 to RF 0  
   `DIGIPEAT 0 0 ^WIDE[3-7]-[1-7]$ ^WIDE[12]-[12]$ TRACE`
 
-#####Fields:
+##### Fields:
 
   - From 0
   - To 0
