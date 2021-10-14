@@ -71,14 +71,19 @@ FREQ=438.525 OFFSET=-5.000 TONE=0.0 COMMENT=”Mt Stanley”`
 
   [e31280c1]: http://mckserver-aw.mmckernan.id.au/wxsvr-au/index.php "AU Weather SERVER"
 
+  Comprehensive guide to using WXSVR-AU to get information from APRS-IS
+
 [Filter Rules for APRS-IS][203c4a3f]
 
   [203c4a3f]: http://www.aprs-is.net/javaprsfilter.aspx "Filter Rules"
 
+  Published rules from aprs-is.net
 
 [Using APRSICE for for APRS-IS filter test][7c9ff106]
 
   [7c9ff106]: https://groups.io/g/APRSISCE/topic/34600041 "APRSICE filter test"
+
+  Great example of using APRSICE to tune your IGFILTER
 
 ## Digipeat rules
   Create rules to manage the Repeating of Information over RF
